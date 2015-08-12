@@ -47,8 +47,9 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::post( 'reset_password', 'UserController@verify_and_reset_password' );
     Route::post( 'modify_user', 'UserController@modify_user' );
 
+    Route::get( 'upload', 'UserController@upload_head_portrait' );
     Route::get( 'pay_record', 'UserController@pay_record' );
-	Route::get('center', array('before' => 'auth.user.is_in', 'uses' => 'UserController@user_center'));
+	Route::get( 'center', array('before' => 'auth.user.is_in', 'uses' => 'UserController@user_center'));
 
     // 挂号记录模块
     Route::group(array( 'prefix' => 'record', 'before' => 'auth.user.is_in' ), function(){

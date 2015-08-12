@@ -366,10 +366,28 @@ class UserController extends BaseController{
         return Response::json(array( 'error_code' => 0, 'message' => '注册成功' ));
     }
 
-    public function upload_portrait(){
+/*
+    public function upload_head_portrait(){
 
+        if ( !Input::hasFile( 'head_portrait' ) ){
+
+            return Response::json(array( 'error_code' => 2, 'message' => '无文件上传' ));
+        }
+
+        if ( !Input::file( 'head_portrait' )->isValid() ){
+
+            return Response::json(array( 'error_code' => 3, 'message' => '文件无效' ));
+        }
+
+        $head_portrait = Input::get( 'head_portrait' );
+
+        $size = $head_portrait('photo')->getSize();
+
+        $result = array();
+
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功' ));
     }
-
+*/
     public function pay_record(){
 
         return View::make( 'user.pay_record' );

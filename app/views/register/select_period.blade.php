@@ -80,7 +80,7 @@
                 <li class="register-item">
                     <span class="register-time">{{{ $period['start'] }}}-{{{ $period['end'] }}}</span>
                     <span class="register-total">总数：{{{ $period['total'] }}}</span>
-                    <span class="register-remain">剩余：<span class="l-orange">{{{ $period['current'] }}}</span></span>
+                    <span class="register-remain">剩余：<span class="l-orange">{{{ $period['total'] - $period['current'] }}}</span></span>
                     <button class="btn" period_id="{{{ $period['id'] }}}"><a href="/user/record/add_record">挂号</a></button>
                 </li>
             @endforeach

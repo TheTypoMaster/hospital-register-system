@@ -24,7 +24,6 @@
 
             $('.login-form').on( 'submit', function( event ){
                 event.preventDefault();
-                alert( $(this).serialize() );
                 $.ajax({
                     url: '/user/login',
                     type: 'POST',

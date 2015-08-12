@@ -139,6 +139,10 @@ class RegisterRecordController extends BaseController{
                 'doctor_id'     => $schedule->doctor_id,
                 'account_id'    => $account_id
             ));
+
+            $period->current += 1;
+            $period->save();
+            
         }catch( Exception $e ){
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
