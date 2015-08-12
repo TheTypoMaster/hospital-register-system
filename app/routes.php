@@ -40,17 +40,18 @@ Route::group(array( 'prefix' => 'user' ), function(){
 
     Route::get( 'reset_password_first', 'UserController@reset_password_first' );
     Route::get( 'reset_password_second', 'UserController@reset_password_second' );
+     Route::post( 'reset_password', 'UserController@verify_and_reset_password' );
 
     Route::get( 'register_first', 'UserController@register_first' );
     Route::get( 'register_second', 'UserController@register_second' );
-
     Route::get( 'register', 'UserController@register_get' );
     Route::post( 'register', 'UserController@register_post' );
     Route::get( 'register/success', 'UserController@register_success' );
+    
     Route::get( 'login', 'UserController@login_get' );
     Route::post( 'login', 'UserController@login_post' );
     Route::post( 'logout', 'UserController@logout' );
-    Route::post( 'reset_password', 'UserController@verify_and_reset_password' );
+   
     Route::post( 'modify_user', 'UserController@modify_user' );
 
     Route::get( 'upload', 'UserController@upload_head_portrait' );

@@ -101,12 +101,10 @@ class UserController extends BaseController{
 
         $message = '您的验证码为：'.$code;
 
-/*
         // 发送验证码
         if ( !$this->send_message( $user_telephone, $message ) ){
             return Response::json(array( 'error_code' => 3, 'message' => '验证码发送失败' ));
         }
-*/
 
         // 设置验证通过标志
         Session::put( 'verification.passed', false );
@@ -205,7 +203,7 @@ class UserController extends BaseController{
 
     public function reset_password_first(){
 
-        return View::make( 'user.verification', array( 'title' => '重置密码', 'next_url' => '/user/reset_password_second' ) );
+        return View::make( 'user.verification', array( 'title' => '找回密码', 'next_url' => '/user/reset_password_second' ) );
     }
 
     public function reset_password_second(){
