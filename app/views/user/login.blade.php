@@ -54,7 +54,7 @@
             <input id="rem-check" class="checkbox" type="checkbox" name="remember" value="true">
             @endif
             <span class="checkbox-text">记住用户名</span>
-            <a class="recover-pwd" href="#">找回密码 ></a>
+            <a class="recover-pwd" href="/user/reset_password_first">找回密码 ></a>
         </div>
         <input class="btn form-blk" type="submit" value="登陆">
     </form>

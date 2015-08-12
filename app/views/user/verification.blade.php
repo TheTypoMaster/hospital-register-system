@@ -73,9 +73,7 @@
                     alert( '请输入验证码' ); return;
                 }
 
-                if ( !$('#pro-check').prop( 'checked' ) ){
-                    alert( '请阅读用户协议' ); return;
-                }
+                
 
                 $.ajax({
                     url: '/user/check_verification_code',
@@ -113,13 +111,6 @@
                 <input type="text" id="captcha" name="verification_code" placeholder="输入验证码" class="input-box">
             </div>
             <button id="captcha-btn" class="btn">获取验证码</button>
-        </div>
-        
-        <div class="protocol-wrap clearfix">
-            <span class="user-protocol">
-                <input id="pro-check" class="checkbox" type="checkbox">
-                <span>我已阅读并接受<a class="protocol-link" href="#">用户协议！</a></span>
-            </span>
         </div>
 
         <div class="submit-wrap">

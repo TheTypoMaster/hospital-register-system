@@ -38,6 +38,10 @@
                     return;
                 }
 
+                if ( !$('#pro-check').prop( 'checked' ) ){
+                    alert( '请阅读用户协议' ); return;
+                }
+
                 $.ajax({
                     url: '/user/register',
                     type: 'POST',
@@ -84,6 +88,13 @@
                 <option value="0">&nbsp&nbsp&nbsp男</option>
                 <option value="1">&nbsp&nbsp&nbsp女</option>
             </select>
+        </div>
+        <div class="form-blk clearfix">
+            <span class="input-key">注册协议</span><span class="fucking-colon">：</span>
+            <span class="user-protocol">
+                <input id="pro-check" class="checkbox" type="checkbox">
+                <span>我已阅读并接受<a class="protocol-link" href="#">用户协议！</a></span>
+            </span>
         </div>
         <input class="btn" type="submit" value="提交">
     </form>
