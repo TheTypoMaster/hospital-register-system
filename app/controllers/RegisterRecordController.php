@@ -120,7 +120,7 @@ class RegisterRecordController extends BaseController{
         
         // 无 account_id 参数，则选择该用户默认挂号账户
         else{
-            $accounts = User::find( $user_id )->register_accounts();
+            $accounts = RegisterAccount::where( 'user_id', $user_id )->first();
 
             if ( !isset( $accounts ) ){
                 return Response::json(array( 'error_code' => 4, 'message' => '请先申请挂号账户' ));
@@ -142,7 +142,7 @@ class RegisterRecordController extends BaseController{
 
             $period->current += 1;
             $period->save();
-            
+
         }catch( Exception $e ){
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
