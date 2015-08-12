@@ -21,7 +21,7 @@
     预约时间
 @stop
 
-@section('body-main')    
+@section('body-main')
     <div class="doc-info-wrap clearfix">
         <img class="doc-pic float-left" src="{{{ $doctor['photo'] }}}" alt="王磊" />
         <div class="doc-info-detail float-left">

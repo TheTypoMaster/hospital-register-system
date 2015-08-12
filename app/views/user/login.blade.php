@@ -19,9 +19,7 @@
 
 @section('js-specify')
     <script type="text/javascript">
-
         $(document).ready(function() {
-
             $('.login-form').on( 'submit', function( event ){
                 event.preventDefault();
                 $.ajax({
@@ -42,7 +40,7 @@
 @stop
 
 @section('body-title')
-    <a class="register" href="/user/register">注册</a>
+    <a class="register" href="/user/register_first">注册</a>
 @stop
 
 @section('body-main')
