@@ -35,8 +35,14 @@ Route::group(array( 'prefix' => 'hospital' ), function()
 Route::group(array( 'prefix' => 'user' ), function(){
     
     Route::get( 'check_phone', 'UserController@check_phone' );
-    Route::get( 'check_verification_code', 'UserController@check_verification_code' );
+    Route::post( 'check_verification_code', 'UserController@check_verification_code' );
     Route::post( 'send_verification_code', 'UserController@send_verification_code' );
+
+    Route::get( 'reset_password_first', 'UserController@reset_password_first' );
+    Route::get( 'reset_password_second', 'UserController@reset_password_second' );
+
+    Route::get( 'register_first', 'UserController@register_first' );
+    Route::get( 'register_second', 'UserController@register_second' );
 
     Route::get( 'register', 'UserController@register_get' );
     Route::post( 'register', 'UserController@register_post' );

@@ -101,10 +101,12 @@ class UserController extends BaseController{
 
         $message = '您的验证码为：'.$code;
 
+/*
         // 发送验证码
         if ( !$this->send_message( $user_telephone, $message ) ){
             return Response::json(array( 'error_code' => 3, 'message' => '验证码发送失败' ));
         }
+*/
 
         // 设置验证通过标志
         Session::put( 'verification.passed', false );
@@ -121,7 +123,7 @@ class UserController extends BaseController{
         // 设置该验证有效期 - 60 minutes
         Session::put( 'verification.expire', time() + self::$verification_expire );
 
-        return Response::json(array( 'error_code' => 0, 'message' => '验证码已经发送' ));
+        return Response::json(array( 'error_code' => 0, 'message' => '验证码已经发送', 'code' => $code ));
     }
 
     public function check_verification_code(){
@@ -150,7 +152,7 @@ class UserController extends BaseController{
 
         $code_from_input = Input::get( 'verification_code' );
         $code_from_session = Session::get( 'verification.code.content' );
-
+        
         if ( $code_from_input != $code_from_session ){
 
             return Response::json(array( 'error_code' => 1, 'message' => '验证码错误' ));
@@ -199,6 +201,21 @@ class UserController extends BaseController{
 
             return Response::json(array( 'error_code' => -1, 'message' => 'Unknown Error' ));
         }
+    }
+
+    public function reset_password_first(){
+
+        return View::make( 'user.verification', array( 'title' => '重置密码', 'next_url' => '/user/reset_password_second' ) );
+    }
+
+    public function reset_password_second(){
+
+        if ( $this->is_verification_expired() || $this->is_verification_failed() ){
+            
+            return Redirect::to( '/user/reset_password_first' );
+        }
+
+        return View::make( 'user.reset_password' );
     }
 
     public function modify_user(){
@@ -315,6 +332,21 @@ class UserController extends BaseController{
 
     }
 
+    public function register_first(){
+
+        return View::make( 'user.verification', array( 'title' => '注册', 'next_url' => '/user/register_second' ) );
+    }
+
+    public function register_second(){
+
+        if ( $this->is_verification_expired() || $this->is_verification_failed() ){
+            
+            return Redirect::to( '/user/register_first' );
+        }
+
+        return View::make( 'user.register.index' );
+    }
+
     public function register_get(){
 
         return View::make( 'user.register.index' );
@@ -366,7 +398,6 @@ class UserController extends BaseController{
         return Response::json(array( 'error_code' => 0, 'message' => '注册成功' ));
     }
 
-/*
     public function upload_head_portrait(){
 
         if ( !Input::hasFile( 'head_portrait' ) ){
@@ -387,7 +418,7 @@ class UserController extends BaseController{
 
         return Response::json(array( 'error_code' => 0, 'message' => '保存成功' ));
     }
-*/
+
     public function pay_record(){
 
         return View::make( 'user.pay_record' );

@@ -1,0 +1,90 @@
+@import "../define.less";
+
+#base;
+
+.bd-wrap .title{
+    min-height: 40px * @scale;
+    border: none;
+}
+
+.form{
+    
+    .input-wrap{
+        height: 24px * @scale;
+        border: solid #d4d4d4 1px;
+        border-radius: 5px * @scale;
+        padding-top: 6px * @scale;
+        padding-bottom: 6px * @scale;
+        margin-bottom: 10px * @scale;
+        
+        .input-icon{
+            top: 3px * @scale;
+            position: relative;
+            display: inline-block;
+            width: 12px * @scale;
+            margin-left: 9px * @scale;
+        }
+
+        .input-box{
+            width: 75%;
+            border: none;
+            border-left: solid #d4d4d4 1px;
+            font-size: 14px * @scale;
+            line-height: 24px * @scale;
+            padding-left: 5px * @scale;
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+
+    #captcha-wrap{
+
+        margin-bottom: 10px * @scale;
+
+        .input-wrap{
+            float: left;
+            width: 57%; 
+            margin: 0px;
+        }
+
+        #captcha-btn{
+            float: right;
+            display: block;
+            width: 40%;
+            line-height: 36px * @scale;
+            border-radius: 5px * @scale;
+        }
+    }
+
+    .submit-wrap{
+        padding-top: 40px * @scale;
+        .submit-btn{            
+            width: 100%;
+            height: 40px * @scale;
+            border-radius: 5px * @scale;
+        }    
+    }
+}
+
+.protocol-wrap{
+
+    .user-protocol{
+        display: inline-block;
+        float: left;
+        font-size: 12px * @scale;
+        color: #3b3b3b;
+
+        .protocol-link{
+            color: #fa9f43;
+        }
+
+        input[type="checkbox"]{
+            min-width: 15px * @scale;
+            min-height: 15px * @scale;
+            vertical-align: -3px * @scale;
+            border-radius: 2px * @scale;
+        }
+    }
+
+}
