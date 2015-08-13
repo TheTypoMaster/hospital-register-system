@@ -92,6 +92,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::group(array( 'prefix' => 'feedback', 'before' => 'auth.user.is_in' ), function(){
         Route::get( 'index', 'FeedbackController@index' );
         Route::post( 'add_feedback', 'FeedbackController@add_feedback' );
+        Route::get( 'success', 'FeedbackController@success' );
     });
 });
 
