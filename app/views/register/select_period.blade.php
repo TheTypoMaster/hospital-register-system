@@ -74,6 +74,30 @@
         <div class="list-head l-grey">
             {{{ $schedule['date'] }}} {{{ $schedule['period'] == 0 ? '上午' : '下午' }}} 号源列表
         </div>
+
+        <table class="register-list">
+            @foreach ( $periods as $period )
+                <tr class="register-item">
+                    <td class="register-time">
+                        {{{ $period['start'] }}}-{{{ $period['end'] }}}
+                    </td>
+                    <td class="register-total">
+                        总数：{{{ $period['total'] }}}
+                    </td>
+                    <td class="register-remain">
+                        <span>剩余：</span>
+                        <span class="l-orange">{{{ $period['total'] - $period['current'] }}}</span>
+                    </td>
+                    <td class="register-btn">
+                        <button class="btn" period_id="{{{ $period['id'] }}}">
+                            <a href="/user/record/add_record">挂号</a>
+                        </button>    
+                    </td>
+                </td>
+            @endforeach
+        </table>
+
+        <!--
         <ul class="register-list">
             @foreach ( $periods as $period )
                 <li class="register-item">
@@ -84,5 +108,6 @@
                 </li>
             @endforeach
         </ul>
+        -->
     </div>
 @stop

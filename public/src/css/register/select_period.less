@@ -54,14 +54,19 @@
 
 .register-list{
     width: 100%;
+    text-align: center;
+    
+    td{
+        border-bottom: @border-style @grey-f0 @border-size;
+    }
 
     .register-item{
+        position: relative;
         font-size: 11px * @scale;
         color: #101010;
         width: 100%;
         height: 45px * @scale;
         line-height: 45px;
-        border-bottom: @border-style @grey-f0 @border-size;
         
         .register-time{
             margin-left: 5%;
@@ -78,19 +83,16 @@
                 color: #ff9800;
             }
         }
-        
-        .btn{
-            display: inline-block;
-            position: absolute;
-            top: 23px; 
-            right: 8px * @scale;
+
+        .register-btn{
             width: 28%;
-            height: 30px * @scale;
-            line-height: 30px * @scale;
-            /*
-            margin-left: 10%;
-            margin-top: 23px;
-            */
+
+            .btn{
+                display: table-cell;
+                width: 90%;
+                height: 30px * @scale;
+                line-height: 30px * @scale;
+            }
         }
     }
 }
