@@ -54,7 +54,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
    
     Route::post( 'modify_user', 'UserController@modify_user' );
 
-    Route::get( 'upload', 'UserController@upload_head_portrait' );
+    Route::get( 'upload_head_portrait', 'UserController@upload_head_portrait' );
     Route::get( 'pay_record', 'UserController@pay_record' );
 	Route::get( 'center', array('before' => 'auth.user.is_in', 'uses' => 'UserController@user_center'));
 

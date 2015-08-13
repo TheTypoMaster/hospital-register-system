@@ -612,3 +612,22 @@ GET
                 }
             ]
         }
+
+GET
+    /user/pay_record: user_id
+    request:
+    response:
+        {
+            "error_code":
+            "pay_records":[
+                {
+                    "doctor": {
+                        "name": ,
+                        "title": ,
+                    },
+                    "fee":
+                    "department": ,
+                    "created_at": 
+                }
+            ]
+        }

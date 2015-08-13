@@ -412,9 +412,29 @@ class UserController extends BaseController{
 
         $size = $head_portrait('photo')->getSize();
 
-        $result = array();
+        try{
+            $user_id = Session::get( 'user.id' );
 
-        return Response::json(array( 'error_code' => 0, 'message' => '保存成功' ));
+            $user = User::find( $user_id );
+
+            $photo_path = '/images/users/'
+            $photo_name = uniqid( $user_id, true );
+            $photo_ext = $head_portrait->getClientOriginalExtension();
+
+            $user->photo = $photo_path.$photo_name.$photo_ext;
+
+            if ( !$user->save() ){
+                return Response::json(array( 'error_code' => 4, 'message' => '错误' ));
+            }
+
+            $head_portrait->move( public_path().$photo_path.$photo_name , $photo_ext );
+
+        }catch( Exception $e ){
+
+            return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'size' => $size ));
     }
 
     public function pay_record(){
