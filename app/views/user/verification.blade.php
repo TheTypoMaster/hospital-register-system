@@ -63,7 +63,8 @@
                             telephone: telephone
                         },
                         success: function( result ){
-                            alert( JSON.stringify( result ) );
+                            alert( result.message );
+                            //alert( JSON.stringify( result ) );
                         }
                     });
                 }
