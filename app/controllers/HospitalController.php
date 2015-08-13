@@ -19,7 +19,7 @@ class HospitalController extends HospitalBasedController{
 
             $this->set_data(array(
                 'name' => $hospital_info->name,
-                'photo' => $hospital_info->photo,
+                'photo' => '/images/hospital/hospital.jpg',//$hospital_info->photo,
                 'description' => $hospital_info->description
             ));
 

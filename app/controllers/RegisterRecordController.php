@@ -98,7 +98,6 @@ class RegisterRecordController extends BaseController{
 
     public function add_record(){
 
-        $account_id     = Input::get( 'account_id' );
         $period_id      = Input::get( 'period_id' );
         $period         = Period::find( $period_id );
         $schedule       = $period->schedule;
@@ -120,7 +119,7 @@ class RegisterRecordController extends BaseController{
         
         // 无 account_id 参数，则选择该用户默认挂号账户
         else{
-            $accounts = RegisterAccount::where( 'user_id', $user_id )->first();
+            $accounts = RegisterAccount::where( 'user_id', $user_id )->get();
 
             if ( !isset( $accounts ) ){
                 return Response::json(array( 'error_code' => 4, 'message' => '请先申请挂号账户' ));

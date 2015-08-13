@@ -31,9 +31,8 @@
                         period_id: $(this).attr('period_id')
                     },
                     success: function( json ){
-
-                        if ( json.error_code ) {
-                            alert( json.message );
+                        if ( json.error_code != 0 ) {
+                            alert( json );
                         }
                         else{
                             window.location.href = '/register/success';
@@ -75,7 +74,7 @@
         <div class="list-head l-grey">
             {{{ $schedule['date'] }}} {{{ $schedule['period'] == 0 ? '上午' : '下午' }}} 号源列表
         </div>
-        <ul class="regiter-list">
+        <ul class="register-list">
             @foreach ( $periods as $period )
                 <li class="register-item">
                     <span class="register-time">{{{ $period['start'] }}}-{{{ $period['end'] }}}</span>
