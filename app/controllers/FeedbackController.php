@@ -20,6 +20,7 @@ class FeedbackController extends BaseController{
         $feedback = new Feedback();
         $feedback->title = Input::get( 'title' );
         $feedback->content = Input::get( 'content' );
+        $feedback->user_id = Session::get( 'user.id' );
 
         if ( !$feedback->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '反馈失败' ));
