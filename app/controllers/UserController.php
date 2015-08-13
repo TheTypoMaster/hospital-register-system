@@ -2,6 +2,10 @@
 
 class UserController extends BaseController{
 
+    protected static $register_pass_code = 0;
+
+    protected static $reset_password_pass_code = 1;
+
     protected static $verification_code_expire = 3600;
 
     protected static $verification_expire = 3600;
@@ -76,11 +80,11 @@ class UserController extends BaseController{
         try{
             $user = Sentry::findUserByLogin( Input::get( 'telephone' ) );
 
-            return Response::json(array( 'error_code' => 1, 'message' => '该手机号已被注册' ));            
+            return Response::json(array( 'error_code' => self::$reset_password_pass_code, 'message' => '该手机号已被注册' ));            
 
         }catch( Cartalyst\Sentry\Users\UserNotFoundException $e ){
 
-            return Response::json(array( 'error_code' => 0, 'message' => '该手机号尚未注册' ));
+            return Response::json(array( 'error_code' => self::$register_pass_code, 'message' => '该手机号尚未注册' ));
 
         }catch( Exception $e ){
 
@@ -100,12 +104,12 @@ class UserController extends BaseController{
         }
 
         $message = '您的验证码为：'.$code;
-
+/*
         // 发送验证码
         if ( !$this->send_message( $user_telephone, $message ) ){
             return Response::json(array( 'error_code' => 3, 'message' => '验证码发送失败' ));
         }
-
+*/
         // 设置验证通过标志
         Session::put( 'verification.passed', false );
         
@@ -203,14 +207,19 @@ class UserController extends BaseController{
 
     public function reset_password_first(){
 
-        return View::make( 'user.verification', array( 'title' => '找回密码', 'next_url' => '/user/reset_password_second' ) );
+        return View::make( 
+            'user.verification', 
+            array( 
+                'title' => '找回密码', 
+                'next_url' => '/user/reset_password/second',
+                'pass_code' => self::$reset_password_pass_code ) );
     }
 
     public function reset_password_second(){
 
         if ( $this->is_verification_expired() || $this->is_verification_failed() ){
             
-            return Redirect::to( '/user/reset_password_first' );
+            return Redirect::to( '/user/reset_password/first' );
         }
 
         return View::make( 'user.reset_password' );
@@ -332,20 +341,20 @@ class UserController extends BaseController{
 
     public function register_first(){
 
-        return View::make( 'user.verification', array( 'title' => '注册', 'next_url' => '/user/register_second' ) );
+        return View::make( 
+            'user.verification', 
+            array( 
+                'title' => '注册', 
+                'next_url' => '/user/register/second',
+                'pass_code' => self::$register_pass_code ) );
     }
 
     public function register_second(){
 
         if ( $this->is_verification_expired() || $this->is_verification_failed() ){
             
-            return Redirect::to( '/user/register_first' );
+            return Redirect::to( '/user/register/first' );
         }
-
-        return View::make( 'user.register.index' );
-    }
-
-    public function register_get(){
 
         return View::make( 'user.register.index' );
     }
@@ -415,20 +424,39 @@ class UserController extends BaseController{
 
         $head_portrait = Input::file( 'head_portrait' );
 
-        $size = $head_portrait->getSize();
+        $file_size = $head_portrait->getSize();
+
+        if ( $file_size > 20 * 1024 ){
+            return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
+        }
+
+/*
+        $validator = Validator::make(
+            array( 'photo' => $head_portrait ),
+            array( 'photo' => 'image' ) );
+
+        if ( $validator->fails() ){
+            return Response::json(array( 'error_code' => 5, 'message' => '必须为图片文件' ));
+        }
+*/
+        $file_ext = $head_portrait->getClientOriginalExtension();
 
         try{
             $user_id = Session::get( 'user.id' );
 
             $user = User::find( $user_id );
 
-            $photo_path = '/images/users/upload/';
-            $photo_full_name = uniqid( $user_id ).'.'.$head_portrait->getClientOriginalExtension();
+            $photo_path = '/images/upload/';
+            $photo_full_name = uniqid( $user_id.time() ).'.'.$file_ext;
+
+            if ( isset( $user->photo ) ){
+                File::delete( public_path().$user->photo );
+            }
 
             $user->photo = $photo_path.$photo_full_name;
 
             if ( !$user->save() ){
-                return Response::json(array( 'error_code' => 4, 'message' => '错误' ));
+                return Response::json(array( 'error_code' => 5, 'message' => '错误' ));
             }
 
             $head_portrait->move( public_path().$photo_path , $photo_full_name );
@@ -439,7 +467,7 @@ class UserController extends BaseController{
             return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
         }
 
-        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'size' => $size ));
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'size' => $file_size ));
     }
 
     public function pay_record(){

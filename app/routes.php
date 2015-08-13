@@ -40,23 +40,38 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::post( 'check_verification_code', 'UserController@check_verification_code' );
     Route::post( 'send_verification_code', 'UserController@send_verification_code' );
 
+    Route::group(array( 'prefix' => 'reset_password' ), function(){
+        Route::post( '/', 'UserController@verify_and_reset_password' );
+        Route::get( 'first', 'UserController@reset_password_first' );
+        Route::get( 'second', 'UserController@reset_password_second' );
+    });
+/*
     Route::get( 'reset_password_first', 'UserController@reset_password_first' );
     Route::get( 'reset_password_second', 'UserController@reset_password_second' );
-     Route::post( 'reset_password', 'UserController@verify_and_reset_password' );
+    Route::post( 'reset_password',  );
+*/
+    Route::group(array( 'prefix' => 'register' ), function(){
+        Route::post( '/', 'UserController@register_post' );
+        Route::get( 'first', 'UserController@register_first' );
+        Route::get( 'second', 'UserController@register_second' );
+        Route::get( 'success', 'UserController@register_success' );
+    });
 
+/*
     Route::get( 'register_first', 'UserController@register_first' );
     Route::get( 'register_second', 'UserController@register_second' );
     Route::get( 'register', 'UserController@register_get' );
     Route::post( 'register', 'UserController@register_post' );
     Route::get( 'register/success', 'UserController@register_success' );
-    
+*/    
     Route::get( 'login', 'UserController@login_get' );
     Route::post( 'login', 'UserController@login_post' );
     Route::post( 'logout', 'UserController@logout' );
    
     Route::post( 'modify_user', 'UserController@modify_user' );
     Route::post( 'upload_head_portrait', 'UserController@upload_head_portrait' );
-    Route::get( 'pay_record', 'UserController@pay_record' );
+
+    Route::get( 'pay_record', array('before' => 'auth.user.is_in', 'uses' => 'UserController@pay_record'));
 	Route::get( 'center', array('before' => 'auth.user.is_in', 'uses' => 'UserController@user_center'));
 
     // 挂号记录模块

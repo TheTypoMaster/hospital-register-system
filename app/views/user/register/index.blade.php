@@ -29,13 +29,11 @@
                 var password_cfm = $('#password_cfm').val();
 
                 if ( !password.match( /^[a-zA-Z0-9]\w{5,15}$/g ) ){
-                    alert( '密码格式错误' );
-                    return;
+                    alert( '密码格式错误' ); return;
                 }
 
                 if ( password != password_cfm ){
-                    alert( '确认密码错误' );
-                    return;
+                    alert( '确认密码错误' ); return;
                 }
 
                 if ( !$('#pro-check').prop( 'checked' ) ){

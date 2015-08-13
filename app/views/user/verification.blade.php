@@ -23,47 +23,67 @@
             $('#captcha-btn').on('click', function( event ){
                 event.preventDefault();
 
+                var captcha_btn = $(this);
                 var telephone = $('#telephone').val();
-                if ( !telephone.match( /^(13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$|17[0-9]{1}[0-9]{8})$/g ) ){
-                    alert( '手机号码不对哦' ); return;
-                }
 
-                $(this).addClass('btn-disabled');
-                $(this).prop( 'disabled', true );
-                
-                var expire = 60;
-                var timer = setInterval(function(){
-                    if ( expire == 0 ){
-                        stop();
-                        return;
-                    }else{
-                        expire -= 1;
+                var on_check_phone_valid = function(){
+                    if ( !telephone.match( /^(13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$|17[0-9]{1}[0-9]{8})$/g ) ){
+                        alert( '手机号码不对哦' ); return;
                     }
 
-                    $('#captcha-btn').html( '重新获取:' + expire );
-
-                }, 1000);
-
-                function stop(){
-                    clearInterval( timer );
+                    captcha_btn.addClass('btn-disabled');
+                    captcha_btn.prop( 'disabled', true );
                     
-                    var send_btn = $('#captcha-btn');
-                    send_btn.removeClass('btn-disabled');
-                    send_btn.html( '发送验证码' );
-                    send_btn.prop( 'disabled', false );
+                    var expire = 60;
+                    var timer = setInterval(function(){
+                        if ( expire == 0 ){
+                            stop();
+                            return;
+                        }else{
+                            expire -= 1;
+                        }
+
+                        captcha_btn.html( '重新获取:' + expire );
+
+                    }, 1000);
+
+                    function stop(){
+                        clearInterval( timer );
+                        
+                        captcha_btn.removeClass('btn-disabled');
+                        captcha_btn.html( '发送验证码' );
+                        captcha_btn.prop( 'disabled', false );
+                    }
+
+                    $.ajax({
+                        url: '/user/send_verification_code',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            telephone: telephone
+                        },
+                        success: function( result ){
+                            alert( JSON.stringify( result ) );
+                        }
+                    });
                 }
 
                 $.ajax({
-                    url: '/user/send_verification_code',
-                    type: 'POST',
+                    url: '/user/check_phone',
+                    type: 'GET',
                     dataType: 'json',
                     data: {
                         telephone: telephone
                     },
-                    success: function( json ){
-                        alert( JSON.stringify( json ) );
+                    success: function ( result ){
+                        if ( result.error_code == {{{ $pass_code }}} ){
+                            on_check_phone_valid();
+                        }else{
+                            alert( result.message );
+                        }
                     }
                 });
+                
             });
 
             $('.form').on('submit', function(event) {
@@ -72,8 +92,6 @@
                 if ( $('#captcha').val().length == 0 ){
                     alert( '请输入验证码' ); return;
                 }
-
-                
 
                 $.ajax({
                     url: '/user/check_verification_code',

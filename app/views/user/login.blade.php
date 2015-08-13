@@ -40,7 +40,7 @@
 @stop
 
 @section('body-title')
-    <a class="register" href="/user/register_first">注册</a>
+    <a class="register" href="/user/register/first">注册</a>
 @stop
 
 @section('body-main')
@@ -54,7 +54,7 @@
             <input id="rem-check" class="checkbox" type="checkbox" name="remember" value="true">
             @endif
             <span class="checkbox-text">记住用户名</span>
-            <a class="recover-pwd" href="/user/reset_password_first">找回密码 ></a>
+            <a class="recover-pwd" href="/user/reset_password/first">找回密码 ></a>
         </div>
         <input class="btn form-blk" type="submit" value="登陆">
     </form>
