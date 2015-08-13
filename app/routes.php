@@ -33,6 +33,8 @@ Route::group(array( 'prefix' => 'hospital' ), function()
 
 //用户模块
 Route::group(array( 'prefix' => 'user' ), function(){
+
+    Route::get( 'test', 'UserController@test' ) ;
     
     Route::get( 'check_phone', 'UserController@check_phone' );
     Route::post( 'check_verification_code', 'UserController@check_verification_code' );
@@ -53,8 +55,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::post( 'logout', 'UserController@logout' );
    
     Route::post( 'modify_user', 'UserController@modify_user' );
-
-    Route::get( 'upload_head_portrait', 'UserController@upload_head_portrait' );
+    Route::post( 'upload_head_portrait', 'UserController@upload_head_portrait' );
     Route::get( 'pay_record', 'UserController@pay_record' );
 	Route::get( 'center', array('before' => 'auth.user.is_in', 'uses' => 'UserController@user_center'));
 

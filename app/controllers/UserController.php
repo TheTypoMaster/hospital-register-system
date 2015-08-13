@@ -396,6 +396,11 @@ class UserController extends BaseController{
         return Response::json(array( 'error_code' => 0, 'message' => '注册成功' ));
     }
 
+    public function test(){
+
+        return View::make( 'user.test' );
+    }
+
     public function upload_head_portrait(){
 
         if ( !Input::hasFile( 'head_portrait' ) ){
@@ -408,28 +413,28 @@ class UserController extends BaseController{
             return Response::json(array( 'error_code' => 3, 'message' => '文件无效' ));
         }
 
-        $head_portrait = Input::get( 'head_portrait' );
+        $head_portrait = Input::file( 'head_portrait' );
 
-        $size = $head_portrait('photo')->getSize();
+        $size = $head_portrait->getSize();
 
         try{
             $user_id = Session::get( 'user.id' );
 
             $user = User::find( $user_id );
 
-            $photo_path = '/images/users/'
-            $photo_name = uniqid( $user_id, true );
-            $photo_ext = $head_portrait->getClientOriginalExtension();
+            $photo_path = '/images/users/upload/';
+            $photo_full_name = uniqid( $user_id ).'.'.$head_portrait->getClientOriginalExtension();
 
-            $user->photo = $photo_path.$photo_name.$photo_ext;
+            $user->photo = $photo_path.$photo_full_name;
 
             if ( !$user->save() ){
                 return Response::json(array( 'error_code' => 4, 'message' => '错误' ));
             }
 
-            $head_portrait->move( public_path().$photo_path.$photo_name , $photo_ext );
+            $head_portrait->move( public_path().$photo_path , $photo_full_name );
+        }
 
-        }catch( Exception $e ){
+        catch( Exception $e ){
 
             return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
         }
