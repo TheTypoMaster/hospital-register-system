@@ -11,6 +11,8 @@
 |
 */
 
+Route::get( 'check_signature', 'WeixinContoller@WeixinContoller' );
+
 // 医院模块
 Route::group(array( 'prefix' => 'hospital' ), function()
 {
@@ -115,7 +117,6 @@ Route::group(array( 'prefix' => 'register', 'before' => 'auth.user.is_in' ), fun
     Route::get( 'select_period', 'RegisterController@select_period' );
     Route::get( 'success', 'RegisterController@success' );
 });
-
 
 Route::group(array( 'prefix' => 'pay', 'before' => 'auth.user.is_in' ), function(){
 });
