@@ -11,7 +11,7 @@
 |
 */
 
-Route::get( 'check_signature', 'WeixinContoller@WeixinContoller' );
+Route::get( 'check_signature', 'WeixinContoller@check_signature' );
 
 // 医院模块
 Route::group(array( 'prefix' => 'hospital' ), function()
