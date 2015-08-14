@@ -301,7 +301,8 @@ class UserController extends BaseController{
             return Response::json(array( 'error_code' => -1, 'message' => 'Unknown Error' ));
         }
 
-        Session::put( 'user.id', Sentry::getUser()->id );
+        $user = Sentry::getUser();
+        Session::put( 'user.id', $user->id );
 
         $error_message = array( 'error_code' => 0, 'message' => '登陆成功' );
 
@@ -322,6 +323,9 @@ class UserController extends BaseController{
             }
 
             return $response;
+        }else{
+
+            $error_message['user'] = $user;
         }
 
         return Response::json( $error_message );
