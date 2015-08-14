@@ -17,11 +17,14 @@ class RegisterAccountController extends BaseController{
 
     public function detail(){
 
-        $account = RegisterAccount::find( Input::get( 'account_id' ) )
-                                  ->where( 'user_id', Session::get( 'user.id' ) )->first();
+        $account = RegisterAccount::find( Input::get( 'account_id' ) );
 
         if ( !isset( $account ) ){
             return Response::json(array( 'error_code' => 1, 'message' => '不存在该账户' ));
+        }
+
+        if ( $account->user_id != Session::get( 'user.id' ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '无效账户' ));
         }
 
         return Response::json(array( 'error_code' => 0, 'account' => $account ));
@@ -30,11 +33,14 @@ class RegisterAccountController extends BaseController{
     public function modify_account(){
 
         $inputs = Input::all();
-        $account = RegisterAccount::find( $inputs['account_id'] )
-                                  ->where( 'user_id', Session::get( 'user.id' ) )->first(); 
+        $account = RegisterAccount::find( $inputs['account_id'] ); 
 
         if ( !isset( $account ) ){
             return Response::json(array( 'error_code' => 1, 'message' => '不存在该账户' ));
+        }
+
+        if ( $account->user_id != Session::get( 'user.id' ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '无效账户' ));
         }
         
         $rules = array(
@@ -79,7 +85,7 @@ class RegisterAccountController extends BaseController{
         //return Response::json( Input::all() );
 
         if ( $validator->fails() ){
-            return Response::json(array( 'error_code' => 2, 'messages' => $validator->messages()->all() ));
+            return Response::json(array( 'error_code' => 3, 'messages' => $validator->messages()->all() ));
         }
 
         foreach ( $rules as $key => $value ){

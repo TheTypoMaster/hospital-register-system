@@ -110,22 +110,26 @@ class RegisterRecordController extends BaseController{
         
         if ( Input::has( 'account_id' ) ){
             $account_id = Input::get( 'account_id' );
-            $account    = RegisterAccount::find( $account_id )->where( 'user_id', $user_id )->first();
+            $account    = RegisterAccount::find( $account_id );
 
             if ( !isset( $account ) ){
                 return Response::json(array( 'error_code' => 3, 'message' => '不存在该挂号账户' ));
+            }
+
+            if ( $account->user_id != $user_id ){
+                return Response::json(array( 'error_code' => 4, 'message' => '无效账户' ));
             }
         }
         
         // 无 account_id 参数，则选择该用户默认挂号账户
         else{
-            $accounts = RegisterAccount::where( 'user_id', $user_id )->get();
+            $account = RegisterAccount::where( 'user_id', $user_id )->first();
 
-            if ( !isset( $accounts ) ){
-                return Response::json(array( 'error_code' => 4, 'message' => '请先申请挂号账户' ));
+            if ( !isset( $account ) ){
+                return Response::json(array( 'error_code' => 5, 'message' => '请先申请挂号账户' ));
             }
             
-            $account_id = $accounts->first()->id;
+            $account_id = $account->id;
         }
 
         try{
