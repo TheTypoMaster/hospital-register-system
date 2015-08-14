@@ -161,4 +161,34 @@ class RegisterAccountController extends BaseController{
 
         return Response::json(array( 'error_code' => 0, 'message' => '注册成功' ));
     }
+
+    public function delete_account(){
+
+        if ( Input::has( 'account_id' ) ){
+
+            $account = RegisterAccount::find( Input::get( 'account_id' ) );
+
+            if ( !isset( $account )  ){
+                return Response::json(array( 'error_code' => 2, 'message' => '不存在该账户' ));
+            }
+
+            if ( $account->user_id != Session::get( 'user.id' ) ){
+                return Response::json(array( 'error_code' => 3, 'message' => '无效账户' ));
+            }
+
+        }else{
+
+            $account = RegisterAccount::where( 'user_id', Session::get( 'user.id' ) )->first();
+
+            if ( !isset( $account ) ){
+                return Response::json(array( 'error_code' => 4, 'message' => '无挂号账户' ));
+            }
+        }
+
+        if ( !$account->delete() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '删除失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '删除成功' ));
+    }
 }

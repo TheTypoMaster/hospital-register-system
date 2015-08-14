@@ -80,6 +80,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
         Route::get( 'detail', 'RegisterAccountController@detail' );
         Route::post( 'modify_account', 'RegisterAccountController@modify_account' );
         Route::post( 'add_account', 'RegisterAccountController@add_account' );
+        Route::post( 'delete_account', 'RegisterAccountController@delete_account' );
     });
 
     // 评论模块
@@ -113,4 +114,8 @@ Route::group(array( 'prefix' => 'register', 'before' => 'auth.user.is_in' ), fun
     Route::get( 'select_schedule', 'RegisterController@select_schedule' );
     Route::get( 'select_period', 'RegisterController@select_period' );
     Route::get( 'success', 'RegisterController@success' );
+});
+
+
+Route::group(array( 'prefix' => 'pay', 'before' => 'auth.user.is_in' ), function(){
 });

@@ -431,6 +431,20 @@ POST
             "resigter_account_id": 111
         }
 
+POST
+    /user/register_account/delete_account
+    request:
+        account_id: // 若无此参数，则选择默认账户
+    response:
+        {
+            "error_code": 0,                                // 0 - 删除成功
+                                                            // 1 - 删除失败
+                                                            // 2 - 不存在该账户
+                                                            // 3 - 无效账户
+                                                            // 4 - 无挂号账户
+            "message": ""
+        }
+
 // 获取指定用户的评论
 GET
     /user/comment/get_comments: user_id
