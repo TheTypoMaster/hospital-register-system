@@ -18,10 +18,14 @@ class WeixinContoller extends BaseController{
     }
     
     public function response_token(){
+        $response = self::check_signature() ? Input::get( 'echostr')
+
         if ( self::check_signature() ){
             return Input::get( 'echostr' );
         }
 
         return "Welcome";
+
+        return Response::make( self::check_signature() ? Input::get( 'echostr ') : 'Error' );
     }
 }
