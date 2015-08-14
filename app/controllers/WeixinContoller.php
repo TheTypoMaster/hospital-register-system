@@ -19,6 +19,6 @@ class WeixinContoller extends BaseController{
     
     public function response_token(){
 
-        return Response::make( Input::get( 'echostr ') : 'Error' );
+        return Response::make( self::checkInput::get( 'echostr ') : 'Error' );
     }
 }
