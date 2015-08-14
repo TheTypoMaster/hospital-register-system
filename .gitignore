@@ -10,6 +10,7 @@ Thumbs.db
 /app/config/app.php
 /app/config/database.php
 /app/config/weixin.php
+/app/controllers/WxPay/lib/WxPay.Config.php
 /public/dist
 /public/node_modules
 *.log
