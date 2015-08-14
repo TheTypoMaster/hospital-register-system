@@ -5,6 +5,7 @@ class WeixinContoller extends BaseController{
     protected static $token = "ziruikeji";
 
     protected static function check_signature(){
+
         $signature = Input::get( 'signature' );
         $timestamp = Input::get( 'timestamp' );
         $nonce = Input::get( 'nonce' );
@@ -18,7 +19,12 @@ class WeixinContoller extends BaseController{
     }
     
     public function response_token(){
+		$response_text = "Error";
 
-        return Response::make( self::check_signature() ? Input::get( 'echostr ') : 'Error' );
+		if ( self::check_signature() ){
+			$response_text = Input::get( 'echostr' );
+		}
+		
+		return Response::make( $response_text );
     }
 }
