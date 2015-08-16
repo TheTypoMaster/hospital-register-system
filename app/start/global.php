@@ -17,7 +17,8 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
-    app_path().'/controllers/WxPay'
+    app_path().'/controllers/WxPay/lib',
+	app_path().'/controllers/WxPay/example'
 
 ));
 

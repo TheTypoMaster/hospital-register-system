@@ -30,7 +30,7 @@
              * @para    int     period_id   挂号的时间段id
              * @return  json                /pay/generate_indent 接口返回的数据解析后的json
              */
-            function generate_indent( ){
+            function generate_indent(){
                 var pay_parameters = null;
 
                 $.ajax({
@@ -39,8 +39,7 @@
                     dataType: 'json',
                     data: {
                         period_id: period_id
-                    }
-					/*
+                    },	
                     success: function( result ){
                         if( result.error_code == 0 ){
 							alert( '生成订单成功' );
@@ -48,12 +47,12 @@
                         }else{
 							alert( result.message );
 						}
-					}*/
-                }).always(function( x, text_status, error ){
-					//alert( text_status);
-					alert( 'Status' + x.status );
-					alert( 'response text: ' + x.responseText );
-				});
+					},
+					error: function( xhr, text_status, error ){
+						alert( xhr.status );
+						alert( xhr.responseText );
+					} 
+                });
 
                 return pay_parameters;
             }
