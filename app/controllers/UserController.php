@@ -481,7 +481,32 @@ class UserController extends BaseController{
 
     public function pay_record(){
 
-        return View::make( 'user.pay_record' );
+        if ( !Request::wantsJson() ){
+            return View::make( 'user.pay_record' );
+        }
+
+        $user = User::find( Session::get( 'user.id' ) );
+        $records = $user->register_records()->with( 'doctor' )->get();
+
+        if ( !isset( $records ) ){
+            return Response::json(array( 'error_code' => 1, 'message' => '无缴费记录' ));
+        }
+
+        $result = array();
+        foreach ( $records as $record ){
+            $doctor = $record->doctor;
+            $result[] = array(
+                'doctor' => array(
+                    'name'  => $doctor->name,
+                    'title' => $doctor->title
+                ),
+                'fee'           => $record->fee,
+                'department'    => $doctor->department->name,
+                'created_at'    => $record->created_at->format('Y-m-d H:i:s')
+            );
+        }
+
+        return Response::json(array( 'error_code' => 0, 'pay_records' => $result ));
     }
 
     public function register_success(){
