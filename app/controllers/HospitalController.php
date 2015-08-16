@@ -76,6 +76,7 @@ class HospitalController extends HospitalBasedController{
 
                     $result['app_id'] = $app_id;
                     $result['sign_package'] = $sign_package;
+                    $result['baidu_map_app_key'] = Config::get('platform.baidu.map.app_key');
                 }
 
                 return $result;

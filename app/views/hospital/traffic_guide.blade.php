@@ -13,7 +13,7 @@
 @section('js-lib')
     @parent
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&v=1.0&ak=iG2mRPwyHcIDiYc25f1PudGC"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&v=1.0&ak={{{ $baidu_map_app_key }}}"></script>
 @stop
 
 @section('js-common')

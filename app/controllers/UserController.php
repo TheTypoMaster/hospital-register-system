@@ -19,16 +19,17 @@ class UserController extends BaseController{
     protected function send_message( $user_telephone, $message ){
         
         $argv = array(
-            'name' => '13580501456',
-            'pwd' => '1AF3988258DE4FABDD7E1C5FDB36',
-            'sign' => '紫睿科技',
-            'type' => 'pt',
-            'mobile' => $user_telephone,
-            'content' => $message //'您的验证码为：'.$code
+            'name'      => Config::get( 'platform.chuangrui.name' ),
+            'pwd'       => Config::get( 'platform.chuangrui.password' ),
+            'sign'      => Config::get( 'platform.chuangrui.sign' ),
+            'type'      => 'pt',
+            'mobile'    => $user_telephone,
+            'content'   => $message //'您的验证码为：'.$code
         );
 
-        $url = 'http://web.cr6868.com/asmx/smsservice.aspx?'.http_build_query( $argv, '', '&' );
-        
+        //$url = 'http://web.cr6868.com/asmx/smsservice.aspx?'.http_build_query( $argv, '', '&' );
+        $url = Config::get( 'platform.chuangrui.url' ).http_build_query( $argv, '', '&' );
+
         $response = file_get_contents( $url );
         $return_code = substr( $response, 0, 1 );
 
@@ -76,6 +77,10 @@ class UserController extends BaseController{
     }
 
     public function check_phone(){
+
+        if ( !Input::has( 'telephone' ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '请输入手机号码' ));
+        }
 
         try{
             $user = Sentry::findUserByLogin( Input::get( 'telephone' ) );
