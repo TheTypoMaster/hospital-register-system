@@ -39,18 +39,21 @@
                     dataType: 'json',
                     data: {
                         period_id: period_id
-                    },
-                    success: function( result ){
-                        /*
-                        if ( result.error_code ){
-                            alert( result.message );
-                        }
-                        */ 
-                        if( result.error_code == 0 ){
-                            pay_parameters = result;
-                        }
                     }
-                });
+					/*
+                    success: function( result ){
+                        if( result.error_code == 0 ){
+							alert( '生成订单成功' );
+                            pay_parameters = result;
+                        }else{
+							alert( result.message );
+						}
+					}*/
+                }).always(function( x, text_status, error ){
+					//alert( text_status);
+					alert( 'Status' + x.status );
+					alert( 'response text: ' + x.responseText );
+				});
 
                 return pay_parameters;
             }

@@ -1,7 +1,7 @@
 <?php
 
-require_once 'WxPay/example/WxPay.JsApiPay.php';
-require_once 'WxPay/lib/WxPay.Api.php';
+//require_once 'WxPay/example/WxPay.JsApiPay.php';
+//require_once 'WxPay/lib/WxPay.Api.php';
 
 class PayController extends BaseController{
     
