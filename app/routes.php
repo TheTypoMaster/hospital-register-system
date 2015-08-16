@@ -63,8 +63,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
         Route::get( 'center', 'UserController@user_center' );
         Route::get( 'pay_record', 'UserController@pay_record' );
         Route::post( 'modify_user', 'UserController@modify_user' );
-        Route::post( 'upload_head_portrait', 'UserController@upload_head_portrait' );
-        
+        Route::post( 'upload_head_portrait', 'UserController@upload_head_portrait' );        
     });
 
     // 挂号记录模块

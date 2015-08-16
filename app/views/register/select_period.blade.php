@@ -23,6 +23,7 @@
         $(document).ready(function(){
 
             var period_id = null;
+            var pay_parameters = null;
 
             /**
              * 调用 /pay/generate_indent 接口生成订单
@@ -46,7 +47,7 @@
                         }
                         */ 
                         if( result.error_code == 0 ){
-                            ppay_parameters = result;
+                            pay_parameters = result;
                         }
                     }
                 });
@@ -67,6 +68,7 @@
                         if ( result.error_code == 0 ){
                             is_add_record_ok = true;
                         }
+                        alert( result.message );
                         /*
                         if ( result.error_code != 0 ) {
                             alert( result.message );
@@ -80,7 +82,7 @@
                 return is_add_record_ok;
             }
     
-            function wxpay_js_call( ){
+            function wxpay_js_call(){
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', 
                     pay_parameters,
@@ -90,7 +92,7 @@
                             if ( add_register_record() ){
                                 window.location.href = '/register/success';
                             }else{
-                                alert( '添加挂号记录失败，请联系客服' );
+                                alert( '添加挂号记录失败' );
                             }
                         }
                     }
@@ -98,7 +100,7 @@
             }
 
             /**
-             * 通用微信
+             * 通用调用接口
              */
             function call_invoke_func( invoke_func ){
                 if ( typeof WeixinJSBridge == "undefined" ){
@@ -113,17 +115,19 @@
                 }
             }
 
-
             $('.btn').on( 'click', function( event ){
                 event.preventDefault();
 
-                period_id = $(this).prop('period_id');
-                var pay_parameters = generate_indent( );
+                period_id = $(this).attr('period_id');
+
+                pay_parameters = generate_indent( );
 
                 if ( pay_parameters ){
                     // JS调用支付接口
                     call_invoke_func( wxpay_js_call );
                 }
+
+                //add_register_record();
             });
         });
     </script>

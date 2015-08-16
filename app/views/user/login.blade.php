@@ -27,10 +27,10 @@
                     type: 'POST',
                     dataType: 'json',
                     data: $('.login-form').serialize(),
-                    success: function ( json ){
-                        alert( json.message );
-                        if ( json.error_code == 0 ){
-                            window.location.href = json.uri_before ? '/' + json.uri_before : '/user/center';    
+                    success: function ( result ){
+                        alert( result.message );
+                        if ( result.error_code == 0 ){
+                            window.location.href = result.uri_before ? '/' + results.uri_before : '/user/center';    
                         }
                     }
                 });

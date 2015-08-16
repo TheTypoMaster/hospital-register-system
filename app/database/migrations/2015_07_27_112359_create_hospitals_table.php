@@ -20,7 +20,7 @@ class CreateHospitalsTable extends Migration {
 			$table->string( 'logo' )->nullable();
 			$table->string( 'photo' )->nullable();
 			$table->time( 'register_start' )->nullable();
-			$table->time( 'register_stop' )->nullable();
+			$table->time( 'register_end' )->nullable();
 			$table->text( 'specialty' )->nullable();
 			$table->text( 'description' )->nullable();
 			$table->text( 'traffic_intro' )->nullable();

@@ -45,7 +45,7 @@ class RegisterRecordController extends BaseController{
                         'department'    =>  $department->name,
                         'doctor'        =>  array( 'id' => $doctor->id, 
                                                    'name' => $doctor->name, 
-                                                   'title' => $doctor->title()->first()->name 
+                                                   'title' => $doctor->title 
                                             )
                     );
                 }
@@ -85,7 +85,7 @@ class RegisterRecordController extends BaseController{
                         'department'        =>  $department->name,
                         'doctor'            =>  array( 'id' => $doctor->id, 
                                                        'name' => $doctor->name, 
-                                                       'title' => $doctor->title()->first()->name )
+                                                       'title' => $doctor->title )
                     );
                 }
             }
@@ -100,24 +100,29 @@ class RegisterRecordController extends BaseController{
 
         $period_id      = Input::get( 'period_id' );
         $period         = Period::find( $period_id );
-        $schedule       = $period->schedule;
 
         if ( !isset( $period ) ){
             return Response::json(array( 'error_code' => 2, 'message' => '无该时间段，请重新选择' ));
         }
 
-        $user_id = Session::get( 'user.id' );
+        if ( $period->current >= $period->total ){
+            return Response::json(array( 'error_code' => 3, 'message' => '已满人，请重新选择' ));
+        }
+
+        $schedule       = $period->schedule;
+        $doctor         = $schedule->doctor;
+        $user_id        = Session::get( 'user.id' );
         
         if ( Input::has( 'account_id' ) ){
             $account_id = Input::get( 'account_id' );
             $account    = RegisterAccount::find( $account_id );
 
             if ( !isset( $account ) ){
-                return Response::json(array( 'error_code' => 3, 'message' => '不存在该挂号账户' ));
+                return Response::json(array( 'error_code' => 4, 'message' => '不存在该挂号账户' ));
             }
 
             if ( $account->user_id != $user_id ){
-                return Response::json(array( 'error_code' => 4, 'message' => '无效账户' ));
+                return Response::json(array( 'error_code' => 5, 'message' => '无效账户' ));
             }
         }
         
@@ -126,27 +131,36 @@ class RegisterRecordController extends BaseController{
             $account = RegisterAccount::where( 'user_id', $user_id )->first();
 
             if ( !isset( $account ) ){
-                return Response::json(array( 'error_code' => 5, 'message' => '请先申请挂号账户' ));
+                return Response::json(array( 'error_code' => 6, 'message' => '请先申请挂号账户' ));
             }
             
             $account_id = $account->id;
         }
 
         try{
+            DB::beginTransaction();
+
             RegisterRecord::create(array(
                 'status'        => 0,
+                'fee'           => $doctor->register_fee,
                 'date'          => $schedule->date,
                 'start'         => $period->start,
                 'end'           => $period->end,
+                'period_id'     => $period->id,
                 'period'        => $schedule->period,
-                'doctor_id'     => $schedule->doctor_id,
-                'account_id'    => $account_id
+                'doctor_id'     => $doctor->id,
+                'account_id'    => $account_id,
+                'user_id'       => $user_id,
             ));
-
             $period->current += 1;
             $period->save();
 
+            DB::commit();
+        
         }catch( Exception $e ){
+
+            DB::rollback();
+
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
 
@@ -175,9 +189,19 @@ class RegisterRecordController extends BaseController{
             return Response::json(array( 'error_code' => 4, 'message' => '已就诊无法取消' ));
         }
 
-        // 取消
-        if ( !RegisterRecord::destroy( $record_id ) ){
-            return Response::json(array( 'error_code' => 1, 'message' => '取消失败' ));
+        // 取消同时将对应时间段挂号人数减1
+        try{
+
+            DB::transaction(function() use ( $record ){
+                $period = Period::find( $record->period_id );
+                $period->current -= 1;
+                $period->save();
+                $record->delete();                
+            });
+
+        }catch( Exception $e ){
+
+            return Response::json(array( 'error_code' => -1, 'message' => $e->getMessage() ));
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '取消成功' ));

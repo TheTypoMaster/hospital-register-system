@@ -18,7 +18,8 @@ class Doctor extends \Eloquent {
         'description',
         'is_chief',
         'is_consultable',
-        'department_id'
+        'department_id',
+        'register_fee',
     );
 
     public function register_records(){
@@ -31,9 +32,5 @@ class Doctor extends \Eloquent {
 
     public function department(){
         return $this->belongsTo( 'Department' );
-    }
-
-    public function title(){
-        return $this->belongsTo( 'Title' );
     }
 }

@@ -16,11 +16,18 @@ class RegisterRecord extends \Eloquent {
         'end',
         'period',
         'status',
+        'fee',
         'advice',
         'return_date',
         'doctor_id',
-        'account_id'
+        'account_id',
+        'user_id',
+        'period_id'
     );
+
+    public function user(){
+        return $this->belongsTo( 'User' );
+    }
 
     public function doctor(){
         return $this->belongsTo( 'Doctor' );
@@ -28,6 +35,10 @@ class RegisterRecord extends \Eloquent {
 
     public function register_account(){
         return $this->belongsTo( 'RegisterAccount', 'account_id', 'id' );
+    }
+
+    public function period(){
+        return $this->belongsTo( 'Period' );
     }
 
     public function comment(){

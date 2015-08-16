@@ -21,4 +21,8 @@ class Period extends \Eloquent {
     public function schedule(){
         return $this->belongsTo( 'Schedule' );
     }
+
+    public function records(){
+        return $this->hasMany( 'RegisterRecord' );
+    }
 }

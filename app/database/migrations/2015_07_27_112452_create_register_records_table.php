@@ -19,23 +19,38 @@ class CreateRegisterRecordsTable extends Migration {
 			$table->time( 'end' );
 			$table->integer( 'period' );
 			$table->integer( 'status' );
+			$table->float( 'fee' );
 			$table->text( 'advice' )->nullable();
 			$table->date( 'return_date' )->nullable();
 			$table->integer( 'doctor_id' )->unsigned();
 			$table->integer( 'account_id' )->unsigned();
+			$table->integer( 'user_id' )->unsigned();
+			$table->integer( 'period_id' )->unsigned()->nullable;
 			$table->timestamps();
+
+			$table->index( 'period_id' );
+			$table->foreign( 'period_id' )
+				  ->references( 'id' )
+				  ->on( 'periods' )
+				  ->onUpdate( 'cascade' );
 
 			$table->index( 'doctor_id' );
 			$table->foreign( 'doctor_id' )
 				  ->references( 'id' )
 				  ->on( 'doctors' )
-				  ->onDelete( 'cascade' )
 				  ->onUpdate( 'cascade' );
 
 			$table->index( 'account_id' );
 			$table->foreign( 'account_id' )
 				  ->references( 'id' )
 				  ->on( 'register_accounts' )
+				  ->onUpdate( 'cascade' );
+
+			$table->index( 'user_id' );
+			$table->foreign( 'user_id' )
+				  ->references( 'id' )
+				  ->on( 'register_accounts' )
+				  ->onDelete( 'cascade' )
 				  ->onUpdate( 'cascade' );
 		});
 	}

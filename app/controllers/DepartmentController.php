@@ -60,7 +60,7 @@ class DepartmentController extends HospitalBasedController {
                         $result['photo'] = $department->photo;
                         $result['hospital_name'] = $hospital_name;
 
-                        if ( $chief_doctor ){
+                        if ( isset( $chief_doctor ) ){
                             $result['doctor'] = array(
                                 'photo' => $chief_doctor->photo,
                                 'description' => $chief_doctor->description,

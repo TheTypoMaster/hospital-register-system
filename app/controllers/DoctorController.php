@@ -10,7 +10,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => '不存在该诊室' ));
         }
 
-        $doctors = $department->doctors()->with('title')->get();
+        $doctors = $department->doctors;
 
         if ( !isset( $doctors ) ){
             return Response::json(array( 'error_code' => 2, 'message' => '该诊室无医生...' ));
@@ -21,7 +21,7 @@ class DoctorController extends BaseController {
             $result[] = array(
                 'id'                => $doctor->id,
                 'name'              => $doctor->name,
-                'title'             => $doctor->title->name,
+                'title'             => $doctor->title,
                 'photo'             => $doctor->photo,
                 'specialty'         => strip_tags( $doctor->specialty ),
                 'can_be_registered' => $this->can_be_registered( $doctor->id ),

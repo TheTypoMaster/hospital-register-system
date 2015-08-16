@@ -28,14 +28,14 @@ class RegisterController extends BaseController{
             // ..
         }
 
-        $doctors = $department->doctors()->with('title')->get();
+        $doctors = $department->doctors;
 
         if ( !isset( $doctors ) ){
             // ..
         }
 
         foreach ( $doctors as $doctor ){
-            $doctor['title'] = $doctor->title->name;
+            $doctor['title'] = $doctor->title;
         }
 
         return View::make( 'register.select_doctor',
@@ -98,7 +98,7 @@ class RegisterController extends BaseController{
                 'doctor' => array(
                     'name'          => $doctor->name,
                     'photo'         => $doctor->photo,
-                    'title'         => $doctor->title->name,
+                    'title'         => $doctor->title,
                     'department'    => $doctor->department->name,
                     'hospital'      => $doctor->department->hospital->name
                 ),
@@ -131,7 +131,7 @@ class RegisterController extends BaseController{
                 'doctor' => array(
                     'name'          => $doctor->name,
                     'photo'         => $doctor->photo,
-                    'title'         => $doctor->title->name,
+                    'title'         => $doctor->title,
                     'specialty'     => strip_tags( $doctor->specialty ),
                     'department'    => $doctor->department->name,
                     'hospital'      => $doctor->department->hospital->name
