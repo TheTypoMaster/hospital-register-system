@@ -17,6 +17,19 @@
     @parent
 @stop
 
+@section('js-specify')
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('.btn').on('click', function( event ){
+                event.preventDefault();
+
+                $('body,html').animate({ scrollTop: 0 }, 1000 );
+            })
+        });
+    </script>
+@stop
+
 @section('body-title')
     科室介绍
 @stop
