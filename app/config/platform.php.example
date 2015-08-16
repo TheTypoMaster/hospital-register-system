@@ -4,15 +4,15 @@ return array(
     
     // 创瑞 -- 短信平台 api 参数
     'chuangrui' => array(
-        'url'       => 'http://web.cr6868.com/asmx/smsservice.aspx?',
-        'name'      => '13580501456',
-        'password'  => '1AF3988258DE4FABDD7E1C5FDB36',
-        'sign'      => '紫睿科技'
+        'url'       => '',
+        'name'      => '',
+        'password'  => '',
+        'sign'      => ''
     ),
 
     'baidu' => array(
         'map'       => array(
-            'app_key'    => 'iG2mRPwyHcIDiYc25f1PudGC'
+            'app_key'    => ''
         )
     )
 );
