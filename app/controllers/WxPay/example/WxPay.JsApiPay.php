@@ -1,5 +1,5 @@
 <?php
-//require_once "WxPay/lib/WxPay.Api.php";
+require_once "../lib/WxPay.Api.php";
 /**
  * 
  * JSAPI支付实现类
@@ -50,7 +50,7 @@ class JsApiPay
 		} else {
 			//获取code码，以获取openid
 		    $code = $_GET['code'];
-			$openid = $this->getOpenidFromMp($code);
+			$openid = $this->GetOpenidFromMp($code);
 			return $openid;
 		}
 	}

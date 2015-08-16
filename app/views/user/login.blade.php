@@ -30,7 +30,8 @@
                     success: function ( result ){
                         alert( result.message );
                         if ( result.error_code == 0 ){
-                            window.location.href = result.uri_before ? '/' + results.uri_before : '/user/center';    
+                            var redirect_url = result.uri_before ? '/' + result.uri_before : '/user/center';
+                            window.location.href = redirect_url;
                         }
                     }
                 });
