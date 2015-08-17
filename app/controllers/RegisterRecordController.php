@@ -31,8 +31,7 @@ class RegisterRecordController extends BaseController{
                 $origin_records = $register_account->records;
 
                 foreach ( $origin_records as $record ){
-                    $doctor     = RegisterRecord::find( $record->id )->doctor()->first();
-                    $department = $doctor->department()->first();
+                    $doctor     = RegisterRecord::find( $record->id )->doctor;
                     $result_records[]  = array(
                         'id'            =>  $record->id,
                         'status'        =>  $this->possible_status[ $record->status ],
@@ -42,7 +41,7 @@ class RegisterRecordController extends BaseController{
                         'end'           =>  $record->end,
                         'period'        =>  $this->possible_period[ $record->period ],
                         'return_date'   =>  $record->return_date,
-                        'department'    =>  $department->name,
+                        'department'    =>  $doctor->department->name,
                         'doctor'        =>  array( 'id' => $doctor->id, 
                                                    'name' => $doctor->name, 
                                                    'title' => $doctor->title 
@@ -72,8 +71,7 @@ class RegisterRecordController extends BaseController{
                 $origin_records = $register_account->records;
 
                 foreach ( $origin_records as $record ){
-                    $doctor     = RegisterRecord::find( $record->id )->doctor()->first();
-                    $department = $doctor->department()->first();
+                    $doctor     = RegisterRecord::find( $record->id )->doctor;
                     $data['records'][] = array(
                         'id'                =>  $record->id,
                         'status'            =>  $this->possible_status[ $record->status ],
@@ -82,7 +80,7 @@ class RegisterRecordController extends BaseController{
                         'start'             =>  date( 'H:i', strtotime( $record->start ) ),
                         'end'               =>  date( 'H:i', strtotime( $record->end ) ),
                         'period'            =>  $this->possible_period[ $record->period ],
-                        'department'        =>  $department->name,
+                        'department'        =>  $doctor->department->name,
                         'doctor'            =>  array( 'id' => $doctor->id, 
                                                        'name' => $doctor->name, 
                                                        'title' => $doctor->title )

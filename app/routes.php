@@ -122,6 +122,6 @@ Route::group(array( 'prefix' => 'register', 'before' => 'auth.user.is_in' ), fun
 });
 
 Route::group(array( 'prefix' => 'pay', 'before' => 'auth.user.is_in' ), function(){
-    Route::post( 'generate_indent', 'PayController@generate_indent' );
+    Route::get( '/', 'PayController@index' );
     Route::post( 'notify', 'PayController@notify' );
 });

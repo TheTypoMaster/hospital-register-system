@@ -417,7 +417,10 @@ class UserController extends BaseController{
 
     public function test(){
 
-        return View::make( 'user.test' );
+        echo $this->get_url_with_parameters( Input::all() );
+        die();
+
+        //return View::make( 'user.test' );
     }
 
     public function upload_head_portrait(){
@@ -488,9 +491,45 @@ class UserController extends BaseController{
 
     public function pay_record(){
 
-        if ( !Request::wantsJson() ){
-            return View::make( 'user.pay_record' );
+        if ( Request::wantsJson() ){
+            return $this->pay_record_json();
+        }else{
+            return $this->pay_record_html();
         }
+
+    }
+
+    public function pay_record_html(){
+
+        $user = User::find( Session::get( 'user.id' ) );
+        $records = $user->register_records()->with( 'doctor' )->get();
+
+        if ( $records->count() == 0 ){
+           return View::make( 'user.pay_record_empty' );
+        }
+
+        $status = array( '未就诊', '已就诊', '需复诊' );
+        $period = array( '上午', '下午' );
+
+        $result = array();
+        foreach( $records as $record ){
+            $doctor = $record->doctor;
+            $result[] = array(
+                'fee'           => $record->fee,
+                'status'        => $status[ $record->status ],
+                'date'          => $record->date,
+                'start'         => date( 'H:i', strtotime( $record->start ) ),
+                'end'           => date( 'H:i', strtotime( $record->end ) ),
+                'period'        => $period[ $record->period ],
+                'department'    => $doctor->department->name,
+                'doctor'        => array( 'name' => $doctor->name, 'title' => $doctor->title )
+            );
+        }
+
+        return View::make( 'user.pay_record', array( 'records' => $result ));
+    }
+
+    public function pay_record_json(){
 
         $user = User::find( Session::get( 'user.id' ) );
         $records = $user->register_records()->with( 'doctor' )->get();
@@ -502,17 +541,17 @@ class UserController extends BaseController{
         $result = array();
         foreach ( $records as $record ){
             $doctor = $record->doctor;
-			$account = RegisterAccount::find( $record->account_id );
-			$result[] = array(
-				'id'			=> $record->id,
-				'doctor' => array(
+            $account = RegisterAccount::find( $record->account_id );
+            $result[] = array(
+                'id'            => $record->id,
+                'doctor' => array(
                     'name'  => $doctor->name,
                     'title' => $doctor->title
                 ),
                 'fee'           => $record->fee,
                 'department'    => $doctor->department->name,
                 'created_at'    => $record->created_at->format('Y-m-d H:i:s'),
-				'account'		=> $account->name
+                'account'       => $account->name
             );
         }
 

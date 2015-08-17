@@ -3,27 +3,63 @@
 
 #base;
 
-.msg-wrap{
-    width: 33%;
-    margin: 40px * @scale auto;
-    font-size: 16px * @scale;
-    color: #cccccc;
-    text-align: justify;
+.record-wrap{
+    margin-top: 16px * @scale;
+    padding-top: 6px * @scale;
+    padding-bottom: 21px * @scale;
+    border: @border-style #ababab @border-size;
 
-    .msg{
-        margin-top: 10px * @scale;
-        &:after{
+    .record-item{
+        margin-left: 2px * @scale;
+
+        .item-wrap{
             display: inline-block;
-            overflow: hidden;
-            width: 100%;
-            height: 0;
-            content:'';
+            border-bottom: @border-style #ababab @border-size;
+            line-height: @font-size;
+            height: 16px * @scale;
+            padding-top: 16px * @scale;
+
+            .colon{
+                display: inline-block;
+                float: left;
+            }
+
+            .item-key{
+                display: inline-block;
+                float: left;
+                color: #787878;
+                width: 56px * @scale;
+                text-align: justify;
+
+                &:after{
+                    display: inline-block;
+                    overflow: hidden;
+                    width: 100%;
+                    height: 0;
+                    content:'';
+                }
+            }
+
+            .item-value{
+                color: #3b3b3b;
+                font-size: 12px * @scale;
+                display: inline-block;
+                float: left;
+            }
+
+            .btn{
+                display: inline-block;
+                position: relative;
+                top: -6px * @scale;
+                font-size: 12px * @scale;
+                line-height: 20px * @scale;
+                min-width: 65px * @scale;
+                border-radius: 8px * @scale;
+            }
+
+            .fee{
+                color: #ff9800;
+            }
         }
     }
-    
-    .hover-img{
-        display: block;
-        width: 100%;
-    }
 }
-

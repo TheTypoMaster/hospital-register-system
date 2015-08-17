@@ -1,0 +1,104 @@
+
+@import "../define.less";
+
+#base;
+
+.pay-wrap{
+
+    background-color: #f1f1f1;
+
+    .fee-wrap{
+        color: #777777;
+        background-color: white;
+        font-size: 15px * @scale;
+        line-height: 45px * @scale;
+        padding-left: 10px * @scale;
+
+        .fee{
+            color: #ff9800;
+            margin-left: 9px * @scale;
+            margin-right: 9px * @scale;
+        }
+    }
+
+    .confirm{
+        background-color: white;
+        padding: 10px * @scale;
+
+        .note{
+            font-size: 15px * @scale;
+            color: #777777;
+        }
+
+        .btn{
+            width: 90%;
+            display: block;
+            margin: 30px * @scale auto;
+            line-height: 32px * @scale;
+            font-size: 15px * @scale;
+        }
+    }
+
+    .info-outer{
+        background-color: white;
+        margin-bottom: 10px * @scale;
+        padding: 10px * @scale 6px * @scale 15px * @scale 6px * @scale;
+    }
+
+    .info-wrap{
+        padding-top: 12px * @scale;
+        padding-bottom: 20px * @scale;
+        border: @border-style #ababab @border-size;
+
+        .info-item{
+            margin-left: 2px * @scale;
+
+            .item-wrap{
+                display: inline-block;
+                border-bottom: @border-style #ababab @border-size;
+                line-height: @font-size;
+                height: 16px * @scale;
+                padding-top: 16px * @scale;
+
+                .colon{
+                    display: inline-block;
+                    float: left;
+                }
+
+                .item-key{
+                    display: inline-block;
+                    float: left;
+                    color: #787878;
+                    width: 56px * @scale;
+                    text-align: justify;
+
+                    &:after{
+                        display: inline-block;
+                        overflow: hidden;
+                        width: 100%;
+                        height: 0;
+                        content:'';
+                    }
+                }
+
+                .item-value{
+                    color: #3b3b3b;
+                    font-size: 12px * @scale;
+                    display: inline-block;
+                    float: left;
+                }
+
+                .btn{
+                    display: inline-block;
+                    position: relative;
+                    top: -6px * @scale;
+                    font-size: 12px * @scale;
+                    line-height: 20px * @scale;
+                    min-width: 65px * @scale;
+                    border-radius: 8px * @scale;
+                }
+            }
+        }
+    }
+}
+

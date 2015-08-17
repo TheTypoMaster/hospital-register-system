@@ -39,6 +39,10 @@ class BaseController extends Controller {
 		$this->return_type = $this->get_return_format(); 
 	}
 
+	public function get_url_with_parameters( $parameters ){
+		return Request::url().'?'.http_build_query( $parameters, '', '&' );
+	}
+
 	public function is_status_ok(){
 		return !$this->error_code;
 	}
