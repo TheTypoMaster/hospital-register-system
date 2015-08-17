@@ -29,7 +29,7 @@
                 var map_level = 15;
                 var map = new BMap.Map("baidu-map");
                 var user_point = new BMap.Point( response.longitude, response.latitude );
-                var dest_point = new BMap.Point( {{{ result['longitude'], result['latitude'] }}});
+                var dest_point = new BMap.Point( {{{ result['longitude'] }}}, {{{ result['latitude'] }}});
                 map.centerAndZoom( user_point, map_level );
                 map.addControl(new BMap.ZoomControl({ anchor: BMAP_ANCHOR_TOP_LEFT }));
 
