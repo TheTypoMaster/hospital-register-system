@@ -30,7 +30,7 @@ class WeixinContoller extends BaseController{
 
     public function response_message(){
 
-        
+        Log::info( json_encode( Input::all() ) );
 
         return Response::make( 'success' );
     }
