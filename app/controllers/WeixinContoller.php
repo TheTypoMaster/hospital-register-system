@@ -27,4 +27,11 @@ class WeixinContoller extends BaseController{
 		
 		return Response::make( $response_text );
     }
+
+    public function response_message(){
+
+        
+
+        return Response::make( 'success' );
+    }
 }

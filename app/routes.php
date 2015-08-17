@@ -11,7 +11,11 @@
 |
 */
 
-Route::get( '/', 'WeixinContoller@response_token' );
+// 给公众号绑定域名所用接口
+//Route::get( '/', 'WeixinContoller@response_token' );
+// 消息处理接口
+Route::post( '/', 'WeixinContoller@response_message' );
+
 
 // 医院模块
 Route::group(array( 'prefix' => 'hospital' ), function()
