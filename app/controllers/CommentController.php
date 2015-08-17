@@ -26,7 +26,7 @@ class CommentController extends BaseController{
                                     'id'         => $doctor->id,
                                     'name'       => $doctor->name,
                                     'photo'      => $doctor->photo,
-                                    'title'      => $doctor->title->name,
+                                    'title'      => $doctor->title,
                                     'department' => $doctor->department->name,
                                     'hospital'   => $doctor->department->hospital->name )
             );
@@ -53,7 +53,7 @@ class CommentController extends BaseController{
                 'id'            => $doctor->id,
                 'name'          => $doctor->name,
                 'photo'         => $doctor->photo,
-                'title'         => $doctor->title->name,
+                'title'         => $doctor->title,
                 'specialty'     => strip_tags( $doctor->specialty ),
                 'department'    => $doctor->department->name,
                 'hospital'      => $doctor->department->hospital->name
