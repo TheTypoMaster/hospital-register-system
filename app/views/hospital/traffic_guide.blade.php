@@ -28,12 +28,13 @@
             var get_location_callback = function( response ){
                 var map_level = 16;
                 var map = new BMap.Map("baidu-map");
-                map.centerAndZoom( new BMap.Point( response.longitude, response.latitude ), map_level );
+                var user_point = new BMap.Point( response.longitude, response.latitude );
+                map.centerAndZoom( user_point, map_level );
                 map.addControl(new BMap.ZoomControl({ anchor: BMAP_ANCHOR_TOP_LEFT }));
 
                 var my_geo = new BMap.Geocoder();
                 my_geo.getLocation( 
-                    //new BMap.Point( response.longitude, response.latitude ),
+                    user_point,
                     function( result ){
                         if ( result ){
                             $("#current-pos").html( result.address );
