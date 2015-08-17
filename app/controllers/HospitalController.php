@@ -66,7 +66,7 @@ class HospitalController extends HospitalBasedController{
 
             // Post function:
             //     Get weixin access token and javascript api ticket
-            $this->set_postprocess_function( 'html', function( $result, $status ){
+            $this->set_postprocess_function( 'html', function( $result, $status ) use ( $hospital_info ) {
                 if ( $status ){
                     $app_id = Config::get('weixin.app_id');
                     $app_secret = Config::get('weixin.app_secret');
