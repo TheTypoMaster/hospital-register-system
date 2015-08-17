@@ -29,9 +29,11 @@
                 var map_level = 16;
                 var map = new BMap.Map("baidu-map");
                 map.centerAndZoom( new BMap.Point( response.longitude, response.latitude ), map_level );
+                map.addControl(new BMap.ZoomControl({ anchor: BMAP_ANCHOR_TOP_LEFT }));
+
                 var my_geo = new BMap.Geocoder();
                 my_geo.getLocation( 
-                    new BMap.Point( response.longitude, response.latitude ),
+                    //new BMap.Point( response.longitude, response.latitude ),
                     function( result ){
                         if ( result ){
                             $("#current-pos").html( result.address );
