@@ -30,8 +30,14 @@ class WeixinContoller extends BaseController{
 
     public function response_message(){
 
+		Log::info( 'In Post' );
         Log::info( json_encode( Input::all() ) );
 
         return Response::make( 'success' );
     }
+
+	public function response_message_get(){
+		
+        return Response::make( 'success' );
+	}
 }
