@@ -27,8 +27,11 @@
                 var telephone = $('#telephone').val();
 
                 var on_check_phone_valid = function(){
-                    if ( !telephone.match( /^(13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$|17[0-9]{1}[0-9]{8})$/g ) ){
+                    
+                    if ( !telephone.match( /^((13[0-9]{1})|(15[0-35-9]{1})|(18[0-9]{1})|(17[5678]{1}))[0-9]{8}$/g ) ){
                         alert( '手机号码不对哦' ); return;
+                    }else{
+                        alert( 'ok' );
                     }
 
                     captcha_btn.addClass('btn-disabled');
@@ -77,11 +80,13 @@
                         telephone: telephone
                     },
                     success: function ( result ){
+                        
                         if ( result.error_code == {{{ $pass_code }}} ){
                             on_check_phone_valid();
                         }else{
                             alert( result.message );
                         }
+                        //alert( result.message );
                     }
                 });
                 

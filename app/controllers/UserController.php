@@ -434,11 +434,11 @@ class UserController extends BaseController{
         $head_portrait = Input::file( 'head_portrait' );
 
         $file_size = $head_portrait->getSize();
-
+/*
         if ( $file_size > 20 * 1024 ){
             return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
         }
-
+*/
 /*
         $validator = Validator::make(
             array( 'photo' => $head_portrait ),
