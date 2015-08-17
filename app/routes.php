@@ -12,10 +12,10 @@
 */
 
 // 给公众号绑定域名所用接口
-//Route::get( '/', 'WeixinContoller@response_token' );
+//Route::get( '/', 'WeixinController@response_token' );
 // 消息处理接口
-Route::post( '/', 'WeixinController@response_message' );
-Route::get( '/', 'WeixinController@response_message_get' );
+//Route::get( '/', 'WeixinController@response_message' );
+Route::post( '/', array( 'before' => 'weixin', 'uses' => 'WeixinController@response_message' ) );
 
 // 医院模块
 Route::group(array( 'prefix' => 'hospital' ), function()
@@ -49,9 +49,9 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::get( 'login', 'UserController@login_get' );
     Route::post( 'login', 'UserController@login_post' );
     Route::post( 'logout', 'UserController@logout' );
-
-    Route::group(array( 'prefix' => 'reset_password' ), function(){
-        Route::post( '/', 'UserController@verify_and_reset_password' );
+	Route::post( 'verify_and_reset_password', 'UserController@verify_and_reset_password' );
+    
+	Route::group(array( 'prefix' => 'reset_password' ), function(){
         Route::get( 'first', 'UserController@reset_password_first' );
         Route::get( 'second', 'UserController@reset_password_second' );
     });

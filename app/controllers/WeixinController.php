@@ -1,6 +1,6 @@
 <?php
 
-class WeixinContoller extends BaseController{
+class WeixinController extends BaseController{
 
     protected static $token = "ziruikeji";
 
@@ -26,18 +26,22 @@ class WeixinContoller extends BaseController{
 		}
 		
 		return Response::make( $response_text );
-    }
+	}
 
     public function response_message(){
+	/*	
+		$request = Request::instance();
 
-		Log::info( 'In Post' );
-        Log::info( json_encode( Input::all() ) );
-
-        return Response::make( 'success' );
-    }
-
-	public function response_message_get(){
+		$message = new SimpleXMLElement( $request->getContent() );
 		
-        return Response::make( 'success' );
-	}
+		Session::put( 'user.open_id', (string)$message->FromUserName );
+	
+		//Session::put( 'user.open_id', '123123'  );
+
+		Log::info( Session::all() );
+
+		Log::info( Session::get( 'user.open_id' ) );
+	*/
+		return Response::make( 'success' );
+    }
 }

@@ -111,9 +111,10 @@ class UserController extends BaseController{
         $message = '您的验证码为：'.$code;
 
         // 发送验证码
+		/*
         if ( !$this->send_message( $user_telephone, $message ) ){
             return Response::json(array( 'error_code' => 3, 'message' => '验证码发送失败' ));
-        }
+        }*/
         
         // 设置验证通过标志
         Session::put( 'verification.passed', false );
@@ -434,11 +435,11 @@ class UserController extends BaseController{
         $head_portrait = Input::file( 'head_portrait' );
 
         $file_size = $head_portrait->getSize();
-
+/*
         if ( $file_size > 2 * 1024 * 1024 ){
             return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
         }
-
+*/
 /*
         $validator = Validator::make(
             array( 'photo' => $head_portrait ),
@@ -501,14 +502,17 @@ class UserController extends BaseController{
         $result = array();
         foreach ( $records as $record ){
             $doctor = $record->doctor;
-            $result[] = array(
-                'doctor' => array(
+			$account = RegisterAccount::find( $record->account_id );
+			$result[] = array(
+				'id'			=> $record->id,
+				'doctor' => array(
                     'name'  => $doctor->name,
                     'title' => $doctor->title
                 ),
                 'fee'           => $record->fee,
                 'department'    => $doctor->department->name,
-                'created_at'    => $record->created_at->format('Y-m-d H:i:s')
+                'created_at'    => $record->created_at->format('Y-m-d H:i:s'),
+				'account'		=> $account->name
             );
         }
 

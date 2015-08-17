@@ -43,10 +43,11 @@
                     success: function( result ){
                         if( result.error_code == 0 ){
 							alert( '生成订单成功' );
-                            pay_parameters = result;
+                            pay_parameters = result.parameters;
                         }else{
 							alert( result.message );
 						}
+						alert( JSON.stringify( result.parameters ) );
 					},
 					error: function( xhr, text_status, error ){
 						alert( xhr.status );
@@ -123,12 +124,12 @@
                 period_id = $(this).attr('period_id');
 
                 pay_parameters = generate_indent( );
-
+/*
                 if ( pay_parameters ){
                     // JS调用支付接口
                     call_invoke_func( wxpay_js_call );
                 }
-
+*/
                 //add_register_record();
             });
         });

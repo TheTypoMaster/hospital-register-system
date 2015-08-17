@@ -11,24 +11,33 @@ class PayController extends BaseController{
         try{
             $tools = new JsApiPay();
 
-            $openId = $tools->GetOpenid();
+			Log::info( Session::all() );
+            $open_id = Session::get( 'user.open_id' );//$tools->GetOpenid();
 
             // 商户号 + 用户id + uniqid生成的随机字符串
             $out_trade_no = WxPayConfig::MCHID.uniqid( Session::get( 'user.id' ) );
+
+			date_default_timezone_set('PRC');
+			$time_start = date( 'YmdHis' );
+			$time_end   = date( 'YmdHis', time() + 3600 );
 
             // 统一下单
             $input = new WxPayUnifiedOrder();
             $input->SetBody( "test" );
             $input->SetAttach( "test" );
             $input->SetOut_trade_no( $out_trade_no );
-            $input->SetTotal_fee( "0.01" );
-            $input->SetTime_start( date( "YmdHis" ) );
-            $input->SetTime_expire( date( "YmdHis", time() + 3600 ) );
+            $input->SetTotal_fee( 100 );
+            $input->SetTime_start( $time_start );
+            $input->SetTime_expire( $time_end );
             $input->SetGoods_tag( "test" );
             $input->SetNotify_url( "http://120.25.211.179/pay/notify" );
             $input->SetTrade_type( "JSAPI" );
-            $input->SetOpenid( $openId );
+            $input->SetOpenid( $open_id );
             $order = WxPayApi::unifiedOrder($input);
+
+			Log::info( $open_id );
+
+			return Response::json(array( 'error_code' => 0, 'parameters' => $open_id ));
 
             $jsApiParameters = $tools->GetJsApiParameters($order);
         }catch( WxPayException $e ){

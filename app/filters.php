@@ -103,3 +103,20 @@ Route::filter('auth.user.is_in',function()
 		}
 	}
 });
+
+Route::filter('weixin', function(){
+
+	$signature = Input::get( 'signature' );
+    $timestamp = Input::get( 'timestamp' );
+	$nonce = Input::get( 'nonce' );
+	            
+    $tmpArr = array( 'ziruikeji', $timestamp, $nonce );
+	sort( $tmpArr, SORT_STRING );
+	$tmpStr = implode( $tmpArr );
+	$tmpStr = sha1( $tmpStr );
+	
+	if ( $tmpStr != $signature ){
+		return 'Fail';
+	}
+	//return $tmpStr == $signature;
+});

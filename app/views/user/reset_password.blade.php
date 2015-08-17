@@ -35,7 +35,7 @@
                 }
 
                 $.ajax({
-                    url: '/user/reset_password',
+                    url: '/user/verify_and_reset_password',
                     type: 'POST',
                     dataType: 'json',
                     data: {
