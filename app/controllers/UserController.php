@@ -434,11 +434,11 @@ class UserController extends BaseController{
         $head_portrait = Input::file( 'head_portrait' );
 
         $file_size = $head_portrait->getSize();
-/*
-        if ( $file_size > 20 * 1024 ){
+
+        if ( $file_size > 2 * 1024 * 1024 ){
             return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
         }
-*/
+
 /*
         $validator = Validator::make(
             array( 'photo' => $head_portrait ),
@@ -450,10 +450,11 @@ class UserController extends BaseController{
 */
         $file_ext = $head_portrait->getClientOriginalExtension();
 
-        try{
-            $user_id = Session::get( 'user.id' );
+        $user_id = Session::get( 'user.id' );
 
-            $user = User::find( $user_id );
+        $user = User::find( $user_id );
+
+        try{    
 
             $photo_path = '/images/upload/';
             $photo_full_name = uniqid( $user_id.time() ).'.'.$file_ext;
@@ -476,7 +477,7 @@ class UserController extends BaseController{
             return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
         }
 
-        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'size' => $file_size ));
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $user->photo, 'size' => $file_size ));
     }
 
     public function pay_record(){
