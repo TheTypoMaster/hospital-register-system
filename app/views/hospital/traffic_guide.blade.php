@@ -26,9 +26,10 @@
             $("#baidu-map").css( "height", map_width * 0.65 + "px" );
 
             var get_location_callback = function( response ){
-                var map_level = 16;
+                var map_level = 15;
                 var map = new BMap.Map("baidu-map");
                 var user_point = new BMap.Point( response.longitude, response.latitude );
+                var dest_point = new BMap.Point( {{{ result['longitude'], result['latitude'] }}});
                 map.centerAndZoom( user_point, map_level );
                 map.addControl(new BMap.ZoomControl({ anchor: BMAP_ANCHOR_TOP_LEFT }));
 
@@ -41,6 +42,13 @@
                         }
                     }
                 );
+
+                var routeSearch=new BMap.RouteSearch();  
+                var start = { latlng: user_point };
+                var end = { latlng: dest_point, , name = {{{ result['name'] }}} };
+                var opt = { mode:BMAP_MODE_NAVIGATION };
+                var ss = new BMap.RouteSearch();
+                routeSearch.routeCall( start, end, );
             }
             
             wx.config( {

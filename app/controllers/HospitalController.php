@@ -74,6 +74,7 @@ class HospitalController extends HospitalBasedController{
                     $wx = new WeixinSDK( $app_id, $app_secret, new DataStorageWrapper() );
                     $sign_package = $wx->getSignPackage();
 
+                    $result['name'] = $hospital_info->name;
                     $result['app_id'] = $app_id;
                     $result['sign_package'] = $sign_package;
                     $result['baidu_map_app_key'] = Config::get('platform.baidu.map.app_key');
