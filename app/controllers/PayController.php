@@ -7,12 +7,20 @@ class PayController extends BaseController{
         $tools = new JsApiPay();
 
         if ( !Input::has( 'code' ) ){
-            $base_url = Request::url().'?'.'period_id='.Input::get('period_id');
+            $base_url = urlencode( 'http://test.zerioi.com/pay?period_id='.Input::get('period_id') );
+			//Log::info( 'redirect url: '.$base_url );
             $url = $tools->CreateOauthUrlForCode( $base_url );
+			//Log::info( 'authenticate url: '.$url );
             return Redirect::to( $url );
         }
-        
-        $open_id = $tools->GetOpenidFromMp( Input::get( 'code ') );
+
+		$open_id = Session::get( 'user.open_id' );
+		if ( !isset( $open_id ) ){
+			$open_id = $tools->GetOpenidFromMp( Input::get( 'code') );
+			Session::put( 'user.open_id', $open_id );
+		}
+
+		//Log::info( 'Code before: '.Input::get('code') );
 
         // 商户号 + 用户id + uniqid生成的随机字符串
         $out_trade_no = WxPayConfig::MCHID.uniqid( Session::get( 'user.id' ) );
@@ -29,7 +37,7 @@ class PayController extends BaseController{
         $input->SetTime_start( date( 'YmdHis' ) );
         $input->SetTime_expire( date( 'YmdHis', time() + 3600 ) );
         $input->SetGoods_tag( "test" );
-        $input->SetNotify_url( "http://120.25.211.179/pay/notify" );
+        $input->SetNotify_url( "http://test.zerioi.com/pay/notify" );
         $input->SetTrade_type( "JSAPI" );
         $input->SetOpenid( $open_id );
         $order = WxPayApi::unifiedOrder($input);

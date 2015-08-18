@@ -44,7 +44,7 @@ class JsApiPay
 		if (!isset($_GET['code'])){
 			//触发微信返回code码
 			$baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].$_SERVER['QUERY_STRING']);
-			$url = $this->__CreateOauthUrlForCode($baseUrl);
+			$url = $this->CreateOauthUrlForCode($baseUrl);
 			Header("Location: $url");
 			exit();
 		} else {
@@ -92,11 +92,13 @@ class JsApiPay
 	 */
 	public function GetOpenidFromMp($code)
 	{
-		$url = $this->__CreateOauthUrlForOpenid($code);
+		//Log::info( 'Code inside: '.$code );
+		$url = $this->CreateOauthUrlForOpenid($code);
+		Log::info( $url );
 		//初始化curl
 		$ch = curl_init();
 		//设置超时
-		curl_setopt($ch, CURLOP_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
@@ -107,9 +109,10 @@ class JsApiPay
 			curl_setopt($ch,CURLOPT_PROXY, WxPayConfig::CURL_PROXY_HOST);
 			curl_setopt($ch,CURLOPT_PROXYPORT, WxPayConfig::CURL_PROXY_PORT);
 		}
-		//运行curl，结果以jason形式返回
+		//运行curl，结果以json形式返回
 		$res = curl_exec($ch);
 		curl_close($ch);
+		Log::info( $res );
 		//取出openid
 		$data = json_decode($res,true);
 		$this->data = $data;
@@ -177,7 +180,7 @@ class JsApiPay
 	 * 
 	 * @return 返回构造好的url
 	 */
-	private function __CreateOauthUrlForCode($redirectUrl)
+	public function CreateOauthUrlForCode($redirectUrl)
 	{
 		$urlObj["appid"] = WxPayConfig::APPID;
 		$urlObj["redirect_uri"] = "$redirectUrl";
@@ -195,7 +198,7 @@ class JsApiPay
 	 * 
 	 * @return 请求的url
 	 */
-	private function __CreateOauthUrlForOpenid($code)
+	public function CreateOauthUrlForOpenid($code)
 	{
 		$urlObj["appid"] = WxPayConfig::APPID;
 		$urlObj["secret"] = WxPayConfig::APPSECRET;
