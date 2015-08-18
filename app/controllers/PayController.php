@@ -21,7 +21,7 @@ class PayController extends BaseController{
 		}
 
 		//Log::info( 'Code before: '.Input::get('code') );
-        $js_api_parameters = Session::pull( 'user.js_api_parameters' )
+        $js_api_parameters = Session::pull( 'user.js_api_parameters' );
         if ( !isset( $js_api_parameters ) ){
             $js_api_parameters = $this->create_order( $open_id );
             Session::put( 'user.js_api_parameters', json_encode( $js_api_parameters ) );
