@@ -48,8 +48,8 @@
                     'getBrandWCPayRequest', 
 					{{ $para }},
                     function( response ){
-						alert( 'Cookies: ' + document.cookie );
-						alert( JSON.stringify( response ) );
+						//alert( 'Cookies: ' + document.cookie );
+						//alert( JSON.stringify( response ) );
                         if ( response.err_msg == "get_brand_wcpay_request:ok" ){
                             alert( '支付成功' );
                             if ( add_register_record() ){

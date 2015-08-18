@@ -18,11 +18,6 @@
 @stop
 
 @section('js-specify')
-	<script "text/javascript">
-		$(document).ready(function(){
-			alert( 'Cookies: ' + document.cookie );
-		});
-	</script>
 @stop
 
 @section('body-title')
