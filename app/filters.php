@@ -94,13 +94,19 @@ Route::filter('auth.user.is_in',function()
 	if ( !Session::has( 'user.id' ) ){
 		
 		if ( Request::wantsJson() ){
+	
 			return Response::json(array('error_code' => 10, 'message' => '请登陆！'));
 		}else{
 
 			Session::put( 'uri.before_login', Request::path() );
 
-			return Redirect::guest('user/login');
+			return Redirect::guest( 'user/login' );
 		}
+	}else if ( !Sentry::check() ){
+
+		$user = Sentry::findUserById( Session::get( 'user.id' ) );
+
+		Sentry::login( $user, false );
 	}
 });
 
