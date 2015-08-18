@@ -18,7 +18,11 @@
 @stop
 
 @section('js-specify')
-
+	<script "text/javascript">
+		$(document).ready(function(){
+			alert( 'Cookies: ' + document.cookie );
+		});
+	</script>
 @stop
 
 @section('body-title')
@@ -66,7 +70,7 @@
                     </td>
                     <td class="register-btn">
                         <button class="btn">
-                            <a href="/pay?period_id={{{ $period['id'] }}}">挂号</a>
+                            <a href="/pay/wxpay?period_id={{{ $period['id'] }}}">挂号</a>
                         </button>
                     </td>
                 </td>

@@ -41,6 +41,7 @@ class RegisterRecordController extends BaseController{
                         'end'           =>  $record->end,
                         'period'        =>  $this->possible_period[ $record->period ],
                         'return_date'   =>  $record->return_date,
+						'created_at'	=>  $record->created_at->format('Y-m-d H:i:s'),
                         'department'    =>  $doctor->department->name,
                         'doctor'        =>  array( 'id' => $doctor->id, 
                                                    'name' => $doctor->name, 

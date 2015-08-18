@@ -94,7 +94,7 @@ class JsApiPay
 	{
 		//Log::info( 'Code inside: '.$code );
 		$url = $this->CreateOauthUrlForOpenid($code);
-		Log::info( $url );
+		//Log::info( $url );
 		//初始化curl
 		$ch = curl_init();
 		//设置超时

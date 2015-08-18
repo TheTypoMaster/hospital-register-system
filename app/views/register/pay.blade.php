@@ -21,7 +21,7 @@
     <script type="text/javascript">
 
         $(document).ready(function(){
-
+			
             // 调用添加挂号记录接口
             function add_register_record(){
                 var is_add_record_ok = false;
@@ -29,6 +29,7 @@
                     url: '/user/record/add_record',
                     type: 'POST',
                     dataType: 'json',
+					async: false,
                     data: { 
                         period_id: {{{ $period['id'] }}}
                     },
@@ -43,11 +44,13 @@
             }
     
             function wxpay_js_call(){
-                WeixinJSBridge.invoke(
+				WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', 
-                    {{{ $js_api_parameters }}},
+					{{ $para }},
                     function( response ){
-                        if ( response.err_msg == "get_brand_wcpay_request：ok" ){
+						alert( 'Cookies: ' + document.cookie );
+						alert( JSON.stringify( response ) );
+                        if ( response.err_msg == "get_brand_wcpay_request:ok" ){
                             alert( '支付成功' );
                             if ( add_register_record() ){
                                 window.location.href = '/register/success';
@@ -63,9 +66,9 @@
              * 通用调用接口
              */
             function call_invoke_func( invoke_func ){
-                if ( typeof WeixinJSBridge == "undefined" ){
+				if ( typeof WeixinJSBridge == "undefined" ){
                     if( document.addEventListener ){
-                        document.addEventListener( 'WeixinJSBridgeReady', invoke_func, false );
+						document.addEventListener( 'WeixinJSBridgeReady', invoke_func, false );
                     }else if ( document.attachEvent ){
                         document.attachEvent( 'WeixinJSBridgeReady', invoke_func ); 
                         document.attachEvent( 'onWeixinJSBridgeReady', invoke_func );
@@ -76,13 +79,8 @@
             }
 
             $('.confirm .btn').on( 'click', function( event ){
-                event.preventDefault();
-
-                if ( pay_parameters ){
-                    // JS调用支付接口
-                    call_invoke_func( wxpay_js_call );
-                }
-
+				event.preventDefault();
+				call_invoke_func( wxpay_js_call );
             });
         });
     </script>
@@ -99,7 +97,7 @@
 @section('body-bottom')
 <div class="pay-wrap">
     <div class="fee-wrap">
-        挂号需收取<span class="fee">{{{ $doctor['register_fee'] }}}</span>元
+        挂号需收取<span class="fee">{{{ round( $doctor['register_fee'], 2 ) }}}</span>元
     </div>
     <div class="info-outer">
         <div class="info-wrap">

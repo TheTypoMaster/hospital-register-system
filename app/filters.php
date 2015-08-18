@@ -91,7 +91,7 @@ Route::filter('csrf', function()
 
 Route::filter('auth.user.is_in',function()
 {
-	if ( !Sentry::check() ){
+	if ( !Session::has( 'user.id' ) ){
 		
 		if ( Request::wantsJson() ){
 			return Response::json(array('error_code' => 10, 'message' => '请登陆！'));

@@ -29,7 +29,7 @@
                     <span class="item-key">挂号费</span>
                     <span class="colon">：</span>
                     <span class="fee item-value">
-                        {{{ $record['fee'] }}}
+                        {{{ round( $record['fee'], 2 ) }}}
                     </span>
                 </div>
             </div>

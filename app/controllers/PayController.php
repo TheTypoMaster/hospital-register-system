@@ -2,33 +2,37 @@
 
 class PayController extends BaseController{
 
-    public function index(){
+    public function wxpay(){
 
         $tools = new JsApiPay();
 
         if ( !Input::has( 'code' ) ){
-            $base_url = urlencode( 'http://test.zerioi.com/pay?period_id='.Input::get('period_id') );
+            $base_url = urlencode( 'http://test.zerioi.com/pay/wxpay?period_id='.Input::get('period_id') );
 			//Log::info( 'redirect url: '.$base_url );
             $url = $tools->CreateOauthUrlForCode( $base_url );
 			//Log::info( 'authenticate url: '.$url );
             return Redirect::to( $url );
         }
 
-		$open_id = Session::pull( 'user.open_id' );
+		$open_id = Session::get( 'user.open_id' );
 		if ( !isset( $open_id ) ){
 			$open_id = $tools->GetOpenidFromMp( Input::get( 'code') );
 			Session::put( 'user.open_id', $open_id );
+		}else{
+			Session::forget( 'user.open_id' );
 		}
 
 		//Log::info( 'Code before: '.Input::get('code') );
-        $js_api_parameters = Session::pull( 'user.js_api_parameters' );
+        /*$js_api_parameters = Session::get( 'user.js_api_parameters' );
         if ( !isset( $js_api_parameters ) ){
-            $js_api_parameters = $this->create_order( $open_id );
+            $js_api_parameters = $this->create_order( $tools, $open_id );
             Session::put( 'user.js_api_parameters', json_encode( $js_api_parameters ) );
         }else{
-            $js_api_parameters = json_decode( $js_api_parameters );
-        }
-        
+			$js_api_parameters = json_decode( $js_api_parameters );
+			Session::forget( 'js_api_parameters' );
+        }*/
+        $para = $this->create_order( $tools, $open_id );
+	
         $period_id = Input::get( 'period_id' );
         $period = Period::find( $period_id );
 
@@ -46,13 +50,13 @@ class PayController extends BaseController{
             'schedule'          => $schedule,
             'doctor'            => $doctor,
             'department'        => $doctor->department->name,
-            'js_api_parameters' => $js_api_parameters
+            'para'				=> $para
         );
 
         return View::make( 'register.pay', $data );
     }
 
-    protected function create_order( $open_id ){
+    protected function create_order( $tools, $open_id ){
 
         // 商户号 + 用户id + uniqid生成的随机字符串
         $out_trade_no = WxPayConfig::MCHID.uniqid( Session::get( 'user.id' ) );

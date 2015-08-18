@@ -121,7 +121,7 @@ Route::group(array( 'prefix' => 'register', 'before' => 'auth.user.is_in' ), fun
     Route::get( 'success', 'RegisterController@success' );
 });
 
-Route::group(array( 'prefix' => 'pay', 'before' => 'auth.user.is_in' ), function(){
-    Route::get( '/', 'PayController@index' );
+Route::group(array( 'prefix' => 'pay' ), function(){
+    Route::get( 'wxpay', 'PayController@wxpay' );
     Route::post( 'notify', 'PayController@notify' );
 });
