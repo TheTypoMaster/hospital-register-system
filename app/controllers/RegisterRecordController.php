@@ -165,7 +165,7 @@ class RegisterRecordController extends BaseController{
                 'can_be_canceled'   =>  $record->status == 0,
                 'date'              =>  $record->date,
                 'start'             =>  $record->created_at->format('Y-m-d H:i'),//date( 'Y-m-d H:i', strtotime( $record->start ) ),
-                'end'               =>  date( 'Y-m-d H:i', strtotime( $record->end ) ),
+                'end'               =>  $record->status == 0 ? '' : date( 'Y-m-d H:i', strtotime( $record->end ) ),
 //                'period'            =>  $this->possible_period[ $record->period ],
                 'period_info'       =>  $period_info,
                 'department'        =>  $doctor->department->name,
