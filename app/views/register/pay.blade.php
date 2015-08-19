@@ -97,7 +97,7 @@
 @section('body-bottom')
 <div class="pay-wrap">
     <div class="fee-wrap">
-        挂号需收取<span class="fee">{{{ round( $doctor['register_fee'], 2 ) }}}</span>元
+        挂号费<span class="fee">{{{ round( $doctor['register_fee'], 2 ) }}}</span>元
     </div>
     <div class="info-outer">
         <div class="info-wrap">
