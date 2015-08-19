@@ -103,7 +103,7 @@ class UserController extends BaseController{
         $code = $this->generate_verification_code();
         $user_telephone = Input::get( 'telephone' );
 
-        if ( !preg_match( self::$telephone_reg, $user_telephone ) ){
+        if ( !preg_match( Config::get( 'regex.telephone' ), $user_telephone ) ){
 
             return Response::json(array( 'error_code' => 1, 'message' => '手机号码不正确' ));
         }
