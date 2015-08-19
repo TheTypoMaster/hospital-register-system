@@ -156,8 +156,8 @@ class RegisterRecordController extends BaseController{
             $period_info = array(
                 'date'      => $schedule->date,
                 'period'    => $this->possible_period[ $schedule->period ],
-                'start'     => date( 'Y-m-d H:i', strtotime( $period->start ) ),
-                'end'       => date( 'Y-m-d H:i', strtotime( $period->end ) )
+                'start'     => date( 'H:i', strtotime( $period->start ) ),
+                'end'       => date( 'H:i', strtotime( $period->end ) )
             );
             $data[] = array(
                 'id'                =>  $record->id,
