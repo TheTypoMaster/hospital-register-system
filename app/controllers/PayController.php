@@ -36,6 +36,9 @@ class PayController extends BaseController{
         $period_id = Input::get( 'period_id' );
         $period = Period::find( $period_id );
 
+        $period->start = date( 'H:i', strtotime( $period->start ) );
+        $period->end   = date( 'H:i', strtotime( $period->end ) );
+
         $schedule = $period->schedule;
         $doctor = $schedule->doctor;
 
