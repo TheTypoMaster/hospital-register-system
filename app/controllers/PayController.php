@@ -65,7 +65,7 @@ class PayController extends BaseController{
         $out_trade_no = WxPayConfig::MCHID.uniqid( Session::get( 'user.id' ) );
 
         // 需重置下当前时区，PHP配置文件不知为何不起作用
-        date_default_timezone_set('PRC');
+        //date_default_timezone_set('PRC');
 
         // 统一下单
         $input = new WxPayUnifiedOrder();
