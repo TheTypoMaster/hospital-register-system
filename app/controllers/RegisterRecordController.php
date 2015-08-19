@@ -14,6 +14,12 @@ class RegisterRecordController extends BaseController{
 
     public function get_records(){
 
+        
+        $invoke_func = 'get_records_'.$this->get_return_format();
+
+        return $this->$invoke_func();
+
+/*
         $register_accounts = User::find( Session::get( 'user.id' ) )
                                    ->register_accounts()
                                    ->with( 'records' )->get();
@@ -92,7 +98,84 @@ class RegisterRecordController extends BaseController{
             return $data;
         });
 
-        return $this->response();
+        return $this->response();*/
+    }
+
+    public function get_records_json(){
+        $register_accounts = User::find( Session::get( 'user.id' ) )
+                                   ->register_accounts()
+                                   ->with( 'records' )->get();
+
+        if ( !isset( $register_accounts ) ){
+            return Response::json(array( 'error_code' => 1, 'message' => '无记录' ));
+        }
+
+        $data = array();
+
+        foreach( $register_accounts as $register_account ){
+            $origin_records = $register_account->records;
+
+            foreach ( $origin_records as $record ){
+                $doctor     = RegisterRecord::find( $record->id )->doctor;
+                $result_records[]  = array(
+                    'id'            =>  $record->id,
+                    'status'        =>  $this->possible_status[ $record->status ],
+                    'advice'        =>  $record->advice,
+                    'date'          =>  $record->date,
+                    'start'         =>  $record->start,
+                    'end'           =>  $record->end,
+                    'period'        =>  $this->possible_period[ $record->period ],
+                    'return_date'   =>  $record->return_date,
+                    'created_at'    =>  $record->created_at->format('Y-m-d H:i'),
+                    'department'    =>  $doctor->department->name,
+                    'doctor'        =>  array( 'id' => $doctor->id,
+                                               'name' => $doctor->name, 
+                                               'title' => $doctor->title )
+                );
+            }
+
+            $data[] = array(
+                'id' => $register_account->id,
+                'name' => $register_account->name,
+                'records' => $result_records
+            );
+        }
+
+        return Response::json(array( 'error_code' => 0, 'register_account' => $data ));
+    }
+
+    public function get_records_html(){
+
+        $records = RegisterRecord::where( 'user_id', Session::get( 'user.id' ) )->with( 'doctor' )->get();
+
+        foreach ( $records as $record ){
+            $doctor = $record->doctor;
+            $period = $record->period()->first();
+            $schedule = Schedule::find( $period['schedule_id'] );
+
+            $period_info = array(
+                'date'      => $schedule->date,
+                'period'    => $this->possible_period[ $schedule->period ],
+                'start'     => $period->start,
+                'end'       => $period->end
+            );
+            $data[] = array(
+                'id'                =>  $record->id,
+                'status'            =>  $this->possible_status[ $record->status ],
+                'can_be_canceled'   =>  $record->status == 0,
+                'date'              =>  $record->date,
+                'start'             =>  $record->created_at->format('Y-m-d H:i'),//date( 'Y-m-d H:i', strtotime( $record->start ) ),
+                'end'               =>  date( 'Y-m-d H:i', strtotime( $record->end ) ),
+//                'period'            =>  $this->possible_period[ $record->period ],
+                'period_info'       =>  $period_info,
+                'department'        =>  $doctor->department->name,
+                'doctor'            =>  array( 'id' => $doctor->id, 
+                                               'name' => $doctor->name, 
+                                               'title' => $doctor->title )
+            );
+        }
+
+        return View::make( 'user.record', array( 'records' => $data ) );
     }
 
     public function add_record(){
