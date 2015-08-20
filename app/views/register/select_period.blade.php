@@ -65,7 +65,7 @@
                     </td>
                     <td class="register-btn">
                         <button class="btn">
-                            <a href="/pay/wxpay?period_id={{{ $period['id'] }}}">挂号</a>
+                            <a href="/pay/wxpay_js?period_id={{{ $period['id'] }}}">挂号</a>
                         </button>
                     </td>
                 </td>

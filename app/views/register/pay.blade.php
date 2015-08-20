@@ -52,12 +52,15 @@
 						//alert( JSON.stringify( response ) );
                         if ( response.err_msg == "get_brand_wcpay_request:ok" ){
                             alert( '支付成功' );
+							/*
                             if ( add_register_record() ){
                                 window.location.href = '/register/success';
                             }else{
                                 alert( '添加挂号记录失败' );
-                            }
-                        }
+                            }*/
+                        }else{
+							alert( '支付失败' );
+						}
                     }
                 );
             }

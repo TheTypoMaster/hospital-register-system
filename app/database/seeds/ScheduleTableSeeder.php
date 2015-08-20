@@ -7,49 +7,49 @@ class ScheduleTableSeeder extends Seeder {
         DB::table( 'schedules' )->delete();
 
         Schedule::create(array(
-            'date' => '2015-08-17',
+            'date' => '2015-08-24',
             'period' => 0,
             'doctor_id' => 1,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-17',
+            'date' => '2015-08-24',
             'period' => 1,
             'doctor_id' => 1,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-18',
+            'date' => '2015-08-25',
             'period' => 0,
             'doctor_id' => 1,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-17',
+            'date' => '2015-08-24',
             'period' => 0,
             'doctor_id' => 2
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-18',
+            'date' => '2015-08-25',
             'period' => 1,
             'doctor_id' => 2,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-17',
+            'date' => '2015-08-24',
             'period' => 1,
             'doctor_id' => 3,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-18',
+            'date' => '2015-08-25',
             'period' => 0,
             'doctor_id' => 3,
         ));
 
         Schedule::create(array(
-            'date' => '2015-08-19',
+            'date' => '2015-08-26',
             'period' => 0,
             'doctor_id' => 3,
         ));

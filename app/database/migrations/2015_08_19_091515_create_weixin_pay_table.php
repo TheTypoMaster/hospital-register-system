@@ -14,7 +14,7 @@ class CreateWeixinPayTable extends Migration {
 	{
 		Schema::create( 'weixin_pay', function( $table ){
 
-			$table->timestamp();
+			$table->timestamps();
 			
 			// 订单号
 			$table->string('trade_no');

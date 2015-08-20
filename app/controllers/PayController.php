@@ -35,7 +35,7 @@ class PayController extends BaseController{
         $period_id = Input::get( 'period_id' );
         $period = Period::find( $period_id );
 
-        if ( $this->validate_peirod( $period ) ){
+        if ( !$this->validate_peirod( $period ) ){
             return Response::make( '无效时间段，请重新选择' );
         }
 
@@ -59,7 +59,7 @@ class PayController extends BaseController{
 
         // 附加信息
         $attach = array(
-            'period_id' => Input::get( 'period_id' ),
+            'period_id' => (int)Input::get( 'period_id' ),
             'account_id' => $account_id
         );
 
@@ -68,8 +68,9 @@ class PayController extends BaseController{
             Input::get( 'user_id' ), 
             'JSAPI', 
             json_encode( $attach ), 
-            $doctor->register_fee * 100,
+            (int)($doctor->register_fee * 100),
             $open_id  );
+		Log::info( $order );
         $para  = $tools->GetJsApiParameters( $order );
 
         $data = array(
@@ -133,7 +134,7 @@ class PayController extends BaseController{
 
         $user_id = Session::get( 'user.id' );
         $attach = array(
-            'period_id' => Input::get( 'period_id' ),
+            'period_id' => (int)Input::get( 'period_id' ),
             'account_id' => $account_id
         );
 
@@ -144,7 +145,7 @@ class PayController extends BaseController{
             $schedule = $period->schedule;
             $doctor = $schedule->doctor;
 
-            $order = $this->create_order( $user_id, 'APP', json_encode( $attach ), $doctor->register_fee );
+            $order = $this->create_order( $user_id, 'APP', json_encode( $attach ), (int)($doctor->register_fee * 100) );
 
             $para = array(
                 'appid'         => $order['appid'],
@@ -194,7 +195,7 @@ class PayController extends BaseController{
         $input->SetOut_trade_no( $out_trade_no );
 
         // 测试用1分钱
-        $input->SetTotal_fee( $fee );
+        $input->SetTotal_fee( 1 );
 
         $current_time   = time();
         $start          = date( 'YmdHis', $current_time );
@@ -238,14 +239,29 @@ class PayController extends BaseController{
         // 排序
         ksort( $para );
         // 拼接
-        $string = http_build_query( $para, '', '&' );
+        $string = $this->__to_url_params( $para );
+		Log::info( 'Connect: '.$string );
         // 加入key
         $string = $string.'$key='.WxPayConfig::KEY;
+		Log::info( 'Add key: '.$string );
         // MD5
         $string = md5( $string );
+		Log::info( 'Sign: '.$string );
 
         return strtoupper( $string );
     }
+
+	protected function __to_url_params( $values ){
+		$buff = "";
+
+		foreach ( $values as $k => $v ){
+			if( $k != "sign" && $v != "" && !is_array($v)){
+				$buff .= $k . "=" . $v . "&";
+			}
+		}
+
+		return trim($buff, "&");
+	}
 
     public function notify(){
 
@@ -346,7 +362,7 @@ class PayController extends BaseController{
 
     protected function create_notify_response( $return_code, $return_message ) {
 
-        $response_xml = "<xml><return_code><![CDATA[$return_code]]></return_code><return_msg><![CDATA[$return_message]]></return_msg></xml>"
+        $response_xml = "<xml><return_code><![CDATA[$return_code]]></return_code><return_msg><![CDATA[$return_message]]></return_msg></xml>";
 
         return Response::make( $response_xml );
     }
