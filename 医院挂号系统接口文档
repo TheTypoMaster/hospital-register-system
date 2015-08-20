@@ -645,3 +645,23 @@ GET
                 }
             ]
         }
+
+GET
+    /pay/wxpay_app: user_id
+    request:
+        period_id:
+        account_id:
+    response:
+    {
+        "error_code": 0,
+        "package": {                                    
+            'appid': ,
+            'partnerid': ,
+            'prepayid': ,
+            'package': 'Sign=WXPay',
+            'noncestr': ,
+            'timestamp': 
+        }
+    }
+
+    see here: // https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_12&index=2
