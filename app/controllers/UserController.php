@@ -417,9 +417,22 @@ class UserController extends BaseController{
 
     public function test(){
 
+        $gift = '1';
+
+        $gift_array = array( 1, 2, 3 );
+
+        foreach( $gift_array as $gift ){
+            echo $gift;
+            $gift = '2';
+        }
+
+        echo $gift;
+        die();
+
+/*
         $xml = new simpleXMLElement( '<xml><return_code>return_code</return_code><return_msg><![CDATA[OK]]></return_msg></xml>' );
         var_dump( $xml );die();
-
+*/
         //return View::make( 'user.test' );
     }
 
@@ -438,11 +451,11 @@ class UserController extends BaseController{
         $head_portrait = Input::file( 'head_portrait' );
 
         $file_size = $head_portrait->getSize();
-/*
+
         if ( $file_size > 2 * 1024 * 1024 ){
             return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
         }
-*/
+
 /*
         $validator = Validator::make(
             array( 'photo' => $head_portrait ),
