@@ -204,7 +204,7 @@ class PayController extends BaseController{
         // 下单时间：当前时间
         $input->SetTime_start( $start );
         
-        // 失效时间：测试用一个系哦啊哈斯
+        // 失效时间：测试用一个小时
         $input->SetTime_expire( $expire );
         
         $input->SetGoods_tag( "挂号费" );
@@ -269,112 +269,93 @@ class PayController extends BaseController{
 
         Log::info( $request->getContent() );
 
-        $message = $this->simple_xml_to_array( new SimpleXMLElement( $request->getContent() ) );
 
-        try {
+        $wxpay_notify_controller = new WxPayNotifyController();
 
-            $sign = $message['sign'];
+        $result = $wxpay_notify_controller->Handle( $request->getContent() );
 
-            unset( $message['sign'] );
+        return Response::make( $result );
+    }
 
-            if ( $sign != $this->__make_sign( $message ) ){
-                throw new Exception( 'Sign Error' );
+}
+
+class WxPayNotifyController extends WxPayNotify{
+
+    public function NotifyProcess( $data, &$msg ){
+
+        if ( $message['return_code'] == 'SUCCESS' ){
+
+            // 通过 out_trade_no 获取相应订单记录
+            $pay_record = WeixinPay::find( $message['out_trade_no'] );
+
+            if ( !isset( $pay_record ) ){
+                $msg = 'Invalid out_trade_no';
+                return false;
             }
 
-            if ( $message['return_code'] == 'SUCCESS' ){
+            if ( $pay_record->status != 'UNFINISHED' ){
+                $msg = 'Already processed';
+                return true;
+            }
 
-                // 通过 out_trade_no 获取相应订单记录
-                $pay_record = WeixinPay::find( $message['out_trade_no'] );
+            $pay_record->time_end       = $message['time_end'];
+            $pay_record->result_code    = $message['result_code'];
 
-                if ( !isset( $pay_record ) ){
-                    throw new Exception( 'out_trade_no not found' );
-                }
+            // 对比附加数据
+            if ( $pay_record->attach != $message['attach']  ){
+                $msg = 'Attach Error'; 
+                return false;
+            }
 
-                if ( $pay_record->status != 'UNFINISHED' ){
-                    return $this->create_notify_response( 'SUCCESS', 'OK' );
-                }
+            // transaction start
+            DB::transaction(function() use ( $period, $pay_record, $message ){
 
-                $pay_record->time_end       = $message['time_end'];
-                $pay_record->result_code    = $message['result_code'];
+                // 查询相应时间段
+                $attach_parse   = json_decode( $pay_record->attach );
+                $account_id     = $attach_parse['account_id'];
+                $period_id      = $attach_parse['period_id'];
+                $period         = Period::find( $period_id );
 
-                // 对比附加数据
-                if ( $pay_record->attach != $message['attach']  ){
+                // 判断 result_code
+                if ( $message['result_code'] == 'FAIL' ){
 
-                    throw new Exception( 'Invalid attach data' );
-                }
-
-                // transaction start
-                DB::transaction(function() use ( $period, $account_id, $pay_record, $message ){
-
-                    // 查询相应时间段
-                    $attach_parse   = json_decode( $pay_record->attach );
-                    $period_id      = $attach_parse['period_id'];
-                    $period         = Period::find( $period_id );
-
-                    // 判断 result_code
-                    if ( $message['result_code'] == 'FAIL' ){
-
-                        $pay_record->error_code     = $message['err_code'];
-                        $pay_record->error_message  = $message['err_code_des'];
-                        $pay_record->status         = 'FAIL';
+                    $pay_record->error_code     = $message['err_code'];
+                    $pay_record->error_message  = $message['err_code_des'];
+                    $pay_record->status         = 'FAIL';
                         
-                        //throw new Exception( 'Code: '.$message['err_code'].' Message: '.$message['err_code_des']  );
-                    }else{
-                        // 创建挂号记录
+                }else{
+                    // 创建挂号记录
 
-                        $schedule = $period->schedule;
-                        $doctor = $schedule->doctor;
+                    $schedule = $period->schedule;
+                    $doctor = $schedule->doctor;
 
-                        $period->current += 1;
-                        $period->save();
+                    $period->current += 1;
+                    $period->save();
 
-                        $new_record = new RegisterRecord();
-                        $new_record['status']       = 0;
-                        $new_record['fee']          = $doctor->register_fee;
-                        $new_record['date']         = $schedule->date;
-                        $new_record['start']        = date( 'Y-m-d H:i:s' );
-                        $new_record['period']       = $schedule->period;
-                        $new_record['period_id']    = $period->id;
-                        $new_record['doctor_id']    = $doctor->id;
-                        $new_record['account_id']   = $account_id;
-                        $new_record['user_id']      = $pay_record->user_id;
-                        $new_record->save();
+                    $new_record = new RegisterRecord();
+                    $new_record['status']       = 0;
+                    $new_record['fee']          = $doctor->register_fee;
+                    $new_record['date']         = $schedule->date;
+                    $new_record['start']        = date( 'Y-m-d H:i:s' );
+                    $new_record['period']       = $schedule->period;
+                    $new_record['period_id']    = $period->id;
+                    $new_record['doctor_id']    = $doctor->id;
+                    $new_record['account_id']   = $account_id;
+                    $new_record['user_id']      = $pay_record->user_id;
+                    $new_record->save();
 
-                        $pay_record->status = 'SUCCESS';  
-                    }
+                    $pay_record->status = 'SUCCESS';  
+                }
 
-                    $pay_record->save();
-                });
+                $pay_record->save();
+            });
 
-            }else{
+            return true;
+        }else{ // if ( $message['return_code'] == 'FAIL' )
 
-                throw new Exception( 'Connection Fail' );
-            }
-        }catch( Exception $e ){
-
-            Log::info( $e->getMessage() );
-
-            return $this->create_notify_response( 'FAIL', 'Error occur' );
+            return false;
         }
 
-        return $this->create_notify_response( 'SUCCESS', 'OK' );
+        return true;
     }
-
-    protected function create_notify_response( $return_code, $return_message ) {
-
-        $response_xml = "<xml><return_code><![CDATA[$return_code]]></return_code><return_msg><![CDATA[$return_message]]></return_msg></xml>";
-
-        return Response::make( $response_xml );
-    }
-
-    protected function simple_xml_to_array( $xml ){
-        $xml = (array)$xml;
-
-        foreach ( $xml as $key => $value) {
-            $xml[$key] = (string)$value;
-        }
-
-        return $xml;
-    }
-
 }

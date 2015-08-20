@@ -85,7 +85,7 @@ class RegisterAccountController extends BaseController{
         //return Response::json( Input::all() );
 
         if ( $validator->fails() ){
-            return Response::json(array( 'error_code' => 3, 'messages' => $validator->messages()->all() ));
+            return Response::json(array( 'error_code' => 3, 'message' => $validator->messages()->all() ));
         }
 
         foreach ( $rules as $key => $value ){
