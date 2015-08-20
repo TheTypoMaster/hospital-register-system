@@ -70,7 +70,6 @@ class PayController extends BaseController{
             json_encode( $attach ), 
             (int)($doctor->register_fee * 100),
             $open_id  );
-		Log::info( $order );
         $para  = $tools->GetJsApiParameters( $order );
 
         $data = array(
@@ -156,14 +155,18 @@ class PayController extends BaseController{
                 'timestamp'     => time(),
             );
 
-            $para['sign'] = $this->__make_sign( $para );
+            $wxpay_result = new WxPayResults();
+            $wxpay_result->FromArray( $para );
+            $wxpay_result->SetSign();
+
+            $package = $wxpay_result->GetValues();
 
         }catch( Exception $e ){
 
             return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
         }        
 
-        return Response::json(array( 'error_code' => 0, 'package' => $para ));
+        return Response::json(array( 'error_code' => 0, 'package' => $package ));
     }
 
     protected function validate_peirod( $period ){
@@ -208,7 +211,7 @@ class PayController extends BaseController{
         $input->SetTime_expire( $expire );
         
         $input->SetGoods_tag( "挂号费" );
-        $input->SetNotify_url( "http://test.zerioi.com/pay/notify" );
+        $input->SetNotify_url( "http://test.zerioi.com/pay/wxpay_notify" );
         $input->SetTrade_type( $trade_type );
         
         // JSAPI调用支付需设置open_id
@@ -260,7 +263,7 @@ class PayController extends BaseController{
 		return trim($buff, "&");
 	}
 
-    public function notify(){
+    public function wxpay_notify(){
 
         $request = Request::instance();
 
@@ -302,56 +305,8 @@ class WxPayNotifyController extends WxPayNotify{
                 return false;
             }
             
-			// transaction start
-			DB::transaction(function() use ( $pay_record, $message ){
+			return RegisterRecordController::create_record( $pay_record, $message );
 
-				$pay_record->time_end       = $message['time_end'];
-				$pay_record->result_code    = $message['result_code'];
-                $pay_record->open_id		= $message['openid'];
-
-				// 查询相应时间段
-                $attach_parse   = json_decode( $pay_record->attach, true );
-                $account_id     = $attach_parse['account_id'];
-                $period_id      = $attach_parse['period_id'];
-                $period         = Period::find( $period_id );
-
-                // 判断 result_code
-                if ( $message['result_code'] == 'FAIL' ){
-
-                    $pay_record->error_code     = $message['err_code'];
-                    $pay_record->error_message  = $message['err_code_des'];
-                    $pay_record->status         = 'FAIL';
-                        
-                }else{
-                    // 创建挂号记录
-
-                    $schedule = $period->schedule;
-                    $doctor = $schedule->doctor;
-
-                    $period->current += 1;
-                    $period->save();
-
-                    $new_record = new RegisterRecord();
-                    $new_record['status']       = 0;
-                    $new_record['fee']          = $doctor->register_fee;
-                    $new_record['date']         = $schedule->date;
-                    $new_record['start']        = date( 'Y-m-d H:i:s' );
-                    $new_record['period']       = $schedule->period;
-                    $new_record['period_id']    = $period->id;
-                    $new_record['doctor_id']    = $doctor->id;
-                    $new_record['account_id']   = $account_id;
-                    $new_record['user_id']      = $pay_record->user_id;
-                    $new_record->save();
-
-                    $pay_record->record_id = $new_record->id;
-                    $pay_record->status = 'SUCCESS';  
-                }
-
-                $pay_record->save();
-            });
-			// transaction end
-
-            return true;
         }else{ // if ( $message['return_code'] == 'FAIL' )
 
             return false;

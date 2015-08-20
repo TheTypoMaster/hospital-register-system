@@ -122,7 +122,7 @@ Route::group(array( 'prefix' => 'register', 'before' => 'auth.user.is_in' ), fun
 });
 
 Route::group(array( 'prefix' => 'pay' ), function(){
+    Route::get( 'wxpay_app', array( 'before' => 'auth.is_in', 'uses' => 'PayController@wxpay_app' ) );
     Route::get( 'wxpay_js', 'PayController@wxpay_js' );
-    Route::get( 'wxpay_app', 'PayController@wxpay_app' );
-    Route::post( 'notify', 'PayController@notify' );
+    Route::post( 'wxpay_notify', 'PayController@wxpay_notify' );
 });
