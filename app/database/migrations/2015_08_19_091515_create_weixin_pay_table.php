@@ -41,7 +41,7 @@ class CreateWeixinPayTable extends Migration {
 			 附加数据：生成订单时附带数据，查询订单和支付通知时附带
 			 	{
 			 		period_id': , 
-			 		user_id: 
+			 		account_id: 
 			 	}
 			 */
 			$table->string('attach')->nullable();
@@ -57,7 +57,10 @@ class CreateWeixinPayTable extends Migration {
 			
 			// 错误代码描述
 			$table->string('error_message')->nullable();
-			
+
+			// weixin pay id
+			$table->string('transaction_id')->nullable();
+
 			// 用户id
 			$table->integer( 'user_id' )->unsigned();
 
