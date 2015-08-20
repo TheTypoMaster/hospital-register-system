@@ -228,7 +228,7 @@ class PayController extends BaseController{
         $record->status         = 'UNFINISHED';
 
         if ( !$record->save() ){
-            throw new Exception( "Could not save pay parameters", 1 );
+            throw new Exception( "Could not save pay parameters" );
         }
 
         return WxPayApi::unifiedOrder( $input );
@@ -240,13 +240,10 @@ class PayController extends BaseController{
         ksort( $para );
         // 拼接
         $string = $this->__to_url_params( $para );
-		Log::info( 'Connect: '.$string );
         // 加入key
         $string = $string.'$key='.WxPayConfig::KEY;
-		Log::info( 'Add key: '.$string );
         // MD5
         $string = md5( $string );
-		Log::info( 'Sign: '.$string );
 
         return strtoupper( $string );
     }
@@ -269,10 +266,11 @@ class PayController extends BaseController{
 
         Log::info( $request->getContent() );
 
-
         $wxpay_notify_controller = new WxPayNotifyController();
 
         $result = $wxpay_notify_controller->Handle( $request->getContent() );
+
+		Log::info( $result );
 
         return Response::make( $result );
     }
@@ -350,6 +348,7 @@ class WxPayNotifyController extends WxPayNotify{
 
                 $pay_record->save();
             });
+			// transaction end
 
             return true;
         }else{ // if ( $message['return_code'] == 'FAIL' )
