@@ -343,6 +343,7 @@ class WxPayNotifyController extends WxPayNotify{
                     $new_record['user_id']      = $pay_record->user_id;
                     $new_record->save();
 
+                    $pay_record->record_id = $new_record->id;
                     $pay_record->status = 'SUCCESS';  
                 }
 
