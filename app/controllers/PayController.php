@@ -92,7 +92,6 @@ class PayController extends BaseController{
         $period_id      = Input::get( 'period_id' );
         $period         = Period::find( $period_id );
 
-
         // 判断时间段有效性
         if ( !isset( $period ) ){
             return Response::json(array( 'error_code' => 2, 'message' => '无该时间段，请重新选择' ));

@@ -178,6 +178,7 @@ class RegisterRecordController extends BaseController{
             $pay_record->time_end       = $message['time_end'];
             $pay_record->result_code    = $message['result_code'];
             $pay_record->open_id        = $message['openid'];
+            $pay_record->transaction_id = $message['transaction_id'];
 
             // 查询相应时间段
             $attach_parse   = json_decode( $pay_record->attach, true );
