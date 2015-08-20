@@ -281,12 +281,12 @@ class PayController extends BaseController{
 
 class WxPayNotifyController extends WxPayNotify{
 
-    public function NotifyProcess( $data, &$msg ){
+    public function NotifyProcess( $message, &$msg ){
 
         if ( $message['return_code'] == 'SUCCESS' ){
 
             // 通过 out_trade_no 获取相应订单记录
-            $pay_record = WeixinPay::find( $message['out_trade_no'] );
+			$pay_record = WeixinPay::where( 'trade_no', $message['out_trade_no'] )->first();
 
             if ( !isset( $pay_record ) ){
                 $msg = 'Invalid out_trade_no';
@@ -298,20 +298,21 @@ class WxPayNotifyController extends WxPayNotify{
                 return true;
             }
 
-            $pay_record->time_end       = $message['time_end'];
-            $pay_record->result_code    = $message['result_code'];
-
             // 对比附加数据
             if ( $pay_record->attach != $message['attach']  ){
                 $msg = 'Attach Error'; 
                 return false;
             }
+            
+			// transaction start
+			DB::transaction(function() use ( $pay_record, $message ){
 
-            // transaction start
-            DB::transaction(function() use ( $period, $pay_record, $message ){
+				$pay_record->time_end       = $message['time_end'];
+				$pay_record->result_code    = $message['result_code'];
+                $pay_record->open_id		= $message['openid'];
 
-                // 查询相应时间段
-                $attach_parse   = json_decode( $pay_record->attach );
+				// 查询相应时间段
+                $attach_parse   = json_decode( $pay_record->attach, true );
                 $account_id     = $attach_parse['account_id'];
                 $period_id      = $attach_parse['period_id'];
                 $period         = Period::find( $period_id );

@@ -15,7 +15,9 @@ class CreateWeixinPayTable extends Migration {
 		Schema::create( 'weixin_pay', function( $table ){
 
 			$table->timestamps();
-			
+
+			$table->increments('id');
+
 			// 订单号
 			$table->string('trade_no');
 
@@ -67,7 +69,7 @@ class CreateWeixinPayTable extends Migration {
 
 			$table->index( 'user_id' );
 			$table->index( 'open_id' );
-			$table->primary( 'trade_no' );
+			$table->unique( 'trade_no' );
 		});
 	}
 
