@@ -18,87 +18,6 @@ class RegisterRecordController extends BaseController{
         $invoke_func = 'get_records_'.$this->get_return_format();
 
         return $this->$invoke_func();
-
-/*
-        $register_accounts = User::find( Session::get( 'user.id' ) )
-                                   ->register_accounts()
-                                   ->with( 'records' )->get();
-
-        if ( !isset( $register_accounts ) ){
-            $this->set_error_code( 1 );
-            $this->set_error_message( 1, '无记录' );
-        }
-
-        $this->set_postprocess_function( 'json', function( $result, $status ) use ( $register_accounts ) {
-            
-            $data = array();
-
-            foreach( $register_accounts as $register_account ){
-                $origin_records = $register_account->records;
-
-                foreach ( $origin_records as $record ){
-                    $doctor     = RegisterRecord::find( $record->id )->doctor;
-                    $result_records[]  = array(
-                        'id'            =>  $record->id,
-                        'status'        =>  $this->possible_status[ $record->status ],
-                        'advice'        =>  $record->advice,
-                        'date'          =>  $record->date,
-                        'start'         =>  $record->start,
-                        'end'           =>  $record->end,
-                        'period'        =>  $this->possible_period[ $record->period ],
-                        'return_date'   =>  $record->return_date,
-						'created_at'	=>  $record->created_at->format('Y-m-d H:i:s'),
-                        'department'    =>  $doctor->department->name,
-                        'doctor'        =>  array( 'id' => $doctor->id, 
-                                                   'name' => $doctor->name, 
-                                                   'title' => $doctor->title 
-                                            )
-                    );
-                }
-
-                $data[] = array(
-                    'id' => $register_account->id,
-                    'name' => $register_account->name,
-                    'records' => $result_records
-                );
-            }
-
-            $result[ 'register_accounts' ] = $data;
-
-            return $result;
-        });
-
-        $this->set_template( 'user.record' );
-        $this->set_postprocess_function( 'html', function( $result, $status ) use ( $register_accounts ) {
-
-            $data = array( 'records' => array() );
-
-            foreach( $register_accounts as $register_account ){
-
-                $origin_records = $register_account->records;
-
-                foreach ( $origin_records as $record ){
-                    $doctor     = RegisterRecord::find( $record->id )->doctor;
-                    $data['records'][] = array(
-                        'id'                =>  $record->id,
-                        'status'            =>  $this->possible_status[ $record->status ],
-                        'can_be_canceled'   =>  $record->status == 0,
-                        'date'              =>  $record->date,
-                        'start'             =>  date( 'H:i', strtotime( $record->start ) ),
-                        'end'               =>  date( 'H:i', strtotime( $record->end ) ),
-                        'period'            =>  $this->possible_period[ $record->period ],
-                        'department'        =>  $doctor->department->name,
-                        'doctor'            =>  array( 'id' => $doctor->id, 
-                                                       'name' => $doctor->name, 
-                                                       'title' => $doctor->title )
-                    );
-                }
-            }
-
-            return $data;
-        });
-
-        return $this->response();*/
     }
 
     public function get_records_json(){
@@ -178,6 +97,7 @@ class RegisterRecordController extends BaseController{
         return View::make( 'user.record', array( 'records' => $data ) );
     }
 
+    // Duplicate
     public function add_record(){
 
         $period_id      = Input::get( 'period_id' );
@@ -247,6 +167,70 @@ class RegisterRecordController extends BaseController{
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '添加成功' ));
+    }
+
+    public static function create_record( $pay_record, $message ){
+
+        try{
+
+            DB::beginTransaction();
+
+            $pay_record->time_end       = $message['time_end'];
+            $pay_record->result_code    = $message['result_code'];
+            $pay_record->open_id        = $message['openid'];
+
+            // 查询相应时间段
+            $attach_parse   = json_decode( $pay_record->attach, true );
+            $account_id     = $attach_parse['account_id'];
+            $period_id      = $attach_parse['period_id'];
+            $period         = Period::find( $period_id );
+
+                // 判断 result_code
+            if ( $message['result_code'] == 'FAIL' ){
+
+                $pay_record->error_code     = $message['err_code'];
+                $pay_record->error_message  = $message['err_code_des'];
+                $pay_record->status         = 'FAIL';
+                        
+            }else{
+                // 创建挂号记录
+
+                $schedule = $period->schedule;
+                $doctor = $schedule->doctor;
+
+                $period->current += 1;
+                $period->save();
+
+                $new_record = new RegisterRecord();
+                $new_record['status']       = 0;
+                $new_record['fee']          = $doctor->register_fee;
+                $new_record['date']         = $schedule->date;
+                $new_record['start']        = date( 'Y-m-d H:i:s' );
+                $new_record['period']       = $schedule->period;
+                $new_record['period_id']    = $period->id;
+                $new_record['doctor_id']    = $doctor->id;
+                $new_record['account_id']   = $account_id;
+                $new_record['user_id']      = $pay_record->user_id;
+                $new_record->save();
+
+                $pay_record->record_id = $new_record->id;
+                $pay_record->status = 'SUCCESS';  
+            }
+
+            $pay_record->save();
+
+            DB::commit();
+
+        }catch( Exception $e ){
+
+            Log::info( 'Error in create record: '.$e->getMessage() );
+
+            DB::rollback();
+
+            return false;
+        }
+
+        return ture;
     }
 
     public function cancel(){
