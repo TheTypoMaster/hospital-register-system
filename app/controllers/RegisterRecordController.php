@@ -141,7 +141,7 @@ class RegisterRecordController extends BaseController{
             );
         }
 
-        return Response::json(array( 'error_code' => 0, 'register_account' => $data ));
+        return Response::json(array( 'error_code' => 0, 'register_accounts' => $data ));
     }
 
     public function get_records_html(){

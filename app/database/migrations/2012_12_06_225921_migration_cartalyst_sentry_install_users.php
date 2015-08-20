@@ -33,11 +33,11 @@ class MigrationCartalystSentryInstallUsers extends Migration {
 		{
 			$table->increments('id');
 			
-			$table->string("nickname");
+			$table->string('nickname');
 			$table->string('password');
 			$table->string('phone');
 			$table->string('real_name');
-			$table->integer("gender");
+			$table->integer('gender');
 			$table->string('photo')->nullable();			
 
 			$table->text('permissions')->nullable();

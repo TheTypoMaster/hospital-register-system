@@ -417,8 +417,8 @@ class UserController extends BaseController{
 
     public function test(){
 
-        echo $this->get_url_with_parameters( Input::all() );
-        die();
+        $xml = new simpleXMLElement( '<xml><return_code>return_code</return_code><return_msg><![CDATA[OK]]></return_msg></xml>' );
+        var_dump( $xml );die();
 
         //return View::make( 'user.test' );
     }

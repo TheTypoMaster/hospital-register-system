@@ -16,8 +16,6 @@ class ScheduleController extends BaseController{
             return Response::json(array( 'error_code' => 2, 'message' => '没有排班' ));
         }
 
-         date_default_timezone_set('PRC');
-
         $result = array();
         $current_date = date_create();
         $latest = (int)Input::get( 'latest' );
