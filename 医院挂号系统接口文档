@@ -274,9 +274,8 @@ GET
                             "status": 0 or 1,                    
                             "advice": ,                     // 医嘱
                             "date": "2015-07-28",
-                            "start": "2015-07-02 09:00",
-                            "created_at": "2015-07-02 09:00",
-                            "period": "上午" or "下午"
+                            "start": "2015-07-02 09:00",    // 就诊时间
+                            "created_at": "2015-07-02 09:00",   // 挂号时间
                             "return_date": "2015-08-01",
                             "can_be_commented": ,           
                             "schedule": {
