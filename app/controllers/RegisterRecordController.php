@@ -36,7 +36,8 @@ class RegisterRecordController extends BaseController{
 
             foreach ( $origin_records as $record ){
                 $doctor             = RegisterRecord::find( $record->id )->doctor;
-                $can_be_commented   = $record->status && !isset( $record->comment()->get() );
+                $old_comment        = $record->comment()->get();
+                $can_be_commented   = $record->status && !isset( $old_comment );
 
                 $result_records[]   = array(
                     'id'                =>  $record->id,
