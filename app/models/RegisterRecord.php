@@ -42,7 +42,7 @@ class RegisterRecord extends \Eloquent {
     }
 
     public function comment(){
-        return $this->hasOne( 'Comment' );
+        return $this->hasOne( 'Comment', 'record_id', 'id' );
     }
 
 }
