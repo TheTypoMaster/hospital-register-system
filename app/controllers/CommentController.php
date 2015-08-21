@@ -102,6 +102,10 @@ class CommentController extends BaseController{
             return Response::json(array( 'error_code' => 4, 'message' => '请输入评价' ));
         }
 
+        if ( isset( $record->comment()->get() ) ){
+            return Response::json(array( 'error_code' => 5, 'message' => '已评论' ));
+        }
+
         $comment            = new Comment();
         $comment->record_id = $record->id;
         $comment->content   = Input::get( 'content' );
