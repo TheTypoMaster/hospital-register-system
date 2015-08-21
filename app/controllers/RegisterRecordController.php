@@ -35,21 +35,24 @@ class RegisterRecordController extends BaseController{
             $origin_records = $register_account->records;
 
             foreach ( $origin_records as $record ){
-                $doctor     = RegisterRecord::find( $record->id )->doctor;
-                $result_records[]  = array(
-                    'id'            =>  $record->id,
-                    'status'        =>  $this->possible_status[ $record->status ],
-                    'advice'        =>  $record->advice,
-                    'date'          =>  $record->date,
-                    'start'         =>  $record->start,
-                    'end'           =>  $record->end,
-                    'period'        =>  $this->possible_period[ $record->period ],
-                    'return_date'   =>  $record->return_date,
-                    'created_at'    =>  $record->created_at->format('Y-m-d H:i'),
-                    'department'    =>  $doctor->department->name,
-                    'doctor'        =>  array( 'id' => $doctor->id,
-                                               'name' => $doctor->name, 
-                                               'title' => $doctor->title )
+                $doctor             = RegisterRecord::find( $record->id )->doctor;
+                $can_be_commented   = $record->status && !isset( $record->comment );
+
+                $result_records[]   = array(
+                    'id'                =>  $record->id,
+                    'status'            =>  $this->possible_status[ $record->status ],
+                    'advice'            =>  $record->advice,
+                    'date'              =>  $record->date,
+                    'start'             =>  $record->start,
+                    'end'               =>  $record->end,
+                    'period'            =>  $this->possible_period[ $record->period ],
+                    'return_date'       =>  $record->return_date,
+                    'created_at'        =>  $record->created_at->format('Y-m-d H:i'),
+                    'department'        =>  $doctor->department->name,
+                    'can_be_commented'  =>  $can_be_commented,
+                    'doctor'            =>  array( 'id' => $doctor->id,
+                                                   'name' => $doctor->name, 
+                                                   'title' => $doctor->title )
                 );
             }
 

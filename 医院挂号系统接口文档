@@ -278,6 +278,8 @@ GET
                             "end": "10:00",
                             "period": "上午" or "下午"
                             "return_date": "2015-08-01",
+                            "can_be_commented": ,           // 0 - false
+                                                            // 1 - true
                             "doctor":
                             {
                                 "id"
