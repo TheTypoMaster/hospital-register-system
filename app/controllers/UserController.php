@@ -530,10 +530,7 @@ class UserController extends BaseController{
             $result[] = array(
                 'fee'           => $record->fee,
                 'status'        => $status[ $record->status ],
-                'date'          => $record->date,
-                'start'         => date( 'H:i', strtotime( $record->start ) ),
-                'end'           => date( 'H:i', strtotime( $record->end ) ),
-                'period'        => $period[ $record->period ],
+                'start'         => date( 'Y-m-d H:i', strtotime( $record->start ) ),
                 'department'    => $doctor->department->name,
                 'doctor'        => array( 'name' => $doctor->name, 'title' => $doctor->title )
             );

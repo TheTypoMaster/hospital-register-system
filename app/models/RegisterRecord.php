@@ -11,10 +11,7 @@ class RegisterRecord extends \Eloquent {
     protected $table = 'register_records';
 
     protected $fillable = array(
-        'date',
         'start',
-        'end',
-        'period',
         'status',
         'fee',
         'advice',

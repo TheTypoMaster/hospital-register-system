@@ -271,15 +271,20 @@ GET
                         {
                             "id": 0,
                             "department": ,
-                            "status": "未就诊" or "已就诊" or "需复诊",                    
+                            "status": 0 or 1,                    
                             "advice": ,                     // 医嘱
                             "date": "2015-07-28",
-                            "start": "09:00",
-                            "end": "10:00",
+                            "start": "2015-07-02 09:00",
+                            "created_at": "2015-07-02 09:00",
                             "period": "上午" or "下午"
                             "return_date": "2015-08-01",
-                            "can_be_commented": ,           // 0 - false
-                                                            // 1 - true
+                            "can_be_commented": ,           
+                            "schedule": {
+                                "date": '2015-07-08',
+                                "period": ,                 // 0 - 上午，1 - 下午
+                                "start": "09:30",
+                                "end": "10:30"
+                            }
                             "doctor":
                             {
                                 "id"

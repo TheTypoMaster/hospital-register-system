@@ -7,10 +7,7 @@ class RegisterRecordTableSeeder extends Seeder {
         DB::table( 'register_records' )->delete();
 
         RegisterRecord::create(array(
-            'date'          => '2015-07-02',
-            'start'         => '8:30',
-            'end'           => '9:30',
-            'period'        => 0,
+            'start'         => '2015-07-02 8:30',
             'status'        => 0,
             'fee'           => 1.0,
             'advice'        => '',
@@ -22,10 +19,7 @@ class RegisterRecordTableSeeder extends Seeder {
         ));
 
         RegisterRecord::create(array(
-            'date'          => '2015-07-15',
-            'start'         => '14:30',
-            'end'           => '14:50',
-            'period'        => 1,
+            'start'         => '2015-07-02 14:30',
             'status'        => 1,
             'fee'           => 2.0,
             'advice'        => '多喝水',
@@ -37,10 +31,7 @@ class RegisterRecordTableSeeder extends Seeder {
         ));
 
         RegisterRecord::create(array(
-            'date'          => '2015-07-20',
-            'start'         => '16:30',
-            'end'           => '18:30',
-            'period'        => 1,
+            'start'         => '2015-07-02 16:30',
             'status'        => 2,
             'fee'           => 3.0,
             'advice'        => '多吃药',
@@ -52,10 +43,7 @@ class RegisterRecordTableSeeder extends Seeder {
         ));
 
         RegisterRecord::create(array(
-            'date'          => '2015-07-28',
-            'start'         => '8:00',
-            'end'           => '12:00',
-            'period'        => 0,
+            'start'         => '2015-07-02 8:00',
             'status'        => 1,
             'fee'           => 4.0,
             'advice'        => '多运动',

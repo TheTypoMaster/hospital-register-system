@@ -35,10 +35,10 @@
             </div>
             <div class="record-item">
                 <div class="item-wrap clearfix">
-                    <span class="item-key">时间</span>
+                    <span class="item-key">就诊时间</span>
                     <span class="colon">：</span>
                     <span class="item-value">
-                        {{{ $record['date'] }}} {{{ $record['period']}}} {{{ $record['start'] }}}-{{{ $record['end'] }}}
+                        {{{ $record['start'] }}}
                     </span>
                 </div>
             </div>

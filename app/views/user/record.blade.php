@@ -58,7 +58,7 @@
                         <span class="item-key">预约时段</span>
                         <span class="colon">：</span>
                         <span class="item-value">
-                            {{{ $record['period_info']['date'] }}} {{{ $record['period_info']['period'] }}} {{{ $record['period_info']['start'] }}}-{{{ $record['period_info']['end'] }}}
+                            {{{ $record['schedule']['date'] }}} {{{ $record['schedule']['period'] }}} {{{ $record['schedule']['start'] }}}-{{{ $record['schedule']['end'] }}}
                         </span>
                     </div>
                 </div>
@@ -66,14 +66,14 @@
                     <div class="item-wrap clearfix">
                         <span class="item-key">挂号时间</span>
                         <span class="colon">：</span>
-                        <span class="item-value">{{{ $record['start'] }}}</span>
+                        <span class="item-value">{{{ $record['created_at'] }}}</span>
                     </div>
                 </div>
                 <div class="record-item">
                     <div class="item-wrap clearfix">
                         <span class="item-key">就诊时间</span>
                         <span class="colon">：</span>
-                        <span class="item-value">{{{ $record['end'] }}}</span>
+                        <span class="item-value">{{{ $record['start'] }}}</span>
                     </div>
                 </div>
                 <div class="record-item">

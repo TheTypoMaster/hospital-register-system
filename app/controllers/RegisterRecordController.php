@@ -39,19 +39,26 @@ class RegisterRecordController extends BaseController{
                 $old_comment        = $record->comment()->get();
                 $can_be_commented   = $record->status && !isset( $old_comment );
 
+                $period = $record->period()->first();
+                $schedule = Schedule::find( $period['schedule_id'] );
+                $schedule_info = array(
+                    'date'      => $schedule->date,
+                    'period'    => $this->possible_period[ $schedule->period ],
+                    'start'     => date( 'H:i', strtotime( $period->start ) ),
+                    'end'       => date( 'H:i', strtotime( $period->end ) )
+                );
+
                 $result_records[]   = array(
-                    'id'                =>  $record->id,
-                    'status'            =>  $record->status,
-                    'advice'            =>  $record->advice,
-                    'date'              =>  $record->date,
-                    'start'             =>  $record->start,
-                    'end'               =>  $record->end,
-                    'period'            =>  $this->possible_period[ $record->period ],
-                    'return_date'       =>  $record->return_date,
-                    'created_at'        =>  $record->created_at->format('Y-m-d H:i'),
-                    'department'        =>  $doctor->department->name,
-                    'can_be_commented'  =>  $can_be_commented,
-                    'doctor'            =>  array( 'id' => $doctor->id,
+                    'id'                => $record->id,
+                    'status'            => $record->status,
+                    'advice'            => $record->advice,
+                    'schedule'          => $schedule_info,
+                    'return_date'       => $record->return_date,
+                    'created_at'        => $record->created_at->format('Y-m-d H:i'),
+                    'start'             => date( 'Y-m-d H:i', strtotime( $record->start ) ),
+                    'department'        => $doctor->department->name,
+                    'can_be_commented'  => $can_be_commented,
+                    'doctor'            => array( 'id' => $doctor->id,
                                                    'name' => $doctor->name, 
                                                    'title' => $doctor->title )
                 );
@@ -76,25 +83,23 @@ class RegisterRecordController extends BaseController{
             $period = $record->period()->first();
             $schedule = Schedule::find( $period['schedule_id'] );
 
-            $period_info = array(
+            $schedule_info = array(
                 'date'      => $schedule->date,
                 'period'    => $this->possible_period[ $schedule->period ],
                 'start'     => date( 'H:i', strtotime( $period->start ) ),
                 'end'       => date( 'H:i', strtotime( $period->end ) )
             );
             $data[] = array(
-                'id'                =>  $record->id,
-                'status'            =>  $this->possible_status[ $record->status ],
-                'can_be_canceled'   =>  $record->status == 0,
-                'date'              =>  $record->date,
-                'start'             =>  $record->created_at->format('Y-m-d H:i'),//date( 'Y-m-d H:i', strtotime( $record->start ) ),
-                'end'               =>  $record->status == 0 ? '' : date( 'Y-m-d H:i', strtotime( $record->end ) ),
-//                'period'            =>  $this->possible_period[ $record->period ],
-                'period_info'       =>  $period_info,
-                'department'        =>  $doctor->department->name,
-                'doctor'            =>  array( 'id' => $doctor->id, 
-                                               'name' => $doctor->name, 
-                                               'title' => $doctor->title )
+                'id'                => $record->id,
+                'status'            => $this->possible_status[ $record->status ],
+                'can_be_canceled'   => $record->status == 0,
+                'created_at'        => $record->created_at->format('Y-m-d H:i'),
+                'start'             => date( 'Y-m-d H:i', strtotime( $record->start ) ),
+                'schedule'          => $schedule_info,
+                'department'        => $doctor->department->name,
+                'doctor'            => array( 'id' => $doctor->id, 
+                                              'name' => $doctor->name, 
+                                              'title' => $doctor->title )
             );
         }
 
@@ -149,9 +154,6 @@ class RegisterRecordController extends BaseController{
             RegisterRecord::create(array(
                 'status'        => 0,
                 'fee'           => $doctor->register_fee,
-                'date'          => $schedule->date,
-                'start'         => $period->start,
-                'end'           => $period->end,
                 'period_id'     => $period->id,
                 'period'        => $schedule->period,
                 'doctor_id'     => $doctor->id,
@@ -209,9 +211,7 @@ class RegisterRecordController extends BaseController{
                 $new_record = new RegisterRecord();
                 $new_record['status']       = 0;
                 $new_record['fee']          = $doctor->register_fee;
-                $new_record['date']         = $schedule->date;
                 $new_record['start']        = date( 'Y-m-d H:i:s' );
-                $new_record['period']       = $schedule->period;
                 $new_record['period_id']    = $period->id;
                 $new_record['doctor_id']    = $doctor->id;
                 $new_record['account_id']   = $account_id;
