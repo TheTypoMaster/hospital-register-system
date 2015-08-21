@@ -211,7 +211,7 @@ class RegisterRecordController extends BaseController{
                 $new_record = new RegisterRecord();
                 $new_record['status']       = 0;
                 $new_record['fee']          = $doctor->register_fee;
-                $new_record['start']        = date( 'Y-m-d H:i:s' );
+//                $new_record['start']        = date( 'Y-m-d H:i:s' );
                 $new_record['period_id']    = $period->id;
                 $new_record['doctor_id']    = $doctor->id;
                 $new_record['account_id']   = $account_id;
