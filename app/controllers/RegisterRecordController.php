@@ -155,7 +155,6 @@ class RegisterRecordController extends BaseController{
                 'status'        => 0,
                 'fee'           => $doctor->register_fee,
                 'period_id'     => $period->id,
-                'period'        => $schedule->period,
                 'doctor_id'     => $doctor->id,
                 'account_id'    => $account_id,
                 'user_id'       => $user_id,
