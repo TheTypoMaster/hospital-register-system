@@ -20,6 +20,7 @@ class Doctor extends \Eloquent {
         'is_consultable',
         'department_id',
         'register_fee',
+        'user_id'
     );
 
     public function register_records(){
@@ -32,5 +33,9 @@ class Doctor extends \Eloquent {
 
     public function department(){
         return $this->belongsTo( 'Department' );
+    }
+
+    public function user(){
+        return $this->belongsTo( 'User' );
     }
 }

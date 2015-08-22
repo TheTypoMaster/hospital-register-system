@@ -13,9 +13,7 @@ class UserController extends BaseController{
     protected static $remember_expire = 10800; // 记住用户名密码七天
 
     protected static $possible_charactors = 'abcdefghijklmnopqrstuvwxyz0123456789';
-
-    protected static $telephone_reg = "/^13[0-9]{1}[0-9]{8}$|15[0189]{1}[0-9]{8}$|189[0-9]{8}$|17[0-9]{1}[0-9]{8}$/";
-
+    
     protected function send_message( $user_telephone, $message ){
         
         $argv = array(
@@ -296,11 +294,11 @@ class UserController extends BaseController{
 
         }catch( Cartalyst\Sentry\Users\UserNotFoundException $e ){
 
-            return Response::json(array( 'error_code' => 3, 'message' => '不存在该用户' ));
+            return Response::json(array( 'error_code' => 3, 'message' => '手机号或密码错误' ));
 
         }catch( Cartalyst\Sentry\Users\WrongPasswordException $e ){
 
-            return Response::json(array( 'error_code' => 4, 'message' => '密码错误' ));
+            return Response::json(array( 'error_code' => 4, 'message' => '手机号或密码错误' ));
         
         }catch( Exception $e ){
 
@@ -308,6 +306,11 @@ class UserController extends BaseController{
         }
 
         $user = Sentry::getUser();
+
+        if ( $user->role ){
+            return Response::json(array( 'error_code' => 5, 'message' => '无效用户' ));
+        }
+
         Session::put( 'user.id', $user->id );
 
         $error_message = array( 'error_code' => 0, 'message' => '登陆成功' );
@@ -406,6 +409,7 @@ class UserController extends BaseController{
                 'real_name'     => Input::get( 'real_name' ),
                 'gender'        => Input::get( 'gender' ),
                 'phone'         => Session::get( 'verification.telephone' ),
+                'role'          => 1,
                 'activated'     => true
             ));   
         }catch( Exception $e ){

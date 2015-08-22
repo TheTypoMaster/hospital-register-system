@@ -19,7 +19,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 1,
             'title' => '主任医师',
-            'register_fee' => 0.2
+            'register_fee' => 0.2,
+            'user_id' => 1
         ));
 
         Doctor::create(array(
@@ -31,7 +32,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => false,
             'department_id' => 1,
             'title' => '副主任医师',
-            'register_fee' => 0.1
+            'register_fee' => 0.1,
+            'user_id' => 2
         ));
 
         Doctor::create(array(
@@ -43,7 +45,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 2,
             'title' => '主任医师',
-            'register_fee' => 0.2
+            'register_fee' => 0.2,
+            'user_id' => 3
         ));
 
         Doctor::create(array(
@@ -55,7 +58,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 2,
             'title' => '副主任医师',
-            'register_fee' => 0.1
+            'register_fee' => 0.1,
+            'user_id' => 4
         ));
 
         Doctor::create(array(
@@ -67,7 +71,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 6,
             'title' => '主任医师',
-            'register_fee' => 0.2
+            'register_fee' => 0.2,
+            'user_id' => 5
         ));
 
         Doctor::create(array(
@@ -79,7 +84,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 6,
             'title' => '副主任医师',
-            'register_fee' => 0.1
+            'register_fee' => 0.1,
+            'user_id' => 6
         ));
 
         Doctor::create(array(
@@ -91,7 +97,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => false,
             'department_id' => 8,
             'title' => '主任医师',
-            'register_fee' => 0.2
+            'register_fee' => 0.2,
+            'user_id' => 7
         ));
 
         Doctor::create(array(
@@ -103,7 +110,8 @@ class DoctorTableSeeder extends Seeder {
             'is_consultable' => true,
             'department_id' => 8,
             'title' => '副主任医师',
-            'register_fee' => 0.1
+            'register_fee' => 0.1,
+            'user_id' => 8
         ));
     }
 }

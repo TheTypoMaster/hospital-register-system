@@ -38,7 +38,9 @@ class MigrationCartalystSentryInstallUsers extends Migration {
 			$table->string('phone');
 			$table->string('real_name');
 			$table->integer('gender');
-			$table->string('photo')->nullable();			
+			$table->integer('role');	// 1 - 普通用户，2 - 医生，4 - 管理员
+			$table->string('account')->nullable();
+			$table->string('photo')->nullable();
 
 			$table->text('permissions')->nullable();
 			$table->boolean('activated')->default(0);

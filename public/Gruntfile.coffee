@@ -54,6 +54,7 @@ module.exports = (grunt)->
                     'dist/css/user/register/success.css': ['src/css/user/register/success.less']
                     'dist/css/user/verification.css': ['src/css/user/verification.less']
                     'dist/css/user/reset_password.css': ['src/css/user/reset_password.less']
+                    'dist/css/base_web.css': ['src/css/base_web.less']
 
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-clean'

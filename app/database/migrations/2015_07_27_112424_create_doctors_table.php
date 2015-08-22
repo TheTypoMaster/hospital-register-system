@@ -23,13 +23,20 @@ class CreateDoctorsTable extends Migration {
 			$table->boolean( 'is_chief' )->default( false );
 			$table->boolean( 'is_consultable' )->default( true );
 			$table->integer( 'department_id' )->unsigned();
+			$table->integer( 'user_id' )->unsigned();
 			$table->timestamps();
+
+			$table->index( 'user_id' );
+			$table->foreign( 'user_id' )
+				  ->references( 'id' )
+				  ->on( 'users' )
+				  ->onDelete( 'cascade' )
+				  ->onUpdate( 'cascade' );
 
 			$table->index( 'department_id' );
 			$table->foreign( 'department_id' )
 				  ->references( 'id' )
 				  ->on( 'departments' )
-				  ->onDelete( 'cascade' )
 				  ->onUpdate( 'cascade' );
 		});
 	}

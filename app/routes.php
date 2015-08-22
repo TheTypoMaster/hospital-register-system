@@ -17,6 +17,8 @@
 //Route::get( '/', 'WeixinController@response_message' );
 Route::post( '/', array( 'before' => 'weixin', 'uses' => 'WeixinController@response_message' ) );
 
+// --------------------------------- 用户端接口 start -------------------------------------------------
+
 // 医院模块
 Route::group(array( 'prefix' => 'hospital' ), function()
 {
@@ -51,11 +53,13 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::post( 'logout', 'UserController@logout' );
 	Route::post( 'verify_and_reset_password', 'UserController@verify_and_reset_password' );
     
+    // 重置密码
 	Route::group(array( 'prefix' => 'reset_password' ), function(){
         Route::get( 'first', 'UserController@reset_password_first' );
         Route::get( 'second', 'UserController@reset_password_second' );
     });
 
+    // 注册
     Route::group(array( 'prefix' => 'register' ), function(){
         Route::post( '/', 'UserController@register_post' );
         Route::get( 'first', 'UserController@register_first' );
@@ -126,3 +130,32 @@ Route::group(array( 'prefix' => 'pay' ), function(){
     Route::get( 'wxpay_js', 'PayController@wxpay_js' );
     Route::post( 'wxpay_notify', 'PayController@wxpay_notify' );
 });
+
+// --------------------------------- 用户端接口 end -------------------------------------------------
+
+
+// --------------------------------- 医生客户端web接口 start ----------------------------------------
+
+Route::group(array( 'prefix' => 'doc' ), function(){
+
+    Route::get( 'login', 'DoctorController@login_get' );
+    Route::post( 'login', 'DoctorController@login_post' );
+
+    //Route::group(array( 'before' => 'auth.is_in' ), function(){
+        Route::post( 'logout', 'DoctorController@logout' );
+        Route::post( 'modify', 'DoctorController@modify_doctor' );
+        Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
+
+        Route::group(array( 'prefix' => 'home' ), function(){
+            Route::get( '/', 'DoctorPageController@home' );
+            Route::get( 'account', 'DoctorPageController@account' );
+            Route::get( 'patient', 'DoctorPageController@patient' );
+            Route::get( 'chat', 'DoctorPageController@chat' );
+            Route::get( 'comment', 'DoctorPageController@comment' );
+            Route::get( 'advice', 'DoctorPageController@advice' );
+            Route::get( 'message', 'DoctorPageController@message' );
+        });
+    //s});
+});
+
+// --------------------------------- 医生客户端web接口 end ------------------------------------------
