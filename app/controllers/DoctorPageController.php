@@ -6,4 +6,7 @@ class DoctorPageController extends BaseController {
         return View::make( 'layouts.master_web' );
     }
 
+    public function chat(){
+        return View::make( 'doctor.chat' );
+    }
 }

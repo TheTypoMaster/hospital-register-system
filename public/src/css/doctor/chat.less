@@ -1,0 +1,156 @@
+
+.chat-wrap{
+
+    width: 790px;
+    margin-left: 50px;
+    margin-top: 27px;
+    background-color: white;
+
+    .top{
+        color: white;
+        font-size: 24px;
+        line-height: 57px;
+        text-align: center;
+        background-color: #4ac0f8;
+    }
+
+    .chat-body{
+        width: 698px;
+        min-height: 520px;
+        margin-top: 18px;
+        margin-left: 50px;
+        border: solid #e3e3e3 1px;
+    }
+}
+
+.users-list{
+    width: 128px;
+    margin-top: -1px;
+    float: left;
+
+    .user{
+        height: 59px;
+        line-height: 59px;
+        border-top: solid #e3e3e3 1px;
+
+        .photo{
+            top: 15px;
+            width: 40px;
+            height: 40px;
+            margin-left: 18px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .name{
+            color: #787878;
+            margin-left: 10px;
+            font-size: 15px;
+        }
+    }
+}
+
+.chat-main{
+    width: 569px;
+    float: right;
+    border-left: solid #e3e3e3 1px;
+
+    .msg-wrap{
+        height: 419px;
+        padding-left: 24px;
+        padding-right: 24px;
+        border-bottom: solid #e3e3e3 1px;
+
+        .cur-time{
+            color: #cbcbcb;
+            font-size: 11px;
+            line-height: 30px;
+            text-align: center;
+        }
+    }
+
+    .input-wrap{
+        height: 118px;
+    }
+}
+
+.msg-inner{
+
+    .item{
+        width: 100%;
+        text-align: left;
+        margin-bottom: 12px;
+
+        .photo{
+            width: 50px;
+            height: 50px;
+        }
+
+        .msg-scope{
+            margin-left: 12px;
+            margin-right: 12px;
+
+            .nickname{
+                display: none;
+                font-size: 12px;
+                line-height: 12px;
+                margin-bottom: 10px;
+                color: #6e6e6e;
+            }
+
+            .content{
+                margin-top: 7px;
+                border-radius: 5px;
+                max-width: 200px;
+                padding: 10px 15px;
+                font-size: 14px;
+                line-height: 16px;
+                background-color: #f2f2f2;
+            }
+        }
+    }
+
+    .from{
+        .photo, .msg-scope{
+            float: left;
+        }
+    }
+
+    .to{
+        .photo, .msg-scope{
+            float: right;
+        }
+     
+        .nickname{
+            text-align: right;
+        }
+    }
+}
+
+
+.input-wrap{
+    background-color: #fbfbfb;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .tool{
+        height: 40px;
+    }
+
+    .input-inner{
+        
+        .input-content{
+            display: block;
+            border: none;
+            width: 100%;
+            height: 60px;
+            resize: none;
+            background-color: #fbfbfb;
+
+            &:focus{
+                outline: none;
+                background-color: white;
+            }
+        }
+    }
+}

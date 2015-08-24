@@ -53,7 +53,7 @@
                 </div>
                 <div class="main-content">
                     @section('main-content')
-                    @stop
+                    @show
                 </div>
             </div>
         </div>
@@ -63,7 +63,6 @@
         @show
 
         @section('js-common')
-            <script src="/dist/js/base.js" type="text/javascript"></script>
         @show
 
         @section('js-specify')
