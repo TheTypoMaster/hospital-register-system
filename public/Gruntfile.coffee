@@ -14,7 +14,9 @@ module.exports = (grunt)->
         copy:
             dev:
                 files: [
-                    { expand: true, flatten: true, src: ["src/js/*"], dest: 'dist/js/'}
+                    { expand: true, flatten: true, src: ["src/js/lib/*"], dest: 'dist/js/lib/' }
+                    { expand: true, flatten: true, src: ["src/js/common/*"], dest: 'dist/js/common/'},
+                    { expand: true, flatten: true, src: ["src/js/pages/doctor/*"], dest: 'dist/js/pages/doctor/' }
                 ]
 
         clean:

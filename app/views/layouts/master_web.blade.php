@@ -59,7 +59,8 @@
         </div>
 
         @section('js-lib')
-            <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+            <script src="/dis/js/lib/jquery-1.11.2.min.js"></script>
+            <script src="/dis/js/lib/lodash.min.js"></script>
         @show
 
         @section('js-common')
