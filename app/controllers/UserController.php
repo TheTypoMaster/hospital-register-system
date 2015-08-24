@@ -307,7 +307,7 @@ class UserController extends BaseController{
 
         $user = Sentry::getUser();
 
-        if ( $user->role ){
+        if ( !( $user->role & 0x01 ) ){
             return Response::json(array( 'error_code' => 5, 'message' => '无效用户' ));
         }
 
@@ -421,17 +421,7 @@ class UserController extends BaseController{
 
     public function test(){
 
-        $gift = '1';
-
-        $gift_array = array( 1, 2, 3 );
-
-        foreach( $gift_array as $gift ){
-            echo $gift;
-            $gift = '2';
-        }
-
-        echo $gift;
-        die();
+        var_dump( Session::all() );die();
 
 /*
         $xml = new simpleXMLElement( '<xml><return_code>return_code</return_code><return_msg><![CDATA[OK]]></return_msg></xml>' );
