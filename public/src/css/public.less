@@ -39,3 +39,37 @@
 	z-index: 999;
 	background: @bg;
 }
+// 分页样式 start
+.pagination-wrapper(@font-size: 18px){
+	float: right;
+	text-align: right;
+	color: rgb(180, 180, 180);
+	font-size: @font-size;
+	&>ul, &>span{
+		float: right;
+		padding: 0px 3px;
+	}
+	&>ul>li, &>span{
+		cursor: pointer;
+	}
+	&>ul{
+		list-style: none;
+		&>li{
+			float: left;
+			padding: 0px 4px;
+
+		}
+	}
+	.page-prev{}
+	.page-next{}
+	.active{
+		color: rgb(20, 174, 244);
+	}
+}
+// 分页样式 end
+
+.background(@url: url("/images/doc_web/"), @position: 0px 0px){
+	background: @url no-repeat;
+	background-size: 100% 100%;
+	background-position: @position;
+}
