@@ -57,7 +57,6 @@ module.exports = (grunt)->
                     'dist/css/user/verification.css': ['src/css/user/verification.less']
                     'dist/css/user/reset_password.css': ['src/css/user/reset_password.less']
                     'dist/css/base_web.css': ['src/css/base_web.less']
-                    'dist/css/doctor/chat.css': ['src/css/doctor/chat.less']
                     'dist/css/doctor/account.css': ['src/css/doctor/account.less']
                     'dist/css/doctor/patient.css': ['src/css/doctor/patient.less']
                     'dist/css/doctor/login.css': ['src/css/doctor/login.less']
