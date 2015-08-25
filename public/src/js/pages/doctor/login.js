@@ -1,13 +1,13 @@
 
 $(document).ready(function() {
-    $('.login-form').on( 'click', function(event) {
+    $('.login-form').on( 'submit', function(event) {
         event.preventDefault();
         
         $.ajax({
             url: '/doc/login',
             type: 'POST',
             dataType: 'json',
-            data: $('.login-form').serialize(),
+            data: $('.login-form').serialize()
         })
         .done(function( data ) {
             if ( data.error_code ){
