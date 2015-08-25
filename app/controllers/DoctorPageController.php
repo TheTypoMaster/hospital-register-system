@@ -2,8 +2,14 @@
 
 class DoctorPageController extends BaseController {
 
-    public function home(){
-        return View::make( 'layouts.master_web' );
+    public function login(){
+
+        return View::make( 'doctor.login' );
+    }
+
+    public function account(){
+
+        return View::make( 'doctor.account' );
     }
 
     public function chat(){

@@ -19,11 +19,11 @@
 				<form action="/" method="post" class="login-form">
 					<div class="login-input login-input-name">
 						<img src="/images/doc_web/login_name.png">
-						<input type="text" placeholder="用户名">
+						<input name="account" type="text" placeholder="用户名">
 					</div>
 					<div class="login-input login-input-psd">
 						<img src="/images/doc_web/login_psd.png">
-						<input type="password" placeholder="密码">
+						<input name="password" type="password" placeholder="密码">
 					</div>
 					<div class="login-words">
 						<a href="/">
@@ -41,5 +41,8 @@
 			<img src="/images/doc_web/login_slogan.png">
 		</div>
 	</div>
+
+	<script src="/dist/js/lib/jquery-1.11.2.min.js"></script>
+	<script src="/dist/js/pages/doctor/login.js"></script>
 </body>
 </html>

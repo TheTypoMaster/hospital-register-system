@@ -7,9 +7,11 @@
 @section("css")
 	@parent
     <link rel="stylesheet" type="text/css" href="/dist/css/doctor/account.css" />
-
 @stop
 
+@section('js-specify')
+	<script src="/dist/js/pages/doctor/account.js" type="text/javascript"></script>
+@stop
 
 @section("main-content")
 	<div class="account-wrapper">

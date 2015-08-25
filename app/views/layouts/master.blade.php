@@ -29,11 +29,11 @@
         @show
 
         @section('js-lib')
-            <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+            <script src="/dis/js/lib/jquery-1.11.2.min.js"></script>
         @show
 
         @section('js-common')
-            <script src="/dist/js/base.js" type="text/javascript"></script>
+            <script src="/dist/js/common/base.js" type="text/javascript"></script>
         @show
 
         @section('js-specify')

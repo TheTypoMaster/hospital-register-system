@@ -11,10 +11,6 @@
 |
 */
 
-Route::get("/", function(){
-    return Response::view("doctor.login");
-});
-
 // 给公众号绑定域名所用接口
 //Route::get( '/', 'WeixinController@response_token' );
 // 消息处理接口
@@ -142,8 +138,8 @@ Route::group(array( 'prefix' => 'pay' ), function(){
 
 Route::group(array( 'prefix' => 'doc' ), function(){
 
-    Route::get( 'login', 'DoctorController@login_get' );
-    Route::post( 'login', 'DoctorController@login_post' );
+    Route::get( 'login', 'DoctorPageController@login' );
+    Route::post( 'login', 'DoctorController@login' );
 
     //Route::group(array( 'before' => 'auth.is_in' ), function(){
         Route::post( 'logout', 'DoctorController@logout' );

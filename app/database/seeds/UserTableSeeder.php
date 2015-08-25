@@ -12,6 +12,7 @@ class UserTableSeeder extends Seeder {
             'password' => '58085088',
             'real_name' => '黄裕源',
             'phone' => '13580501456',
+            'account' => 'hyuyuan',
             'role' => 7,
             'gender' => 1,
             'activated' => 1,
@@ -22,6 +23,7 @@ class UserTableSeeder extends Seeder {
             'password' => '123456',
             'real_name' => '李四',
             'phone' => '13512341234',
+            'account' => 'Cobb_yuan',
             'role' => 3,
             'gender' => 1,
             'activated' => 1
@@ -72,6 +74,7 @@ class UserTableSeeder extends Seeder {
             'password' => 'AAA',
             'real_name' => 'Test',
             'phone' => '13022225555',
+            'account' => '13022225555',
             'role' => 2,
             'gender' => 2,
             'activated' => 1
@@ -82,6 +85,7 @@ class UserTableSeeder extends Seeder {
             'password' => 'BBB',
             'real_name' => 'Test',
             'phone' => '13122225555',
+            'account' => '13122225555',
             'role' => 2,
             'gender' => 2,
             'activated' => 1
@@ -92,6 +96,7 @@ class UserTableSeeder extends Seeder {
             'password' => 'CCC',
             'real_name' => 'Test',
             'phone' => '13222225555',
+            'account' => '13222225555',
             'role' => 2,
             'gender' => 2,
             'activated' => 1
