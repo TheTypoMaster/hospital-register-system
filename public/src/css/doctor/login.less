@@ -1,0 +1,116 @@
+@import "./../public.less";
+body,html{
+	width: 100%;
+	height: 100%;
+}
+.login{
+	position: relative;
+	height: 100%;
+	.background(url("/images/doc_web/login_bg.jpg"));
+	.login-board-wrapper{
+		@width: 510px;
+		@height: 440px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: @width;
+		height: @height;
+		margin: -@height/2 -@width/2;
+		.background(url("/images/doc_web/login_shadow.png"));
+		.login-board{
+			position: relative;
+			width: 451px;
+			height: 381px;
+			top: 20px;
+			left: 20px;
+			background: rgba(255, 255, 255, 1);
+			.login-board-head{
+				@line-height: 64px;
+				width: 100%;
+				height: @line-height;
+				line-height: @line-height;
+				text-align: center;
+				font-size: 22px;
+				color: white;
+				.background(url("/images/doc_web/login_head_bar.png"));
+			}
+			.login-form{
+				@wrapper-width: 400px;
+				position: relative;
+				width: 100%;
+				height: 318px;
+				background: rgba(255, 255, 255, 1);
+				.login-input{
+					position: relative;
+					
+					margin: 0px auto;
+					width: @wrapper-width;
+					height: 60px;
+					.background(url("/images/doc_web/login_input_bg.png"));
+					&>input{
+						width: 82%;
+						height: 100%;
+						border: 0px;
+						line-height: 100%;
+						font-size: 22px;
+						padding-left: 12px;
+						background: transparent;
+						&:focus{
+							outline: none;
+						}
+						padding-top: 2px;
+					}
+					&>img{
+						@width: 30px;
+						width: @width;
+						height: @width;
+						position: absolute;
+						top: 50%;
+						right: @width - 10px;
+						margin: -@width/2 0px;
+					}
+				}
+				.login-input-name{
+					margin-top: 30px;
+				}
+				.login-input-psd{
+					margin-top: 15px;
+				}
+				.login-words{
+					width: @wrapper-width;
+					margin: 20px auto;
+					text-align: right;
+					cursor: pointer;
+					font-size: 16px;
+					&>a,&>a:link,&>a:visited{
+						color: rgb(33, 170, 241);
+					}
+				}
+				.login-btn{
+					width: @wrapper-width;
+					margin: 20px auto;
+					.login-submit{
+						width: 162px;
+						height: 70px;
+						font-size: 24px;
+						letter-spacing: 5px;
+						color: white;
+						border: 0px;
+						cursor: pointer;
+						.background(url("/images/doc_web/login_btn.png"));
+					}
+				}
+			}
+		}
+	}
+	.slogan-wrapper{
+		position: absolute;
+		bottom: 36px;
+		width: 100%;
+		text-align: center;
+		height: 64px;
+		&>img{
+			height: 100%;
+		}
+	}
+}

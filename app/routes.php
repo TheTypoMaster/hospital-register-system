@@ -11,6 +11,10 @@
 |
 */
 
+Route::get("/", function(){
+    return Response::view("doctor.login");
+});
+
 // 给公众号绑定域名所用接口
 //Route::get( '/', 'WeixinController@response_token' );
 // 消息处理接口
