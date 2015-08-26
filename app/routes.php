@@ -11,7 +11,7 @@
 |
 */
 Route::get("/", function() {
-    return Response::view("doctor.patient");
+    return Response::view("doctor.message");
 });
 
 // 给公众号绑定域名所用接口
