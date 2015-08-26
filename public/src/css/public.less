@@ -69,7 +69,26 @@
 // 分页样式 end
 
 .background(@url: url("/images/doc_web/"), @position: 0px 0px){
+	background: none\9;
 	background: @url no-repeat;
 	background-size: 100% 100%;
 	background-position: @position;
 }
+.click-btn(@width: 108px,@height: 42px, @url: url("/images/doc_web/u12.png")){
+	position: relative;
+	display: inline-block;
+	font-size: 20px;
+	cursor: pointer;
+	width: @width;
+	height: @height;
+	line-height: @height;
+	text-align: center;
+	border: 0px;
+	color: white;
+	background: @url;
+	background-size: 100% 100%;
+}
+
+
+
+
