@@ -141,21 +141,21 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::get( 'login', 'DoctorPageController@login' );
     Route::post( 'login', 'DoctorController@login' );
 
-    //Route::group(array( 'before' => 'auth.is_in' ), function(){
-        Route::post( 'logout', 'DoctorController@logout' );
+    Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
+        Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );
         Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
 
         Route::group(array( 'prefix' => 'home' ), function(){
             Route::get( '/', 'DoctorPageController@home' );
+            Route::get( 'chat', 'DoctorPageController@chat' );
             Route::get( 'account', 'DoctorPageController@account' );
             Route::get( 'patient', 'DoctorPageController@patient' );
-            Route::get( 'chat', 'DoctorPageController@chat' );
             Route::get( 'comment', 'DoctorPageController@comment' );
             Route::get( 'advice', 'DoctorPageController@advice' );
             Route::get( 'message', 'DoctorPageController@message' );
         });
-    //s});
+    });
 });
 
 // --------------------------------- 医生客户端web接口 end ------------------------------------------

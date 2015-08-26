@@ -110,6 +110,21 @@ Route::filter('auth.user.is_in',function()
 	}
 });
 
+Route::filter('auth.doc_is_in', function(){
+
+	if ( !Session::has( 'user.id' ) ){
+
+		return Redirect::guest( 'doc/login' );
+
+	}else if ( !Sentry::check() ){
+
+		$user = Sentry::findUserById( Session::get( 'user.id' ) );
+
+		Sentry::login( $user, false );
+	} 
+
+});
+
 Route::filter('weixin', function(){
 
 	$signature = Input::get( 'signature' );

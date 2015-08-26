@@ -83,8 +83,103 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 5, 'message' => '用户名或密码错误' ));
         }
 
+        $doctor = Doctor::where( 'user_id', $user->id )->first();
         Session::put( 'user.id', $user->id );
+        Session::put( 'doctor.id', $doctor->id );
+        Session::put( 'doctor.name', $doctor->name );
 
         return Response::json(array( 'error_code' => 0, 'message' => '登录成功' ));
+    }
+
+    public function logout(){
+
+        Session::forget( 'user.id' );
+        Session::forget( 'doctor.name' );
+
+        return Redirect::to( '/doc/login' );
+    }
+
+    public function modify_doctor(){
+        
+        $doctor = Doctor::find( Session::get( 'doctor.id' ) );
+
+        $inputs = array(
+            'name'          => Input::get( 'name' ),
+            'title'         => Input::get( 'title' ),
+            'specialty'     => Input::get( 'specialty' ),
+            'description'   => Input::get( 'description' )
+        );
+
+        foreach( $inputs as $key => $value ){
+            if ( isset( $value ) ){
+                if ( $key == 'specialty' || $key == 'description' ){
+                    $doctor[ $key ] = '<p>'.$value.'</p>';
+                }else{
+                    $doctor[ $key ] = $value;
+                }
+            }
+        }
+
+        if ( !$doctor->save() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '保存失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功' ));
+    }
+
+    public function upload_portrait(){
+        if ( !Input::hasFile( 'portrait' ) ){
+
+            return Response::json(array( 'error_code' => 2, 'message' => '无文件上传' ));
+        }
+
+        if ( !Input::file( 'portrait' )->isValid() ){
+
+            return Response::json(array( 'error_code' => 3, 'message' => '文件无效' ));
+        }
+
+        $portrait = Input::file( 'portrait' );
+
+        $file_size = $portrait->getSize();
+
+        if ( $file_size > 2 * 1024 * 1024 ){
+            return Response::json(array( 'error_code' => 4, 'message' => '文件过大' ));
+        }
+
+        $file_ext = $portrait->getClientOriginalExtension();
+
+        $user_id = Session::get( 'user.id' );
+
+        $doctor = Doctor::where( 'user_id', $user_id )->first();
+
+        try{    
+
+            $photo_path = '/images/upload/';
+            $photo_full_name = uniqid( $user_id.time() ).'.'.$file_ext;
+
+            if ( isset( $doctor->photo ) ){
+                $previous_photo = $doctor->photo;
+            }
+
+            $doctor->photo = $photo_path.$photo_full_name;
+
+            if ( !$doctor->save() ){
+                return Response::json(array( 'error_code' => 5, 'message' => '错误' ));
+            }
+
+            // Save and delete previous photo
+            if ( isset( $previous_photo ) ){
+                File::delete( $previous_photo );
+            }
+
+            $portrait->move( public_path().$photo_path , $photo_full_name );
+        }
+
+        catch( Exception $e ){
+
+            return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $user->photo, 'size' => $file_size ));
     }
 }

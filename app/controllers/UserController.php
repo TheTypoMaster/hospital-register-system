@@ -109,10 +109,9 @@ class UserController extends BaseController{
         $message = '您的验证码为：'.$code;
 
         // 发送验证码
-		/*
         if ( !$this->send_message( $user_telephone, $message ) ){
             return Response::json(array( 'error_code' => 3, 'message' => '验证码发送失败' ));
-        }*/
+        }
         
         // 设置验证通过标志
         Session::put( 'verification.passed', false );

@@ -4,7 +4,12 @@
     复诊咨询
 @stop
 
+@section('css')
+    @parent
+    <link rel="stylesheet" href="/dist/css/doctor/chat.css">
+@stop
+
 @section('main-content')
-<iframe src="{{{ $chat_url }}}" frameborder="0">
+<iframe class="chat-page" src="{{{ $chat_url }}}" frameborder="0">
 </iframe>
 @stop
