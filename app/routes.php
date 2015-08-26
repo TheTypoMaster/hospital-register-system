@@ -10,6 +10,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::get("/", function(){
+    return Response::view("doctor.login");
+});
 
 // 给公众号绑定域名所用接口
 //Route::get( '/', 'WeixinController@response_token' );
