@@ -33,19 +33,19 @@
 			<div class="patient-tr patient-tabel-content">
 				<div class="patient-td">04月27日</div>
 				<div class="patient-td">
-					<span class="patient-td-btn">
+					<button type="button" class="patient-td-btn">
 						查看病人
-					</span>
+					</button>
 				</div>
 				<div class="patient-td">
-					<span class="patient-td-btn">
+					<button type="button" class="patient-td-btn">
 						查看病人
-					</span>
+					</button>
 				</div>
 				<div class="patient-td">
-					<span class="patient-td-btn">
+					<button type="button" class="patient-td-btn">
 						查看病人
-					</span>
+					</button>
 				</div>
 			</div>
 			<!-- 表格内容 END-->
