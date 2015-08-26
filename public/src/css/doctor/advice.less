@@ -5,7 +5,15 @@
 	.content-body();
 	.patient-caption{
 		.table-caption(center);
-		padding-left: 20px;
+		// padding-left: 20px;
+		.add-btn{
+			.click-btn(108px, 42px, url("/images/doc_web/advice_add_btn.png"));
+			color: rgb(13, 168, 244);
+			fong-size: 26px;
+			position: absolute;
+			top: 7px;
+			right: 20px;
+		}
 	}
 	.patient-table{
 		width: @wrapper-width;
@@ -152,10 +160,11 @@
 			.border-style();
 			background: white;
 			.patient-details-table{
-				margin: 40px auto;
+				margin: 40px auto 0px;
 				width: @width;
 				height: 460px;
 				.border-style();
+				background: rgb(255, 255, 255);
 				.table-details-head{
 					@line-height: 56px;
 					width: 100%;
@@ -170,7 +179,7 @@
 				.table-details-content{
 					width: 100%;
 					float: left;
-					height: 405px;
+					height: 404px;
 					&>span{
 						display: inline-block;
 						margin: 25px 15px;
@@ -179,6 +188,64 @@
 						color: rgb(150, 150, 150);
 						// text-indent: 2em;
 					}
+					&>.table-details-tr{
+						@line-height: 56.8px;
+						position: relative;
+						width: 100%;
+						height: @line-height;
+						line-height: @line-height;
+						float: left;
+						border-bottom: @border-value;
+						border-top: @border-value;
+						margin-bottom: -1px;
+						&>.table-details-name{
+							padding-left: 55px;
+							font-size: 22px;
+							color: rgb(160, 160, 160);
+						}
+						&>.table-details-add{
+							.click-btn();
+							position: absolute;
+							top: 7px;
+							right: 20px;
+						}
+					}
+				}
+			}
+
+			.table-details-input{
+				height: 400px;
+				.table-details-content{
+					@content-height: 344px;
+					height: @content-height;
+					&>.textarea{
+						@vertical: 30px;
+						@horizontal: 26px;
+						position: relative;;
+						width: @width - 2 * @horizontal;
+						height: @content-height - 2 * @vertical;
+						border: 0px;
+						resize: none;
+						padding: @vertical @horizontal;
+						font-size: 20px;
+						line-height: 34px;
+						color: rgb(70, 70, 70);
+						&:focus{
+							outline: none;
+						}
+					}
+				}
+			}
+
+			.table-details-submit{
+				margin-top: 30px;
+				width: 100%;
+				height: 60px;
+				text-align: center;
+				.submit-btn{
+					.click-btn(166px, 60px);
+					font-size: 26px;
+					letter-spacing: 8px;
 				}
 			}
 		}

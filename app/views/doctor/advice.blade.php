@@ -13,7 +13,12 @@
 
 @section("main-content")
 	<div class="patient-wrapper">
-		<div class="patient-caption">病人医嘱</div>
+		<div class="patient-caption">
+			病人医嘱
+			<button class="add-btn">
+				新增医嘱
+			</button>
+		</div>
 		<div class="patient-table">
 			<!-- 表格头 START -->
 			<div class="table-tr table-tr-caption">
@@ -124,9 +129,10 @@
 				<span class="patient-page-prev">上一页</span>
 			</div>
 		</div>
-		<div class="page-mask"></div>
-		<div class="page-details-mask">
-			<div class="patient-details">
+		<div class="page-mask" style="display: none;"></div>
+		<div class="page-details-mask" style="display: none;">
+			<!-- 医嘱内容显示 SATRT -->
+			<div class="patient-details" style="display: none;">
 				<div class="patient-details-table">
 					<div class="table-details-head">
 						医嘱
@@ -135,8 +141,85 @@
 						<span>这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。这个是评价内容框。</span>
 					</div>
 				</div>
-
 			</div>
+			<!-- 医嘱内容显示 END -->
+
+			<!-- 病人列表——增加医嘱 START -->
+			<div class="patient-details" style="display: none;">
+				<div class="patient-details-table">
+					<div class="table-details-head">
+						病人
+					</div>
+					<div class="table-details-content">
+						<!-- 表格内容行 START -->
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>
+						<div class="table-details-tr">
+							<span class="table-details-name">凌晓辉</span>
+							<button class="table-details-add">增加医嘱</button>
+						</div>						
+						<!-- 表格内容行 END -->
+					</div>
+				</div>
+
+				<!-- 分页 START -->
+				<div class="patient-pagination-wrapper">
+					<span class="patient-page-next">下一页</span>
+					<ul>
+						<li class="patient-page-num active">1</li>
+						<li class="patient-page-num">2</li>
+						<li class="patient-page-num">3</li>
+						<li class="patient-page-num">4</li>
+						<li class="patient-page-num">5</li>
+						<li class="patient-page-num">6</li>
+					</ul>
+					<span class="patient-page-prev">上一页</span>
+				</div>
+				<!-- 分页 END -->
+			</div>
+			<!-- 病人列表——增加医嘱 END -->
+
+			<!-- 增加医嘱输入框 START -->
+			<div class="patient-details">
+				<div class="patient-details-table table-details-input">
+					<div class="table-details-head">
+						凌晓辉医嘱
+					</div>
+					<div class="table-details-content">
+						<textarea class="textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="table-details-submit">
+					<button class="submit-btn">
+						确定
+					</button>
+				</div>
+			</div>
+			<!-- 增加医嘱输入框 END -->
+
 		</div>
 	</div>
 @stop
