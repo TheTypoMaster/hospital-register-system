@@ -16,13 +16,13 @@ class CreateRegisterRecordsTable extends Migration {
 			$table->increments( 'id' );
 			$table->integer( 'status' );
 			$table->float( 'fee' );
-			$table->datetime( 'start' )->nullable();
 			$table->text( 'advice' )->nullable();
+			$table->datetime( 'start' )->nullable();
 			$table->date( 'return_date' )->nullable();
 			$table->integer( 'doctor_id' )->unsigned();
 			$table->integer( 'account_id' )->unsigned();
 			$table->integer( 'user_id' )->unsigned();
-			$table->integer( 'period_id' )->unsigned()->nullable;
+			$table->integer( 'period_id' )->unsigned();
 			$table->timestamps();
 
 			$table->index( 'period_id' );
