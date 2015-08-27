@@ -138,14 +138,17 @@
 	}
 	.page-mask{
 		.full-mask();
-		
+		display: none;
+		.bg-opacity();
+		z-index: 0;
 	}
 	.page-details-mask{
 		@width: 694px;
-		
-		.full-mask(transparent);
+		display: none;
+		//.full-mask(transparent);
 		.patient-details{
 			position: absolute;
+			z-index: 999;
 			top: 50%;
 			left: 50%;
 			margin: -285px -405px;

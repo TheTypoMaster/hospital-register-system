@@ -26,7 +26,7 @@
 	text-align: @align;
 	color: white;
 	font-size: @font-size;
-	font-family: @font-family;
+	//font-family: @font-family;
 	border: 0px;
 	background: rgb(13, 168, 244);
 }
@@ -38,6 +38,12 @@
 	height: 100%;
 	z-index: 999;
 	background: @bg;
+}
+.bg-opacity(@bg: rgb(0, 0, 0), @opa: 0.3){
+	background: @bg;
+	opacity: @opa;
+	@opacity: @opa * 100;
+	filter:alpha(opacity=@opacity);
 }
 // 分页样式 start
 .pagination-wrapper(@font-size: 18px){
@@ -69,10 +75,14 @@
 // 分页样式 end
 
 .background(@url: url("/images/doc_web/"), @position: 0px 0px){
-	background: none\9;
 	background: @url no-repeat;
 	background-size: 100% 100%;
 	background-position: @position;
+}
+//ie8背景
+.bg-hack(@url: ""){
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.@{url}', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='@{url}', sizingMethod='scale')";
 }
 .click-btn(@width: 108px,@height: 42px, @url: url("/images/doc_web/u12.png")){
 	position: relative;
@@ -85,9 +95,37 @@
 	text-align: center;
 	border: 0px;
 	color: white;
-	background: @url;
-	background-size: 100% 100%;
+	//background: @url;
+	//background-size: 100% 100%;
 }
+ input:-webkit-autofill,
+ textarea:-webkit-autofill,
+ select:-webkit-autofill{
+	 -webkit-box-shadow: 0 0 0 1000px transparent inset;
+ }
+
+
+
+
+.bg{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+button{
+	background: transparent;
+	&:focus{
+		outline: none;
+	}
+}
+
+textarea{
+	overflow: auto;
+}
+
 
 
 

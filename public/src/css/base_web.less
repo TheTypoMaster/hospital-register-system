@@ -38,6 +38,7 @@ button, input, select{
         position: relative;
         background-color: #0faae7;
         cursor: pointer;
+        color: white;
         &:focus{
             outline: none;
         }
@@ -45,7 +46,12 @@ button, input, select{
             width: 100%;
             color: white;
             display: block;
+            height: 28px;
+            float: left;
             text-decoration: none;
+            &:visited, &:link{
+                color: white;
+            }
         }
     }
 
@@ -77,23 +83,33 @@ button, input, select{
         float: left;
 
         .sub-btn{
-            padding-top: 25px;
-            padding-bottom: 20px;
+            
             text-align: center;
 
-            .sub-icon{
-                width: 32px;
-                height: 32px;
-                margin: 0px auto;
+            .sub-item{
+                padding-top: 25px;
+                padding-bottom: 20px;
                 display: block;
-            }
-
-            .sub-tl{
+                width: 100%;
+                height: 100%;
                 color: white;
                 font-size: 18px;
-                margin-top: 10px;
-                display: block;
+                .sub-icon{
+                    width: 32px;
+                    height: 32px;
+                    margin: 0px auto;
+                    display: block;
+                    border: 0px;
+                }
+
+                .sub-tl{
+                    color: white;
+                    font-size: 18px;
+                    margin-top: 10px;
+                    display: block;
+                }
             }
+            
         }
 
         .odd{
