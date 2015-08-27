@@ -140,3 +140,7 @@
 		</div>
 	</div>
 @stop
+@section("js-specify")
+	@parent
+	<script type="text/javascript" src="/dist/js/pages/doctor/comment.js"></script>
+@stop

@@ -133,7 +133,7 @@
 		<div class="page-mask"></div>
 		<div class="page-details-mask">
 			<!-- 医嘱内容显示 SATRT -->
-			<div class="patient-details">
+			<div id="advice_show" class="patient-details">
 				<div class="patient-details-table">
 					<div class="table-details-head">
 						医嘱
@@ -146,7 +146,7 @@
 			<!-- 医嘱内容显示 END -->
 
 			<!-- 病人列表——增加医嘱 START -->
-			<div class="patient-details" style="display: none;">
+			<div id="advice_list" class="patient-details">
 				<div class="patient-details-table">
 					<div class="table-details-head">
 						病人
@@ -224,7 +224,7 @@
 			<!-- 病人列表——增加医嘱 END -->
 
 			<!-- 增加医嘱输入框 START -->
-			<div class="patient-details" style="display: none;">
+			<div id="advice_input" class="patient-details">
 				<div class="patient-details-table table-details-input">
 					<div class="table-details-head">
 						凌晓辉医嘱
@@ -245,4 +245,10 @@
 
 		</div>
 	</div>
+@stop
+
+
+@section("js-specify")
+	@parent
+	<script type="text/javascript" src="/dist/js/pages/doctor/advice.js"></script>
 @stop
