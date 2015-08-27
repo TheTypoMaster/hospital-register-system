@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>复诊资讯</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">         
+        <link rel="stylesheet" type="text/css" href="{{ static_url("css/index.css") }}" />
+        
+    </head>
+    <body>
+        <div class="chat-body clearfix">
+            <ul class="users-list">
+                {% for id, nickname, photo in users %}
+                <li user_id="{{ id }}" class="user">
+                    {% if photo %}
+                    <img src="{{ photo }}" class="photo" />
+                    {% else %}
+                    <img src="{{ static_url('images/u70.png') }}" class="photo" />
+                    {% end %}
+                    <span class="name">{{ nickname }}</span>
+                </li>
+                {% end %}
+            </ul>
+            <div class="chat-main">
+                <div class="cur-time">17:30</div>
+                {% for id, nickname, photo in users %}
+                <div user_id="{{ id }}" class="msg-wrap hidden">
+                </div>
+                {% end %}
+                <div user_id="" class="input-wrap">
+                    <div class="tool"></div>
+                    <div class="input-inner">
+                        <textarea id="message-input" class="input-content"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ static_url( "js/lib/jquery-1.11.2.min.js" ) }}"></script>
+        <script src="{{ static_url( "js/lib/lodash.min.js" ) }}"></script>
+
+        <script src="{{ static_url( "js/index.js" ) }}"></script>
+
+        <!-- 当前用户信息 start -->
+        <script type="text/template" id="current_user_info">
+            {
+                "name": "",
+                "photo": "{{ static_url( "images/u8.png" ) }}"
+            }
+        </script>
+        <!-- 当前用户信息 end -->
+
+        <!-- 聊天用户模板 start -->
+        <script type="text/template" id="user-info-template">
+            <li uid="<%- user_id %>" class="user">
+                <img src="<%- photo %>" class="photo" />
+                <span class="name"><%- user_name %></span>
+            </li>
+        </script>
+        <!-- 聊天用户模板 end-->
+        
+        <!-- 聊天记录模板 start -->
+        <script type="text/template" id="message-record-template">
+            <div from_uid="<%- from_uid %>" class="msg-wrap">
+                <div class="cur-time"><%- current_time %></div>
+                <div class="msg-inner">
+                </div>
+            </div>
+        </script>
+        <!-- 聊天记录模板 end -->
+
+        <!-- 聊天消息模板 start -->
+        <script type="text/template" id="message-template">
+            <div class="item <%- classname %> clearfix">
+                <img src="<%- photo %>" class="photo" />
+                <div class="msg-scope">
+                    <div class="content"><%- content %></div>
+                </div>
+            </div>
+        </script>
+        <!-- 聊天消息模板 end -->
+    </body>
+</html>
+    
