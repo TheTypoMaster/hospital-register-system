@@ -8,7 +8,9 @@ $(document).ready(function() {
 	    detailsAdd = $(".table-details-add"),
 	    adviceInput = $("#advice_input"),
 	    adviceShow = $("#advice_show"),
-	    adviceList = $("#advice_list");
+	    adviceList = $("#advice_list"),
+	    adviceSubmit = $(".submit-btn"),
+	    adviceContent = $("#advice_content");
 
     var showPannel = function() {
     	patientMask.fadeIn();
@@ -37,7 +39,15 @@ $(document).ready(function() {
 		
 	});
 
+	//隐藏浮层
 	patientMask.on("click", function() {
+		patientMask.fadeOut();
+		patientDetailsMask.fadeOut();
+	});
+
+	//提交医嘱
+	adviceSubmit.on("click", function() {
+		var content = $(adviceContent).val();
 		patientMask.fadeOut();
 		patientDetailsMask.fadeOut();
 	});

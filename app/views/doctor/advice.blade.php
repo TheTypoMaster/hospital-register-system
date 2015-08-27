@@ -230,7 +230,7 @@
 						凌晓辉医嘱
 					</div>
 					<div class="table-details-content">
-						<textarea class="textarea"></textarea>
+						<textarea id="advice_content" class="textarea"></textarea>
 					</div>
 				</div>
 

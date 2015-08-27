@@ -33,28 +33,46 @@
             <div class="main clearfix">
                 <div class="navi">
                     <div class="sub-btn odd">
-                        <img class="sub-icon" src="/images/icons/account.png">
-                        <a class="sub-tl" href="/doc/home/account">个人账户</a>
+                        <a class="sub-item" href="/doc/home/account">
+                            <img class="sub-icon" src="/images/icons/account.png">
+                            <span class="sub-tl">个人账户</span>
+                        </a>
+                        
                     </div>
                     <div class="sub-btn even">
-                        <img class="sub-icon" src="/images/icons/patient.png">
-                        <a class="sub-tl" href="/doc/home/patient">挂号病人</a>
+                        <a class="sub-item" href="/doc/home/patient">
+                            <img class="sub-icon" src="/images/icons/patient.png">
+                            <span class="sub-tl">挂号病人</span>
+                        </a>
+                        
                     </div>
                     <div class="sub-btn odd">
-                        <img class="sub-icon" src="/images/icons/chat.png">
-                        <a class="sub-tl" href="/doc/home/chat">复诊资讯</a>
+                        <a class="sub-item" href="/doc/home/chat">
+                            <img class="sub-icon" src="/images/icons/chat.png">
+                            <span class="sub-tl">复诊资讯</span>
+                        </a>
+                        
                     </div>
                     <div class="sub-btn even">
-                        <img class="sub-icon" src="/images/icons/comment.png">
-                        <a class="sub-tl" href="/doc/home/comment">病人评价</a>
+                        <a class="sub-item" href="/doc/home/comment">
+                            <img class="sub-icon" src="/images/icons/comment.png">
+                            <span class="sub-tl">病人评价</span>
+                        </a>
+                        
                     </div>
                     <div class="sub-btn odd">
-                        <img class="sub-icon" src="/images/icons/advice.png">
-                        <a class="sub-tl" href="/doc/home/advice">病人医嘱</a>
+                        <a class="sub-item" href="/doc/home/advice">
+                            <img class="sub-icon" src="/images/icons/advice.png">
+                            <span class="sub-tl">病人医嘱</span>
+                        </a>
+                        
                     </div>
                     <div class="sub-btn even">
-                        <img class="sub-icon" src="/images/icons/message.png">
-                        <a class="sub-tl" href="/doc/home/message">消息提醒</a>
+                        <a class="sub-item" href="/doc/home/message">
+                            <img class="sub-icon" src="/images/icons/message.png">
+                            <span class="sub-tl">消息提醒</span>
+                        </a>
+                        
                     </div>
                 </div>
                 <div class="main-content">
