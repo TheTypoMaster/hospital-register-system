@@ -99,7 +99,7 @@ class DoctorController extends BaseController {
         return Redirect::to( '/doc/login' );
     }
 
-    public function modify_doctor(){
+    public function modify_account(){
         
         $doctor = Doctor::find( Session::get( 'doctor.id' ) );
 
@@ -181,5 +181,49 @@ class DoctorController extends BaseController {
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $user->photo, 'size' => $file_size ));
+    }
+
+    public function modify_advice(){
+
+        if ( !Input::has( 'advcie' ) ){
+            return Response::json(array( 'error_code' => 1, 'message' => '不能为空' ));
+        }
+
+        $advice = Input::get( 'advice' );
+        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) );
+
+        if ( !isset( $record ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号' ));
+        }
+
+        $record->advice = $advice;
+
+        if ( !$record->save() ){
+            return Response::json(array( 'error_code' => 3, 'message' => '添加失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '添加成功' ));
+    }
+
+    public function modify_status(){
+
+        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) );
+
+        // 是否存在该记录
+        if ( !isset( $record ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号' ));
+        }
+
+        $status = (int)(Input::get( 'status' ));
+        if ( $status > 2 || $status < 0 ){
+            return Response::json(array( 'error_code' => 3, 'message' => '参数错误' ));
+        }
+
+        $record->status = $status;
+        if ( !$record->save() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '修改失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '修改成功' ));
     }
 }
