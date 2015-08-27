@@ -10,6 +10,13 @@
 @stop
 
 @section('main-content')
-<iframe class="chat-page" src="{{{ $chat_url }}}" frameborder="0">
-</iframe>
+
+<div class="chat-wrap">
+    <div class="top">
+        复诊提醒
+    </div>
+    <iframe class="chat-page" src="{{{ $chat_url }}}" frameborder="0">
+    </iframe>
+</div>
+
 @stop
