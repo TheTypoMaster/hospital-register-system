@@ -6,7 +6,9 @@ body,html{
 .login{
 	position: relative;
 	height: 100%;
-	.background(url("/images/doc_web/login_bg.jpg"));
+	//.background(url("/images/doc_web/login_bg.jpg"));
+
+
 	.login-board-wrapper{
 		@width: 510px;
 		@height: 440px;
@@ -16,7 +18,7 @@ body,html{
 		width: @width;
 		height: @height;
 		margin: -@height/2 -@width/2;
-		.background(url("/images/doc_web/login_shadow.png"));
+		//.background(url("/images/doc_web/login_shadow.png"));
 		.login-board{
 			position: relative;
 			width: 451px;
@@ -46,21 +48,23 @@ body,html{
 					margin: 0px auto;
 					width: @wrapper-width;
 					height: 60px;
-					.background(url("/images/doc_web/login_input_bg.png"));
+					//.background(url("/images/doc_web/login_input_bg.png"));
 					&>input{
-						width: 82%;
-						height: 100%;
+						position:relative;
+						width: 78%;
 						border: 0px;
-						line-height: 100%;
 						font-size: 22px;
 						padding-left: 12px;
 						background: transparent;
 						&:focus{
 							outline: none;
 						}
-						padding-top: 2px;
+						padding: 14px;
+						top: 1px;
+						left: 1px;
+						border-radius: 10px 0px 0px 10px;
 					}
-					&>img{
+					&>.login-icon{
 						@width: 30px;
 						width: @width;
 						height: @width;

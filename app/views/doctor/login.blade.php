@@ -11,18 +11,22 @@
 </head>
 <body>
 	<div class="wrap login">
+		<img class="bg" src="/images/doc_web/login_bg.jpg" alt="">
 		<div class="login-board-wrapper">
+			<img class="bg" src="/images/doc_web/login_shadow.png" alt="">
 			<div class="login-board">
 				<div class="login-board-head">
 					用户登录
 				</div>
 				<form action="/" method="post" class="login-form">
 					<div class="login-input login-input-name">
-						<img src="/images/doc_web/login_name.png">
+						<img class="bg" src="/images/doc_web/login_input_bg.png" alt="">
+						<img class="login-icon" src="/images/doc_web/login_name.png">
 						<input name="account" type="text" placeholder="用户名">
 					</div>
 					<div class="login-input login-input-psd">
-						<img src="/images/doc_web/login_psd.png">
+						<img class="bg" src="/images/doc_web/login_input_bg.png" alt="">
+						<img class="login-icon" src="/images/doc_web/login_psd.png">
 						<input name="password" type="password" placeholder="密码">
 					</div>
 					<div class="login-words">

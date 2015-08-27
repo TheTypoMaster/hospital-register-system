@@ -21,7 +21,7 @@
 				float: left;
 				font-size: 22px;
 				display: inline-block;
-				width: 174px;
+				width: 232px;
 				height: 100%;
 				line-height: 57px;
 				border-right: @border-value;
@@ -40,6 +40,7 @@
 				color: rgb(155, 155, 155);
 				.patient-td-btn{
 					.click-btn();
+					top: 8px;
 					// position: relative;
 					// display: inline-block;
 					// font-size: 16px;
@@ -123,9 +124,12 @@
 		}
 	}
 	.patient-mask{
+		display: none;
 		.full-mask();
+		.bg-opacity();
 	}
 	.patient-details-mask{
+		display: none;
 		@width: 694px;
 		.full-mask(transparent);
 		.patient-details{

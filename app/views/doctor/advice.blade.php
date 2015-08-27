@@ -16,7 +16,8 @@
 		<div class="patient-caption">
 			病人医嘱
 			<button class="add-btn">
-				新增医嘱
+				<img src="/images/doc_web/advice_add_btn.png" alt="" class="bg">
+				<span class="bg">新增医嘱</span>
 			</button>
 		</div>
 		<div class="patient-table">
@@ -129,10 +130,10 @@
 				<span class="patient-page-prev">上一页</span>
 			</div>
 		</div>
-		<div class="page-mask" style="display: none;"></div>
-		<div class="page-details-mask" style="display: none;">
+		<div class="page-mask"></div>
+		<div class="page-details-mask">
 			<!-- 医嘱内容显示 SATRT -->
-			<div class="patient-details" style="display: none;">
+			<div class="patient-details">
 				<div class="patient-details-table">
 					<div class="table-details-head">
 						医嘱
@@ -154,31 +155,52 @@
 						<!-- 表格内容行 START -->
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>
 						<div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">增加医嘱</button>
+							<button class="table-details-add">
+								<img src="/images/doc_web/u12.png" alt="" class="bg">
+								<span class="bg">增加医嘱</span>
+							</button>
 						</div>						
 						<!-- 表格内容行 END -->
 					</div>
@@ -202,7 +224,7 @@
 			<!-- 病人列表——增加医嘱 END -->
 
 			<!-- 增加医嘱输入框 START -->
-			<div class="patient-details">
+			<div class="patient-details" style="display: none;">
 				<div class="patient-details-table table-details-input">
 					<div class="table-details-head">
 						凌晓辉医嘱
@@ -214,7 +236,8 @@
 
 				<div class="table-details-submit">
 					<button class="submit-btn">
-						确定
+						<img src="/images/doc_web/u12.png" alt="" class="bg">
+						<span class="bg">确定</span>
 					</button>
 				</div>
 			</div>

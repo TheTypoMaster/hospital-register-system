@@ -18,7 +18,13 @@
         <div class="wrap">
              <div class="top clearfix">
                 <img class="logo" src="/images/doc_web/u6.png" alt="海口市妇幼保健院">
-                <button class="logout-btn"><a href="/doc/logout">退出</a></button>
+                <!-- <button class="logout-btn"> -->
+                    <a class="logout-btn" href="/doc/logout">退出</a>
+                    <!-- <a href="/doc/logout" class="bg">
+                        <img src="/images/doc_web/u12.png" alt="" class="bg">
+                        <span class="bg">退出</span>
+                    </a> -->
+                <!-- </button> -->
                 <div class="top-right">
                     <img class="photo" src="/images/doc_web/u8.png" alt="王磊">
                     <span class="name">{{{ $name }}}</span>

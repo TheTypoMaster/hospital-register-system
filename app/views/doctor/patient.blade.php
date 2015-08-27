@@ -25,26 +25,20 @@
 				<div class="patient-td">
 					下午
 				</div>
-				<div class="patient-td">
-					晚上
-				</div>
 			</div>
 			<!-- 表格内容 START-->
 			<div class="patient-tr patient-tabel-content">
 				<div class="patient-td">04月27日</div>
 				<div class="patient-td">
 					<button type="button" class="patient-td-btn">
-						查看病人
+						<img src="/images/doc_web/u12.png" alt="" class="bg">
+						<span class="bg">查看病人</span>
 					</button>
 				</div>
 				<div class="patient-td">
 					<button type="button" class="patient-td-btn">
-						查看病人
-					</button>
-				</div>
-				<div class="patient-td">
-					<button type="button" class="patient-td-btn">
-						查看病人
+						<img src="/images/doc_web/u12.png" alt="" class="bg">
+						<span class="bg">查看病人</span>
 					</button>
 				</div>
 			</div>

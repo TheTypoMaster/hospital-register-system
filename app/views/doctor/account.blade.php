@@ -50,7 +50,8 @@
 					<img src="/images/doc_web/u54.jpg">
 				</div>
 				<div class="account-upload-btn">
-					修改头像
+					<img src="/images/doc_web/u12.png" alt="" class="bg">
+					<span class="accout-upload-text">修改头像</span>
 					<input name="portrait" type="file" class="account-upload-btn account-file">
 				</div>
 			</div>
@@ -59,7 +60,10 @@
 			<span class="account-key">简介：</span>
 			<!-- <span class="span">小儿呼吸道、大肠肠、小儿头大无脑痴呆症、先天性小儿麻痹症、装逼症、小儿呼吸道、大肠肠、小儿头大无脑痴呆症、先天性小儿麻痹症、装逼症</span> -->
 			<textarea class="account-no-edit" readonly="true">{{{ $description }}}</textarea>
-			<div class="account-submit">确定修改</div>
+			<div class="account-submit">
+				<img src="/images/doc_web/u12.png" alt="" class="bg">
+				<span class="accout-submit-text">确定修改</span>
+			</div>
 		</div>
 	</div>
 @stop
