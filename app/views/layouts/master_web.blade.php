@@ -85,6 +85,8 @@
         @section('js-lib')
             <script src="/dist/js/lib/jquery-1.11.2.min.js"></script>
             <script src="/dist/js/lib/lodash.min.js"></script>
+            <script src="/dist/js/lib/jquery.paging.min.js" type="text/javascript"></script>
+            <script src="/dist/js/lib/jquery.easy-paging.js" type="text/javascript"></script>
         @show
 
         @section('js-common')
