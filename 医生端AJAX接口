@@ -1,0 +1,48 @@
+医生端AJAX接口
+
+修改个人账户：
+    每个参数都不是必须，即不传代表不修改
+POST /doc/modify_account
+request:
+    name:           <string>
+    title:          <string>
+    specialty:      <string>
+    description:    <string>
+response:
+{
+    error_code:     <int>   // 0 - 成功
+    message:        <string>
+}
+
+上传个人头像
+POST /doc/upload_portrait
+request:
+    portrait:       <image>
+response:
+{
+    error_code:     <int>
+    message:        <string>
+}
+
+添加/修改医嘱
+    请在模板文件中标明record_id所在位置
+POST /doc/modify_advice
+request:
+    record_id:      <int>
+    advice:         <string>
+response:
+{
+    error_code:     <int>
+    message:        <string>
+}
+
+修改挂号状态 -- ( 如将‘未就诊’改成‘已就诊’ )
+POST /doc/modify_status
+request:
+    record_id:      <int>
+    status:         <int>   // 0 - 未就诊，1 - 已就诊， 2 - 需复诊
+response:
+{
+    error_code:     <int>
+    message:        <string>
+}
