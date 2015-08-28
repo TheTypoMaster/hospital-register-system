@@ -46,16 +46,16 @@
 	filter:alpha(opacity=@opacity);
 }
 // 分页样式 start
-.pagination-wrapper(@font-size: 18px){
+.pagination-wrapper{
 	float: right;
 	text-align: right;
 	color: rgb(180, 180, 180);
-	font-size: @font-size;
-	&>ul, &>span{
+	font-size: 18px;
+	&>ul{
 		float: right;
 		padding: 0px 3px;
 	}
-	&>ul>li, &>span{
+	&>ul>li{
 		cursor: pointer;
 	}
 	&>ul{
@@ -63,12 +63,14 @@
 		&>li{
 			float: left;
 			padding: 0px 4px;
-
+			a{
+				color: rgb(180, 180, 180);
+			}
 		}
 	}
 	.page-prev{}
 	.page-next{}
-	.active{
+	.current{
 		color: rgb(20, 174, 244);
 	}
 }

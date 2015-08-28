@@ -15,4 +15,11 @@ $(document).ready(function() {
 		patientDetailsMask.fadeOut();
 	});    
 
+	//分页插件使用
+	$("#message_pagination").easyPaging(100, {
+		onSelect: function(page) {
+			console.log("当前页：" + page);
+		}
+	});
+
 });

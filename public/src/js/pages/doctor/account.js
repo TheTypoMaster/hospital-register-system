@@ -4,7 +4,9 @@ $(document).ready(function() {
 	var editBtn = $(".account-edit"),
 	    accountInput = $(".account-no-edit"),
 	    accountSubmit = $(".account-submit"),
-	    uploadBtn = $("#account_upload_btn");
+	    uploadBtn = $("#account_upload_btn"),
+	    accountRoom = $("#account_room"),
+	    avatarImg = document.getElementById("change_avatar");
 
     var uploader = function (options, handlers){
         var callback, config, name, uploader;
@@ -55,53 +57,85 @@ $(document).ready(function() {
 	editBtn.on("click", function(){
 		if (accountInput.hasClass("account-no-edit")) {
 			accountInput.removeClass("account-no-edit").removeAttr("readonly");
+			accountRoom.removeAttr("disabled");
 			accountSubmit.fadeIn();
 		};
 	});
 
 	//确定修改
 	accountSubmit.on("click",function() {
-		var name = $("#account_name"),
-		    quality = $("#account_quality"),
-		    room = $("#account_room"),
-		    skill = $("#account_skill"),
-		    brief = $("#account_brief");
+		var name = $("#account_name").val(),
+		    quality = $("#account_quality").val(),
+		    room = parseInt("10", $("#account_room option:selected").val()),
+		    skill = $("#account_skill").val(),
+		    brief = $("#account_brief").val();
+		    console.log(room);
+	    $.post("/doc/modify_account", {
+	    	name: name,
+	    	title: quality,
+	    	department: room,
+	    	specialty: skill,
+	    	description: brief
+	    },function (msg){
+	    	console.log(msg["error_code"]);
+	    }, "json");
 
 
 	    accountInput.addClass("account-no-edit").attr("readonly", "readonly");
+	    accountRoom.attr("disabled", "disabled");
 	    $(this).hide();
 	});
 
-	//图片上传
-	uploadBtn.on("click", function() {
-		uploader({
-		    browse_button: "change_avatar",
-		    container: "account_upload_btn"
-		    // uptoken_url: "/qiniu/getUpToken"
-		},{
-		    FileUploaded: function (up,file,info) {
-		        info = $.parseJSON(info);
-		        domain = up.getOption("domain");
-		        url = domain + info.key;
-		        $(".account-avatar img").attr("src",url);
-		        $.post("/user/personal/chang_image",{
-		            avatar : url 
-		        },function (data){
-		            if(data["errCode"] == 0){
-		                console.log("头像链接保存成功");
-		            }
-		            else{
-		                console.log(data["message"]);
-		                alert("头像保存失败，请重新操作");
-		            }
-		        },"json");
+	// $(avatarImg).on("change", function(){
+	// 	console.log(
+	// 		avatarImg["value"] + "\n" + 
+	// 		avatarImg["accept"] + "\n" + 
+	// 		avatarImg["accessKey"] + "\n" + 
+	// 		avatarImg["defaultValue"] + "\n" + 
+	// 		avatarImg["id"] + "\n" + 
+	// 		avatarImg["name"] + "\n" + 
+	// 		avatarImg["className"] + "\n"
+	// 		);
+	// });
 
-		    },
-		    Error: function(up, err, errTip) {
-		            return console.log(errTip);
-		      }
-		});
+	$("#change_avatar").fileupload({
+		url: "/doc/upload_portrait",
+		type: "post",
+		done: function(e, data){
+			console.log("done!");
+		}
 	});
+
+	//图片上传
+	// uploadBtn.on("click", function() {
+	// 	uploader({
+	// 	    browse_button: "change_avatar",
+	// 	    container: "account_upload_btn"
+	// 	    // uptoken_url: "/qiniu/getUpToken"
+	// 	},{
+	// 	    FileUploaded: function (up,file,info) {
+	// 	        info = $.parseJSON(info);
+	// 	        domain = up.getOption("domain");
+	// 	        url = domain + info.key;
+	// 	        $(".account-avatar img").attr("src",url);
+	// 	        $.post("/user/personal/chang_image",{
+	// 	            avatar : url 
+	// 	        },function (data){
+	// 	            if(data["errCode"] == 0){
+	// 	                console.log("头像链接保存成功");
+	// 	            }
+	// 	            else{
+	// 	                console.log(data["message"]);
+	// 	                alert("头像保存失败，请重新操作");
+	// 	            }
+	// 	        },"json");
+
+	// 	    },
+	// 	    Error: function(up, err, errTip) {
+	// 	            return console.log(errTip);
+	// 	      }
+	// 	});
+	// });
 
 
 });

@@ -108,17 +108,16 @@
 					<option value="12">12月</option>
 				</select>
 			</div>
-			<div class="patient-pagination-wrapper">
-				<span class="patient-page-next">下一页</span>
-				<ul>
-					<li class="patient-page-num active">1</li>
-					<li class="patient-page-num">2</li>
-					<li class="patient-page-num">3</li>
-					<li class="patient-page-num">4</li>
-					<li class="patient-page-num">5</li>
-					<li class="patient-page-num">6</li>
+			<div class="pagination-wrapper">
+				<ul id="message_pagination">
+					<li class="page-num active">上一页</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">下一页</li>
 				</ul>
-				<span class="patient-page-prev">上一页</span>
 			</div>
 		</div>
 		<div class="page-mask"></div>
@@ -141,5 +140,7 @@
 
 @section("js-specify")
 	@parent
+	<script src="/dist/js/lib/jquery.paging.min.js" type="text/javascript"></script>
+	<script src="/dist/js/lib/jquery.easy-paging.js" type="text/javascript"></script>
 	<script type="text/javascript" src="/dist/js/pages/doctor/message.js"></script>
 @stop
