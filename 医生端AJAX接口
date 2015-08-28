@@ -47,3 +47,95 @@ response:
     error_code:     <int>
     message:        <string>
 }
+
+获取时间表:
+GET /doc/get_schedules
+request:
+    page:           <int>
+    date:           <date format:yyyy-dd>
+response:
+{
+    error_code:     <int>,
+    schedules:
+    {
+        <date format:yyyy-mm-dd>:      // 
+        [
+            {
+                'id': <int>,
+                'period': <int>     // 0 - 上午，1 - 下午
+            }
+        ]
+    }
+}
+
+获取病人列表：
+GET /doc/get_patients
+request:
+    page:           <int>
+    schedule_id:    <int>
+response:
+{
+    error_code:     <int>,
+    patients:
+    [
+        {
+            id:         <int>
+            time:       <time format:mm-ss>,
+            name:       <string>
+        }
+    ]
+}
+
+获取病人评价:
+GET /doc/get_comment:
+request:
+    page:           <int>
+    date:           <date format:yyyy-dd>
+response:
+{
+    error_code:     <int>,
+    comments:
+    [
+        {
+            id:         <int>,
+            name:       <string>,
+            content:    <string>
+        }
+    ]
+}
+
+获取病人医嘱:
+GET /doc/get_advice:
+request:
+    page:           <int>
+    date:           <date format:yyyy-dd>
+response:
+{
+    error_code:     <int>,
+    advice:
+    [
+        {
+            id:         <int>,
+            name:       <string>,
+            content:    <string>
+        }
+    ]
+}
+
+获取消息:
+GET /doc/get_message:
+request:
+    page:           <int>
+    date:           <date format:yyyy-dd>
+response:
+{
+    error_code:     <int>,
+    messages:
+    [
+        {
+            id:         <int>,
+            content:    <string>,
+            time:       <timestamp>
+        }
+    ]
+}
