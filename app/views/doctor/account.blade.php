@@ -10,8 +10,9 @@
 @stop
 
 @section('js-specify')
-	<script src="/dist/js/lib/plupload.full.min.js" type="text/javascript"></script>
-	<script src="/dist/js/lib/qiniu.min.js" type="text/javascript"></script>
+	<script src="/dist/js/lib/jquery.ui.widget.js" type="text/javascript"></script>
+	<script src="/dist/js/lib/jquery.iframe-transport.js" type="text/javascript"></script>
+	<script src="/dist/js/lib/jquery.fileupload.js" type="text/javascript"></script>
 	<script src="/dist/js/pages/doctor/account.js" type="text/javascript"></script>
 @stop
 
@@ -39,7 +40,13 @@
 				<div class="account-tr">
 					<span class="account-key">科室：</span>
 					<!-- <span class="account-span">小儿科</span> -->
-					<input id="account_room" type="text" class="account-input account-no-edit" value="{{{ $department }}}" readonly="true" />
+					<!-- <input id="account_room" type="text" class="account-input account-no-edit" value="{{{ $department }}}" readonly="true" /> -->
+					<select id="account_room" class="account-input account-no-edit" disabled="">
+						<option value="0">儿内科</option>
+						<option value="1">妇科</option>
+						<option value="2">外科</option>
+						<option value="3">皮肤科</option>
+					</select>
 				</div>
 				<div class="account-tr" style="">
 					<span class="account-key">专长：</span>
@@ -52,9 +59,12 @@
 					<img src="/images/doc_web/u54.jpg">
 				</div>
 				<div id="account_upload_btn" class="account-upload-btn">
-					<img src="/images/doc_web/u12.png" alt="" class="bg">
-					<span class="accout-upload-text">修改头像</span>
-					<input id="change_avatar" name="portrait" type="file" class="account-upload-btn account-file">
+					<form action="/doc/upload_portrait" method="post" enctype="multipart/form-data" id="portrait">
+						<img src="/images/doc_web/u12.png" alt="" class="bg">
+						<span class="accout-upload-text">修改头像</span>
+						<input id="change_avatar" name="portrait" type="file" class="account-upload-btn account-file">
+					</form>
+					
 				</div>
 			</div>
 		</div>
