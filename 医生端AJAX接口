@@ -8,6 +8,7 @@ request:
     title:          <string>
     specialty:      <string>
     description:    <string>
+    department:     <int>
 response:
 {
     error_code:     <int>   // 0 - 成功
