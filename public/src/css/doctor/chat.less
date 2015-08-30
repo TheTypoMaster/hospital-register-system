@@ -32,6 +32,7 @@
             border-radius: 3px;
             text-align: center;
             position: absolute;
+            cursor: pointer;
             background-color: white;
         }
     }
@@ -64,13 +65,13 @@
 }
 
 .patient-mask{
-    
+    display: none;
     .full-mask();
     .bg-opacity();
     z-index: 0;
 }
 .patient-details-mask{
-
+    display: none;
     @width: 694px;
     //.full-mask(transparent);
     .patient-details{
@@ -195,6 +196,23 @@
             }
             .patient-return{
                 margin-left: 50px;
+            }
+            .patient-return-add{
+                margin-left: 50px;
+                input{
+                    height: 18px;
+                    border: none;
+                    outline: none;
+                    text-align: center;
+                    display: inline-block;
+                    background-color: #f2f2f2;
+                }
+                .input-add-year{
+                    width: 50px;
+                }
+                .input-add-month, .input-add-day{
+                    width: 35px;
+                }
             }
         }
     }
