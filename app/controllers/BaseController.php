@@ -208,4 +208,176 @@ class BaseController extends Controller {
 		}
 	}
 
+	protected static $seconds_per_day 	= 86400;
+	protected static $seconds_per_month = 2419200;
+	protected static $seconds_per_year 	= 29030400;
+
+	protected static $RANDOM_NUM		= 0x01;
+	protected static $RANDOM_ALPHA 		= 0x10;
+	protected static $RANDOM_ALPHA_NUM 	= 0x11;
+
+	protected static $ALPHA_LOWER 		= 'abcdefghijklmnopqrstuvwxyz';
+	protected static $ALPHA_UPPER		= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	protected static $NUMBER			= '0123456789';
+	protected static $TELEPHONE_PREFIX  = [
+		'130','131','132','133','134','135','136','137','138','139',
+		'180','181','182','183','184','185','186','187','188','189',
+		'150','151','152','153','155','156','157','158','159',
+		'175','176','177','178','17'
+	];
+
+	/*
+	 * 
+	 */
+
+	public function insert_data(){
+
+		DB::transaction(function(){
+
+			$this->insert_users();
+
+			$this->insert_accounts();
+
+			$this->insert_schedules();
+
+			$this->insert_periods();
+
+			$this->insert_records();
+
+			$this->insert_comments();
+
+		});
+
+		return Response::make( '' );
+	}
+
+	protected function insert_users(){
+
+		for ( $i = 0; $i != 20; ++$i ){
+			$password = $this->get_random( self::$RANDOM_ALPHA_NUM, 6, 16 );
+			Sentry::createUser([
+				'password'		=> $password,
+				'nickname'		=> $this->get_random( self::$RANDOM_ALPHA, 4, 12 ),
+				'real_name'		=> $this->get_random( self::$RANDOM_ALPHA, 4, 12 ),
+				'phone'			=> rand( 0, count(self::$TELEPHONE_PREFIX) ) + $this->get_random( self::$RANDOM_NUM, 8, 8 ),
+				'account'		=> $this->get_random( self::$RANDOM_ALPHA_NUM, 6, 16 ),
+				'role'			=> 1,
+				'gender'		=> rand( 0, 1 ),
+				'activated'		=> 1
+			]);
+		}
+	}
+
+	protected function insert_accounts(){
+
+		$users = Usre::get();
+
+		foreach( $users as $user ){
+
+			RegisterAccount::create([
+				'name'				=> $this->get_random( self::$RANDOM_ALPHA, 4, 12 ),
+				'age'				=> rand( 0, 100 ),
+				'weight'			=> rand( 10, 100 ),
+				'gender'			=> rand( 0, 1 ),
+				'blood_type'		=> 'A型',
+				'type'				=> '小伙子',
+				'phone'				=> rand( 0, count(self::$TELEPHONE_PREFIX) ) + $this->get_random( self::$RANDOM_NUM, 8, 8 ),
+				'id_card'			=> '44092319930206' + rand( 1000, 9999 ),
+				'emergency_name'	=> $this->get_random( self::$RANDOM_ALPHA, 4, 12 ),
+				'emergency_phone' 	=> rand( 0, count(self::$TELEPHONE_PREFIX) ) + $this->get_random( self::$RANDOM_NUM, 8, 8 ),
+				'user_id'			=> $user->id
+			]);
+		}
+	}
+
+	protected function insert_schedules(){
+
+		$doctors = Doctor::get();
+
+		foreach( $doctors as $doctor ){
+
+			$count = rand( 100, 200 );
+			
+			while( $count-- ){
+
+				$date  = $this->get_random_date();
+
+				// 添加早上排班
+				if ( rand( 0, 1 ) ){
+					Schedule::create([
+						'date'		=> $date,
+						'period'	=> 0,
+						'doctor_id'	=>  $doctor->id
+					]);
+				}
+				
+				// 添加下午排班
+				if ( rand( 0, 1 ) ){
+					Schedule::create([
+						'date'		=> $date,
+						'period'	=> 1,
+						'doctor_id'	=>  $doctor->id
+					]);
+				}
+			}
+		}
+	}
+
+	protected function insert_periods(){
+		$schedules = Schedule::get();
+
+		foreach( $schedules as $schedule ){
+			// 1/4几率将该schedule设为无号源
+			if ( rand( 0, 3 ) ){
+			}
+		}
+	}
+
+	protected function get_random_date(){
+
+		$offset_year = rand( 0, 2 ) - 1;
+		$offset_month = rand( 0, 4 ) - 2;
+		$offset_day = rand( 0, 7 ) - 3;
+
+		$total_offset = $offset_year * self::$seconds_per_year + 
+						$offset_month * self::$seconds_per_month + 
+						$offset_day * self::$seconds_per_day;
+		
+		return date( 'Y-m-d', time() + $total_offset );
+	}
+
+	protected function get_random( $flag, $min, $max ){
+
+		$bs = '';
+
+		if ( $flag & self::$RANDOM_ALPHA ){
+			$bs .= self::$ALPHA_UPPER.self::$ALPHA_LOWER;
+		}
+
+		if ( $flag & self::$RANDOM_NUM ){
+			$bs .= self::$NUMBER;
+		}
+
+		$i = 0;
+		$rstr = '';
+		$bs_count = strlen( $bs );
+
+		while( $i < $max ){
+
+			$rstr .= $bs[ rand( 0, $bs_count - 1 ) ];
+
+			if ( $this->stop() && $i >= $min ){
+				return $rstr;
+			}
+
+			++$i;
+		}
+
+		return $rstr;
+	}
+
+	protected function stop(){
+
+		return rand( 0, 1 );
+	}
 }
