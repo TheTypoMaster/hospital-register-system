@@ -65,17 +65,14 @@
 }
 
 .patient-mask{
-    display: none;
     .full-mask();
     .bg-opacity();
     z-index: 0;
 }
 .patient-details-mask{
-    display: none;
     @width: 694px;
     //.full-mask(transparent);
     .patient-details{
-        display: none;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -195,6 +192,7 @@
                 }
             }
             .patient-return{
+                display: none;
                 margin-left: 50px;
             }
             .patient-return-add{
@@ -212,6 +210,18 @@
                 }
                 .input-add-month, .input-add-day{
                     width: 35px;
+                }
+                .patient-item-btn{
+                    display: block;
+                    width: 100px;
+                    font-size: 14px;
+                    line-height: 35px;
+                    text-align: center;
+                    margin: 20px auto;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    background: rgb(105, 187, 240);
                 }
             }
         }

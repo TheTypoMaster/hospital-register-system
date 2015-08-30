@@ -83,7 +83,7 @@
                             王磊 / 副主任医师 / 妇科
                         </div>
                     </div>
-                    
+
                     <div class="patient-return-add patient-record-item">
                         <div class="patient-item-top">
                             复诊时间
@@ -93,9 +93,7 @@
                             <input class="input-add-month" name="month" type="text"><span>月</span>
                             <input class="input-add-day" name="day" type="text"><span>日</span>
                         </div>
-                        <div class="patient-item-doc-info">
-                            王磊 / 副主任医师 / 妇科
-                        </div>
+                        <button class="patient-item-btn">确定时间</button>
                     </div>
                 </div>
             </div>
