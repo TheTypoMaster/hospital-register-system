@@ -141,10 +141,21 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::get( 'login', 'DoctorPageController@login' );
     Route::post( 'login', 'DoctorController@login' );
 
+    Route::post( 'modify_account', 'DoctorController@modify_account' );
+    Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
+    Route::post( 'modify_advice', 'DoctorController@modify_advice' );
+    Route::post( 'modify_status', 'DoctorController@modify_status' );
+
     Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
         Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );
         Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
+
+        Route::get( 'get_schedules', 'DoctorPageController@get_schedules');
+        Route::get( 'get_patients', 'DoctorPageController@get_patients');
+        Route::get( 'get_comments', 'DoctorPageController@get_comments' );
+        Route::get( 'get_advice', 'DoctorPageController@get_advice' );
+        Route::get( 'get_messages', 'DoctorPageController@get_messages' );
 
         Route::group(array( 'prefix' => 'home' ), function(){
             Route::get( '/', 'DoctorPageController@home' );
@@ -159,3 +170,5 @@ Route::group(array( 'prefix' => 'doc' ), function(){
 });
 
 // --------------------------------- 医生客户端web接口 end ------------------------------------------
+
+Route::get( 'insert_data', 'BaseController@insert_data' );
