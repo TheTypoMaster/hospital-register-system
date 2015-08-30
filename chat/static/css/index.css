@@ -126,7 +126,7 @@ li {
   text-align: right;
 }
 .input-wrap {
-  background-color: #fbfbfb;
+  background: #fbfbfb url("/static/images/u112.png") no-repeat center;
   padding-left: 20px;
   padding-right: 20px;
 }
