@@ -154,8 +154,10 @@ Route::group(array( 'prefix' => 'doc' ), function(){
         Route::post( 'modify', 'DoctorController@modify_doctor' );
         Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
 
+        Route::get( 'get_records', 'DoctorPageController@get_records' );
+        Route::get( 'get_record_detail', 'DoctorPageController@get_record_detail' );
+        Route::get( 'get_records_bs', 'DoctorPageController@get_records_by_schedule');
         Route::get( 'get_schedules', 'DoctorPageController@get_schedules');
-        Route::get( 'get_patients', 'DoctorPageController@get_patients');
         Route::get( 'get_comments', 'DoctorPageController@get_comments' );
         Route::get( 'get_advice', 'DoctorPageController@get_advice' );
         Route::get( 'get_null_advice', 'DoctorPageController@get_null_advice' );

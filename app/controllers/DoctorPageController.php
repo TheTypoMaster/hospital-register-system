@@ -84,36 +84,59 @@ class DoctorPageController extends BaseController {
         return Response::json(array( 'error_code' => 0, 'result' => $schedules_map ));
     }
 
-    public function get_patients(){
-        $schedules = Schedule::where( 'doctor_id', Session::get( 'doctor.id' ) )
-                             ->where( 'date', 'like', Input::get( 'date', date( 'Y-m') ).'%' )
-                             ->orderBy( 'date' )->paginate( 7 );
+    public function get_records(){
+        
+        $paginator = RegisterRecord::where( 'doctor_id', Session::get( 'doctor.id' ) )
+                                   ->where( 'created_at', 'like', Input::get( 'date', date( 'Y-m-d' ) ).'%' )
+                                   ->with('user')->paginate( 7 );
 
-        $schedules_map = array();
+        $result = array();
+        $records = $paginator->getCollection();
 
-        foreach( $schedules as $schedule ){
-
-            $date_parse = date( 'm-d', strtotime( $schedule->date ) );
-
-            if ( !array_key_exists( $schedule->date, $schedules_map ) ){
-                $schedules_map[ $schedule->date ] = array();
-            }
-
-            $schedules_map[ $schedule->date ][ $schedule->period ] = array(
-                'id' => $schedule->id,
-                'period' => $schedule->period,
-                'status' => false
+        foreach( $records as $record ){
+            $user = $record->user;
+            $result[] = array(
+                'record_id'   => $user->id,
+                'user_name'   => $user->real_name,
             );
-
-            foreach( $schedule->periods as $period ){
-                if ( $period->current > 0 ){
-                    $schedules_map[ $schedule->date ][ $schedule->period ]['status'] = true;
-                    break;
-                }
-            }
         }
 
-        return Response::json(array( 'error_code' => 0, 'totality' => $schedules->getTotal(), 'patients' => $schedules_map ));
+        return Response::json(array(
+                    'error_code'  => 0,
+                    'total'       => $paginator->getTotal(),
+                    'last_page'   => $paginator->getLastPage(),
+                    'records'     => $result ));
+    }
+
+    public function get_record_detail(){
+
+        $record = RegisterRecord::find( Input::get( 'record_id' ) );
+
+        $doctor = $record->doctor;
+
+        $result = array(
+            'record_id'       => $record->id,
+            'timestamp'       => strtotime( $record->created_at->format('Y-m-d H:i:s') ),
+            'period'          => $record->period->schedule['period'],
+            'doctor'          => array(
+                                    'name'        => $doctor->name,
+                                    'title'       => $doctor->title,
+                                    'department'  => $doctor->department->name ) );
+
+        return Response::json(array( 'error_code' => 0, 'result' => $result ));
+    }
+
+    public function get_records_by_schedule(){
+
+        $paginator = RegisterRecord::selectRaw( 'register_records.id as id, periods.start as time, users.real_name as name' )
+                                   ->join( 'periods', 'periods.id', '=', 'register_records.period_id' )
+                                   ->join( 'schedules', 'schedules.id', '=', 'periods.schedule_id' )
+                                   ->join( 'users', 'users.id', '=', 'register_records.user_id' )
+                                   ->where( 'schedules.id', Input::get( 'schedule_id' ) )
+                                   ->where( 'schedules.doctor_id', Session::get( 'doctor.id' ) )
+                                   ->paginate( 7 );
+
+        return Response::json(array( 'error_code' => 0, 'totality' => $paginator->getTotal(), 'patients' => $paginator->getCollection() ));
     }
 
     public function patient(){
