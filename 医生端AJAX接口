@@ -57,6 +57,7 @@ request:
 response:
 {
     error_code:     <int>,
+    totality:       <int>,
     schedules:
     {
         <date format:yyyy-mm-dd>:      // 
@@ -69,8 +70,8 @@ response:
     }
 }
 
-获取病人列表：
-GET /doc/get_patients
+获取病人挂号列表：
+GET /doc/get_records_bs
 request:
     page:           <int>
     schedule_id:    <int>
