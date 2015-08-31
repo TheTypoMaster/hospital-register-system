@@ -27,19 +27,21 @@
 				</div>
 			</div>
 			<!-- 表格内容 START-->
-			<div class="patient-tr patient-tabel-content">
-				<div class="patient-td">04月27日</div>
-				<div class="patient-td">
-					<button type="button" class="patient-td-btn">
-						<img src="/images/doc_web/u12.png" alt="" class="bg">
-						<span class="bg">查看病人</span>
-					</button>
-				</div>
-				<div class="patient-td">
-					<button type="button" class="patient-td-btn">
-						<img src="/images/doc_web/u12.png" alt="" class="bg">
-						<span class="bg">查看病人</span>
-					</button>
+			<div class="table-container">
+				<div class="patient-tr patient-table-content">
+					<div class="patient-td">04月27日</div>
+					<div class="patient-td">
+						<button type="button" disabled="disabled" class="patient-td-btn">
+							<img src="/images/doc_web/u12.png" alt="" class="bg">
+							<span class="bg">查看病人</span>
+						</button>
+					</div>
+					<div class="patient-td">
+						<button type="button" class="patient-td-btn">
+							<img src="/images/doc_web/u12.png" alt="" class="bg">
+							<span class="bg">查看病人</span>
+						</button>
+					</div>
 				</div>
 			</div>
 			<!-- 表格内容 END-->
@@ -70,17 +72,16 @@
 					<option value="12">12月</option>
 				</select>
 			</div>
-			<div class="patient-pagination-wrapper">
-				<span class="patient-page-next">下一页</span>
-				<ul>
-					<li class="patient-page-num active">1</li>
-					<li class="patient-page-num">2</li>
-					<li class="patient-page-num">3</li>
-					<li class="patient-page-num">4</li>
-					<li class="patient-page-num">5</li>
-					<li class="patient-page-num">6</li>
+			<div class="pagination-wrapper">
+				<ul class="pagination-container">
+					<li class="page-num active">上一页</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">#n</li>
+					<li class="page-num">下一页</li>
 				</ul>
-				<span class="patient-page-prev">上一页</span>
 			</div>
 		</div>
 		<div class="patient-mask"></div>
@@ -92,29 +93,59 @@
 						<div class="patient-details-td patient-details-td02">病人</div>
 					</div>
 					<!-- 病人列表 START -->
-					<div class="patient-details-tr patient-details-content">
-						<div class="patient-details-td patient-details-td01">08：20</div>
-						<div class="patient-details-td patient-details-td02">阿拉登</div>
+					<div class="patient-details-container">
+						<div class="patient-details-tr patient-details-content">
+							<div class="patient-details-td patient-details-td01">08：20</div>
+							<div class="patient-details-td patient-details-td02">阿拉登</div>
+						</div>
 					</div>
 					<!-- 病人列表 END -->
 				</div>
 
-				<div class="patient-pagination-wrapper">
-					<span class="patient-page-next">下一页</span>
-					<ul>
-						<li class="patient-page-num active">1</li>
-						<li class="patient-page-num">2</li>
-						<li class="patient-page-num">3</li>
-						<li class="patient-page-num">4</li>
-						<li class="patient-page-num">5</li>
-						<li class="patient-page-num">6</li>
+				<div class="patient-pagination-wrapper pagination-wrapper">
+					<ul class="details-pagination-container">
+						<li class="page-num active">上一页</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">下一页</li>
 					</ul>
-					<span class="patient-page-prev">上一页</span>
 				</div>
 
 			</div>
 		</div>
 	</div>
+	<!-- 日期列表 START -->
+	<script type="text/template">
+		<div class="patient-tr patient-table-content">
+			<div class="patient-td"><%- date %></div>
+			<div class="patient-td">
+				<button data-id="<%- id %>" data-period="<%- period %>" type="button" class="patient-td-btn">
+					<img src="/images/doc_web/u12.png" alt="" class="bg">
+					<span class="bg">查看病人</span>
+				</button>
+			</div>
+			<div class="patient-td">
+				<button data-id="<%- id %>" data-period="<%- period %>" type="button" class="patient-td-btn">
+					<img src="/images/doc_web/u12.png" alt="" class="bg">
+					<span class="bg">查看病人</span>
+				</button>
+			</div>
+		</div>
+	</script>
+	<!-- 日期列表 END -->
+
+	<!-- 病人列表 START -->
+	<script type="text/template">
+		<div class="patient-details-tr patient-details-content">
+			<div class="patient-details-td patient-details-td01">08：20</div>
+			<div class="patient-details-td patient-details-td02">阿拉登</div>
+		</div>
+	</script>
+	<!-- 病人列表 END -->
+
 @stop
 
 @section("js-specify")

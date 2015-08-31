@@ -14,72 +14,17 @@
 @section("main-content")
 	<div class="patient-wrapper">
 		<div class="patient-caption">消息提醒</div>
-		<div class="patient-table">
+		<div id="message_content" class="patient-table">
 			<!-- 表格内容 START -->
 			<div class="table-tr table-tr-clickable">
 				<div class="table-td table-td01">
 					2015.4.30
 				</div>
 				<div class="table-td table-td02">
-					好好吃药，别着凉了！
+					好好吃药，别着凉了！fmksajdfkjsd发生的纠纷时价格可分开搞快点发两个覆盖了发动机股份的客观的
 				</div>
 			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
-			<div class="table-tr table-tr-clickable">
-				<div class="table-td table-td01">
-					2015.4.30
-				</div>
-				<div class="table-td table-td02">
-					好好吃药，别着凉了！
-				</div>
-			</div>
+			
 			<!-- 表格内容 END -->
 		</div>
 
@@ -127,7 +72,7 @@
 					<div class="table-details-head">
 						消息内容
 					</div>
-					<div class="table-details-content">
+					<div id="message_details" class="table-details-content">
 						<span>s什么也没有</span>
 					</div>
 				</div>
@@ -135,12 +80,21 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/template" id="message_template">
+		<div class="table-tr table-tr-clickable">
+			<div class="table-td table-td01">
+				<%- date %>
+			</div>
+			<div class="table-td table-td02">
+				<%- content %>
+			</div>
+		</div>
+	</script>
 @stop
 
 
 @section("js-specify")
 	@parent
-	<script src="/dist/js/lib/jquery.paging.min.js" type="text/javascript"></script>
-	<script src="/dist/js/lib/jquery.easy-paging.js" type="text/javascript"></script>
+	
 	<script type="text/javascript" src="/dist/js/pages/doctor/message.js"></script>
 @stop
