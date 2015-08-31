@@ -270,7 +270,7 @@ class BaseController extends Controller {
 
 	protected function insert_accounts(){
 
-		$users = Usre::get();
+		$users = User::get();
 
 		foreach( $users as $user ){
 
@@ -329,21 +329,102 @@ class BaseController extends Controller {
 		foreach( $schedules as $schedule ){
 			// 1/4几率将该schedule设为无号源
 			if ( rand( 0, 3 ) ){
+				if ( $schedule->period == 0 ){
+					Period::create([
+						'start' => '8:00',
+						'end' => '9:30',
+						'total' => 10,
+						'current' => 0,
+						'schedule_id' => $schedule->id
+					]);
+				}else if ( $schedule->period == 1 ){
+					Period::create([
+						'start' => '14:00',
+						'end' => '15:30',
+						'total' => 10,
+						'current' => 0,
+						'schedule_id' => $schedule->id
+					]);
+				}
 			}
 		}
 	}
 
-	protected function get_random_date(){
+	public function insert_records(){
+		
+		$accounts = RegisterAccount::get();
 
+		$periods = Period::get();
+
+		$account_num = $accounts->count();
+
+		$peirod_num = $periods->count();
+
+		for ( $i = 0; $i < 500; ++$i ){
+			$record = new RegisterRecord();
+
+			$account = $accounts[ rand( 0, $account_num - 1 ) ];
+
+			$period = $periods[ rand( 0, $peirod_num - 1 ) ];
+
+			$dt = $this->get_random_datetime();
+			$record->created_at = $dt ;
+			$record->start = date( 'Y-m-d H:i:s', strtotime( $dt ) + 3600 );
+			$record->return_date = $this->get_random_date();
+			$record->status = rand( 0, 1 );
+			$record->fee = 1.0;
+
+			if ( rand( 0, 1 ) ){
+				$record->advice = "abcd1234";
+			}
+
+			$record->account_id = $account->id;
+			$record->user_id = $account->user_id;
+			$record->period_id = $period->id;
+			$record->doctor_id = $period->schedule->doctor_id;
+
+			$period->current += 1;
+			$period->save();
+			$record->save();
+		}
+	}
+
+	protected function insert_comments(){
+
+		$records = RegisterRecord::get();
+
+		foreach( $records as $record ){
+			$comment = new Comment();
+			$comment->content = $this->get_random( self::$RANDOM_ALPHA_NUM, 10, 20 );
+			$comment->record_id = $record->id;
+			$comment->created_at = date( 'Y-m-d H:i:s', strtotime( $record->start ) + 3600 );
+			$comment->save();
+		}
+	}
+
+	protected function get_random_timestamp_offset(){
 		$offset_year = rand( 0, 2 ) - 1;
 		$offset_month = rand( 0, 4 ) - 2;
 		$offset_day = rand( 0, 7 ) - 3;
 
-		$total_offset = $offset_year * self::$seconds_per_year + 
-						$offset_month * self::$seconds_per_month + 
-						$offset_day * self::$seconds_per_day;
+		return 	$offset_year * self::$seconds_per_year + 
+				$offset_month * self::$seconds_per_month + 
+				$offset_day * self::$seconds_per_day;
+	}
+
+	protected function get_random_datetime(){
+
+		return date( 'Y-m-d H:i:s', time() + $this->get_random_timestamp_offset() );
+	}
+
+	protected function get_random_date(){	
 		
-		return date( 'Y-m-d', time() + $total_offset );
+		return date( 'Y-m-d', time() + $this->get_random_timestamp_offset() );
+	}
+
+	protected function get_random_time(){
+
+		return date( 'H:i:s', time() + $this->get_random_timestamp_offset() );
 	}
 
 	protected function get_random( $flag, $min, $max ){

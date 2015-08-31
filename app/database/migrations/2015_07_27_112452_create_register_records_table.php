@@ -46,7 +46,7 @@ class CreateRegisterRecordsTable extends Migration {
 			$table->index( 'user_id' );
 			$table->foreign( 'user_id' )
 				  ->references( 'id' )
-				  ->on( 'register_accounts' )
+				  ->on( 'users' )
 				  ->onDelete( 'cascade' )
 				  ->onUpdate( 'cascade' );
 		});

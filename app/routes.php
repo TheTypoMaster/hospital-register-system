@@ -147,6 +147,8 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::post( 'modify_status', 'DoctorController@modify_status' );
 
     Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
+        Route::get( 'insert_data', 'BaseController@insert_data' );
+
         Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );
         Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );

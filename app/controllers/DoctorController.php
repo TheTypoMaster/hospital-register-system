@@ -113,14 +113,14 @@ class DoctorController extends BaseController {
 
         foreach( $inputs as $key => $value ){
             if ( isset( $value ) ){
-                if ( $key == 'specialty' || $key == 'description' ){
+                if ( $key == 'department' ){
+                    $doctor->department_id = (int)$value;
+                    echo 'ok';
+                }
+                else if ( $key == 'specialty' || $key == 'description' ){
                     $doctor[ $key ] = '<p>'.$value.'</p>';
                 }else{
                     $doctor[ $key ] = $value;
-                }
-
-                if ( $key == 'department' ){
-                    $doctor->department_id = $value;
                 }
             }
         }
