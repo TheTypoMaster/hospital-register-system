@@ -17,9 +17,12 @@ $(document).ready(function() {
     	patientDetailsMask.fadeIn();
     }
 
+    //
+
     //查看医嘱
 	checkBtn.on("click", function() {
     	adviceDetails.css("display", "none");
+    	adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
     	adviceShow.fadeIn();
 		showPannel();
 		

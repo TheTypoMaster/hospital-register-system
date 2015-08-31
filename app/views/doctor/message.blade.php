@@ -21,7 +21,7 @@
 					2015.4.30
 				</div>
 				<div class="table-td table-td02">
-					好好吃药，别着凉了！fmksajdfkjsd发生的纠纷时价格可分开搞快点发两个覆盖了发动机股份的客观的
+					好好吃药，别着凉了！每日三次，每次10颗，饭后服用，忌吃辛辣。
 				</div>
 			</div>
 			
@@ -39,21 +39,25 @@
 					<option value="2015">2015年</option>
 				</select>
 				<select class="patient-month">
-					<option value="1">1月</option>
-					<option value="2">2月</option>
-					<option value="3">3月</option>
-					<option value="4">4月</option>
-					<option value="5">5月</option>
-					<option value="6">6月</option>
-					<option value="7">7月</option>
-					<option value="8">8月</option>
-					<option value="9">9月</option>
+					<option value="01">1月</option>
+					<option value="02">2月</option>
+					<option value="03">3月</option>
+					<option value="04">4月</option>
+					<option value="05">5月</option>
+					<option value="06">6月</option>
+					<option value="07">7月</option>
+					<option value="08">8月</option>
+					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
 					<option value="12">12月</option>
 				</select>
+				<div class="jump-link">跳转</div>
 			</div>
 			<div class="pagination-wrapper">
+				<!-- 时间列表总条目数 START-->
+				<input type="hidden" value="变量" id="message_count" />
+				<!-- 时间列表总条目数 END-->
 				<ul id="message_pagination">
 					<li class="page-num active">上一页</li>
 					<li class="page-num">#n</li>
@@ -81,14 +85,16 @@
 		</div>
 	</div>
 	<script type="text/template" id="message_template">
-		<div class="table-tr table-tr-clickable">
+		<% for(var i = 0; i < array.length; i++){ %>
+			<div class="table-tr table-tr-clickable">
 			<div class="table-td table-td01">
-				<%- date %>
+				<%- array[i]["date"] %>
 			</div>
 			<div class="table-td table-td02">
-				<%- content %>
+				<%- array[i]["content"] %>
 			</div>
 		</div>
+		<% } %>
 	</script>
 @stop
 
