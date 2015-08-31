@@ -26,8 +26,7 @@ class HospitalInformationController extends HospitalBasedController{
             return  Response::json(array( 
                         'error_code' => 0,
                         'total' => $news->getTotal(),
-                        'news_list' => $news->getItems()
-                    ));
+                        'news_list' => $news->getItems() ));
         }
 
         return Response::json(array( 'error_code' => 1, 'message' => '无资讯' ));

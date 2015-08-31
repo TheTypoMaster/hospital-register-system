@@ -76,7 +76,7 @@
 			</div>
 			<div class="pagination-wrapper">
 				<!-- 时间列表总条目数 START-->
-				<input type="hidden" value="变量" id="comment_count" />
+				<input type="hidden" value="{{{ $total }}}" id="comment_count" />
 				<!-- 时间列表总条目数 END-->
 				<ul class="pagination-container">
 					<li class="page-num active">上一页</li>

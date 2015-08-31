@@ -146,8 +146,9 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::post( 'modify_advice', 'DoctorController@modify_advice' );
     Route::post( 'modify_status', 'DoctorController@modify_status' );
 
+    Route::get( 'insert_data', 'BaseController@insert_data' );
+
     Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
-        Route::get( 'insert_data', 'BaseController@insert_data' );
 
         Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );
@@ -157,6 +158,7 @@ Route::group(array( 'prefix' => 'doc' ), function(){
         Route::get( 'get_patients', 'DoctorPageController@get_patients');
         Route::get( 'get_comments', 'DoctorPageController@get_comments' );
         Route::get( 'get_advice', 'DoctorPageController@get_advice' );
+        Route::get( 'get_null_advice', 'DoctorPageController@get_null_advice' );
         Route::get( 'get_messages', 'DoctorPageController@get_messages' );
 
         Route::group(array( 'prefix' => 'home' ), function(){

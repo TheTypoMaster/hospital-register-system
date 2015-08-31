@@ -96,6 +96,7 @@ request:
 response:
 {
     error_code:     <int>,
+    totality:       <int>,
     comments:
     [
         {
@@ -114,6 +115,7 @@ request:
 response:
 {
     error_code:     <int>,
+    totality:       <int>,
     advice:
     [
         {
@@ -133,6 +135,7 @@ request:
 response:
 {
     error_code:     <int>,
+    totality:       <int>,
     messages:
     [
         {

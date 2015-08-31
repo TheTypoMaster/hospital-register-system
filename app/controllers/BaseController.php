@@ -296,11 +296,18 @@ class BaseController extends Controller {
 
 		foreach( $doctors as $doctor ){
 
-			$count = rand( 100, 200 );
+			$count = rand( 300, 500 );
 			
 			while( $count-- ){
 
-				$date  = $this->get_random_date();
+				$date  		= $this->get_random_date();
+				$schedules 	= Schedule::where( 'date', $date )
+									  ->where( 'doctor_id', $doctor->id )
+									  ->get();
+
+				if ( $schedules->count() ){
+					continue;
+				}
 
 				// 添加早上排班
 				if ( rand( 0, 1 ) ){
@@ -360,7 +367,7 @@ class BaseController extends Controller {
 
 		$peirod_num = $periods->count();
 
-		for ( $i = 0; $i < 500; ++$i ){
+		for ( $i = 0; $i < 2000; ++$i ){
 			$record = new RegisterRecord();
 
 			$account = $accounts[ rand( 0, $account_num - 1 ) ];
