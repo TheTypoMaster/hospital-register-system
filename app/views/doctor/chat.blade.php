@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/dist/css/doctor/chat.css">
 @stop
 
+@section('js-specify')
+    <script type="text/javascript" src="/dist/js/pages/chat.js"></script>
+@stop
+
 @section('main-content')
 
 <div class="chat-wrap">
@@ -36,6 +40,15 @@
                     </button>
                 </div>
                 <!-- 病人列表 END -->
+
+                <script tpye="text/template" id="patient-template">
+                    <div class="patient-details-tr patient-details-content">
+                        <%- name %>
+                        <button user_id="<%- user_id %>" class="patient-set-btn">
+                            设置时间
+                        </button>
+                    </div>
+                </script>
             </div>
             <div class="patient-pagination-wrapper">
                 <span class="patient-page-next">下一页</span>
@@ -46,6 +59,9 @@
                     <li class="patient-page-num">4</li>
                     <li class="patient-page-num">5</li>
                     <li class="patient-page-num">6</li>
+                    <script tpye="text/template" id="user-template">
+                        <li page="<%- page %>" class="patient-page-num"><%- page %></li>
+                    </script>
                 </ul>
                 <span class="patient-page-prev">上一页</span>
             </div>
@@ -56,45 +72,51 @@
                     复诊提醒
                 </div>
                 <div class="patient-record-inner clearfix">
-                    <div class="patient-record patient-record-item">
-                        <div class="patient-item-top">
-                            挂号记录
+                    
+                    <script type="text/javascript">
+                        <div class="patient-record patient-record-item">
+                            <div class="patient-item-top">
+                                挂号记录
+                            </div>
+                            <div class="patient-item-time">
+                                <span class="date"><%- date %></span>
+                                <span class="period"><%- period %></span>
+                                <span class="time"><%- time %></span>
+                            </div>
+                            <div class="patient-item-doc-info">
+                                <%- doctor.name %> / <%- doctor.title %> / <%- doctor.department %>
+                            </div>
                         </div>
-                        <div class="patient-item-time">
-                            <span class="date">2015.3.25</span>
-                            <span class="period">上午</span>
-                            <span class="time">09:30</span>
-                        </div>
-                        <div class="patient-item-doc-info">
-                            王磊 / 副主任医师 / 妇科
-                        </div>
-                    </div>
+                    </script>
 
-                    <div class="patient-return patient-record-item">
-                        <div class="patient-item-top">
-                            复诊时间
+                    <script type="text/javascript">
+                        <div class="patient-return patient-record-item">
+                            <div class="patient-item-top">
+                                复诊时间
+                            </div>
+                            <div class="patient-item-date">
+                                <% date %>
+                            </div>
+                            <div class="patient-item-doc-info">
+                                <%- doctor.name %> / <%- doctor.title %> / <%- doctor.department %>
+                            </div>
                         </div>
-                        <div class="patient-item-date">
-                            <span>2015</span>年
-                            <span>5</span>月
-                            <span>10</span>日
+                    </script>
+                    
+                    <script type="text/javascript">
+                        <div class="patient-return-add patient-record-item">
+                            <div class="patient-item-top">
+                                复诊时间
+                            </div>
+                            <div class="patient-item-date">
+                                <input class="input-add-year" name="year" type="text"><span>年</span>
+                                <input class="input-add-month" name="month" type="text"><span>月</span>
+                                <input class="input-add-day" name="day" type="text"><span>日</span>
+                            </div>
+                            <button record_id="<%- record_id %>" class="patient-item-btn">确定时间</button>
                         </div>
-                        <div class="patient-item-doc-info">
-                            王磊 / 副主任医师 / 妇科
-                        </div>
-                    </div>
+                    </script>
 
-                    <div class="patient-return-add patient-record-item">
-                        <div class="patient-item-top">
-                            复诊时间
-                        </div>
-                        <div class="patient-item-date">
-                            <input class="input-add-year" name="year" type="text"><span>年</span>
-                            <input class="input-add-month" name="month" type="text"><span>月</span>
-                            <input class="input-add-day" name="day" type="text"><span>日</span>
-                        </div>
-                        <button class="patient-item-btn">确定时间</button>
-                    </div>
                 </div>
             </div>
         </div>
