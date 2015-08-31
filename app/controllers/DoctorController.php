@@ -107,7 +107,8 @@ class DoctorController extends BaseController {
             'name'          => Input::get( 'name' ),
             'title'         => Input::get( 'title' ),
             'specialty'     => Input::get( 'specialty' ),
-            'description'   => Input::get( 'description' )
+            'description'   => Input::get( 'description' ),
+            'department'    => Input::get( 'department' )
         );
 
         foreach( $inputs as $key => $value ){
@@ -116,6 +117,10 @@ class DoctorController extends BaseController {
                     $doctor[ $key ] = '<p>'.$value.'</p>';
                 }else{
                     $doctor[ $key ] = $value;
+                }
+
+                if ( $key == 'department' ){
+                    $doctor->department_id = $value;
                 }
             }
         }
@@ -180,7 +185,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
         }
 
-        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $user->photo, 'size' => $file_size ));
+        return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $doctor->photo, 'size' => $file_size ));
     }
 
     public function modify_advice(){

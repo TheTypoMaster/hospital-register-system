@@ -23,6 +23,7 @@ response:
 {
     error_code:     <int>
     message:        <string>
+    path:           <string>
 }
 
 添加/修改医嘱
@@ -87,7 +88,7 @@ response:
 }
 
 获取病人评价:
-GET /doc/get_comment:
+GET /doc/get_comments:
 request:
     page:           <int>
     date:           <date format:yyyy-dd>
@@ -123,7 +124,7 @@ response:
 }
 
 获取消息:
-GET /doc/get_message:
+GET /doc/get_messages:
 request:
     page:           <int>
     date:           <date format:yyyy-dd>

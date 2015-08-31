@@ -48,6 +48,8 @@ class chat_handler( base_handler ):
                values ({from_uid}, {to_uid}, {timestamp}, "{content}", {status})'.format( 
                 from_uid = from_uid, to_uid = to_uid, timestamp = timestamp, content = content, status = init_status )
 
+        print sql
+
         try:
             self.mysql_cursor.execute( sql )
             self.application.database.commit()
@@ -63,7 +65,6 @@ class chat_handler( base_handler ):
         if count:
             messages = self.mysql_cursor.fetchall()
             sql = 'update messages set status = 1 where id in ({ids})'.format( ids = ','.join( [ str( m[0] ) for m in messages ] ) )
-            print sql
 
             try:
                 self.mysql_cursor.execute( sql )
@@ -71,6 +72,8 @@ class chat_handler( base_handler ):
                 return messages
             except:
                 self.application.database.rollback()
+            else:
+                return None
         
         return None
 
