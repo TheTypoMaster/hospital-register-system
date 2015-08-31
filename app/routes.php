@@ -141,14 +141,14 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::get( 'login', 'DoctorPageController@login' );
     Route::post( 'login', 'DoctorController@login' );
 
-    Route::post( 'modify_account', 'DoctorController@modify_account' );
-    Route::post( 'upload_portrait', 'DoctorController@upload_portrait' );
-    Route::post( 'modify_advice', 'DoctorController@modify_advice' );
-    Route::post( 'modify_status', 'DoctorController@modify_status' );
-
     Route::get( 'insert_data', 'BaseController@insert_data' );
 
     Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
+
+        Route::post( 'modify_account', 'DoctorController@modify_account' );
+        Route::post( 'modify_advice', 'DoctorController@modify_advice' );
+        Route::post( 'modify_status', 'DoctorController@modify_status' );
+        Route::post( 'modify_return', 'DoctorPageController@modify_return' );
 
         Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );

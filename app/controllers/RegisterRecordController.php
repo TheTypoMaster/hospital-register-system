@@ -162,6 +162,14 @@ class RegisterRecordController extends BaseController{
             $period->current += 1;
             $period->save();
 
+            $message = new Message();
+            $message->from_uid = $user_id;
+            $message->to_uid = $doctor->user->id;
+            $message->content = $account->user->real_name.'挂号';
+            $message->timestamp = time();
+            $message->status = 3;
+            $message->save();
+
             DB::commit();
         
         }catch( Exception $e ){
@@ -217,6 +225,14 @@ class RegisterRecordController extends BaseController{
                 $new_record['user_id']      = $pay_record->user_id;
                 $new_record->save();
 
+                $message = new Message();
+                $message->from_uid = $user_id;
+                $message->to_uid = $doctor->user->id;
+                $message->content = $account->user->real_name.'挂号';
+                $message->timestamp = time();
+                $message->status = 3;
+                $message->save();
+
                 $pay_record->record_id = $new_record->id;
                 $pay_record->status = 'SUCCESS';  
             }
@@ -266,7 +282,15 @@ class RegisterRecordController extends BaseController{
                 $period = Period::find( $record->period_id );
                 $period->current -= 1;
                 $period->save();
-                $record->delete();                
+                $record->delete();
+
+                $message = new Message();
+                $message->from_uid = $record->user_id;
+                $message->to_uid = $record->doctor->user_id;
+                $message->content = $record->user->real_name.'取消挂号';
+                $message->timestamp = time();
+                $message->status = 3;
+                $message->save(); 
             });
 
         }catch( Exception $e ){
