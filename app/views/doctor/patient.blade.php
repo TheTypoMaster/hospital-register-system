@@ -58,21 +58,25 @@
 					<option value="2015">2015年</option>
 				</select>
 				<select class="patient-month">
-					<option value="1">1月</option>
-					<option value="2">2月</option>
-					<option value="3">3月</option>
-					<option value="4">4月</option>
-					<option value="5">5月</option>
-					<option value="6">6月</option>
-					<option value="7">7月</option>
-					<option value="8">8月</option>
-					<option value="9">9月</option>
+					<option value="01">1月</option>
+					<option value="02">2月</option>
+					<option value="03">3月</option>
+					<option value="04">4月</option>
+					<option value="05">5月</option>
+					<option value="06">6月</option>
+					<option value="07">7月</option>
+					<option value="08">8月</option>
+					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
 					<option value="12">12月</option>
 				</select>
+				<div class="jump-link">跳转</div>
 			</div>
 			<div class="pagination-wrapper">
+				<!-- 时间列表总条目数 START-->
+				<input type="hidden" value="变量" id="schedule_count" />
+				<!-- 时间列表总条目数 END-->
 				<ul class="pagination-container">
 					<li class="page-num active">上一页</li>
 					<li class="page-num">#n</li>
@@ -103,6 +107,9 @@
 				</div>
 
 				<div class="patient-pagination-wrapper pagination-wrapper">
+					<!-- 病人列表总条目数 START-->
+					<input type="hidden" value="变量" id="patient_count" />
+					<!-- 病人列表总条目数 END-->
 					<ul class="details-pagination-container">
 						<li class="page-num active">上一页</li>
 						<li class="page-num">#n</li>
@@ -118,31 +125,35 @@
 		</div>
 	</div>
 	<!-- 日期列表 START -->
-	<script type="text/template">
+	<script type="text/template" id="patient_date_list">
+		<% for(var d in array["schedules"]){ %>
 		<div class="patient-tr patient-table-content">
-			<div class="patient-td"><%- date %></div>
+			<div class="patient-td"><%- d %></div>
 			<div class="patient-td">
-				<button data-id="<%- id %>" data-period="<%- period %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d]['0']['id'] %>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
 			</div>
 			<div class="patient-td">
-				<button data-id="<%- id %>" data-period="<%- period %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d]['1']['id'] %>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
 			</div>
 		</div>
+		<% } %>
 	</script>
 	<!-- 日期列表 END -->
 
 	<!-- 病人列表 START -->
-	<script type="text/template">
+	<script type="text/template" id="patient_list">
+		<% for(var i = 0; i < array.length; i ++){ %>
 		<div class="patient-details-tr patient-details-content">
-			<div class="patient-details-td patient-details-td01">08：20</div>
-			<div class="patient-details-td patient-details-td02">阿拉登</div>
+			<div class="patient-details-td patient-details-td01"><%- array[i]["time"] %></div>
+			<div class="patient-details-td patient-details-td02"><%- content[i]["name"] %></div>
 		</div>
+		<% } %>
 	</script>
 	<!-- 病人列表 END -->
 
