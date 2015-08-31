@@ -77,6 +77,7 @@ request:
 response:
 {
     error_code:     <int>,
+    totality:       <int>,
     patients:
     [
         {
@@ -128,6 +129,7 @@ GET /doc/get_messages:
 request:
     page:           <int>
     date:           <date format:yyyy-dd>
+    totality:       <int>
 response:
 {
     error_code:     <int>,
