@@ -132,7 +132,7 @@ response:
 GET /doc/get_null_advice:
 request:
     page:           <int>
-    date:           <date format:yyyy-dd>
+    date:    9       <date format:yyyy-dd>
 response:
 {
     error_code:     <int>,

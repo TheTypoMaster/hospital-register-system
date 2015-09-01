@@ -6,14 +6,33 @@ $(document).ready(function() {
 	    msgContent = $("#message_content"),
 	    msgDetails = $("#message_details"),
 	    jump = $(".jump-link"),
-	    count = $("#message_count").val();
+	    count = $("#message_count").val(),
+	    paginationCodes = $("#message_pagination").html();
 
 	function showContent (){
 		$(".table-tr-clickable").unbind();
 		$(".table-tr-clickable").on("click", function() {
-			msgDetails.find("span").html($(this).find(".table-td02").html());
-			patientMask.fadeIn();
-			patientDetailsMask.fadeIn();
+			var _this = $(this);
+			// msgDetails.find("span").html(_this.find(".table-td02").html());
+			// patientMask.fadeIn();
+			// patientDetailsMask.fadeIn();
+			//修改信息阅读状态
+			if(_this.attr("data-status") == 3){
+				$.get("/doc/modify_message_status", {
+					message_id: _this.attr("data-id"),
+					status: 4
+				},function (data){
+					if(data["error_code"] == 0){
+						_this.css({
+							"color": "#969696"
+						}).attr("data-status","4");
+					}
+					else{
+						alert(data["message"]);
+					}
+				});
+			}
+
 		});
 	}
 
@@ -38,7 +57,7 @@ $(document).ready(function() {
 			date: msgYear + "-" + msgMonth
 		}, function (data){
 			msgContent.html("");
-			addItems(data, "#message_template");
+			addItems(data["messages"], "#message_template");
 			showContent();
 		});
 	}
@@ -62,7 +81,6 @@ $(document).ready(function() {
 	jump.on("click", function (){
 		var date = "";
 		var tag = 1;
-		console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
 		//请求指定页数据
@@ -71,18 +89,15 @@ $(document).ready(function() {
 			date: msgYear + "-" + msgMonth
 		}, function (data){
 			msgContent.html("");
-			addItems(data, "#message_template");
+			addItems(data["messages"], "#message_template");
 			showContent();
+
+			$("#message_pagination").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
 				onSelect: function(page) {
-					if(tag == 1){
-						return;
-					}
-					else{
-						loadData(page);
-						tag = 0;
-					}
-					
+
+					loadData(page);
+
 				}
 			});
 		});

@@ -4,7 +4,9 @@ $(document).ready(function() {
 	    patientDetailsMask = $(".page-details-mask"),
 	    pagination = $(".pagination-container"),
 	    commentsContent = $(".comments-content-wrapper"),
-	    commentsCount = $("#comment_count");
+	    commentsCount = $("#comment_count"),
+	    jump = $(".jump-link"),
+	    paginationCodes = $(".pagination-container").html();
 
     //显示评论内容
     function showContent (){
@@ -25,7 +27,7 @@ $(document).ready(function() {
 	//加载数据
 	function loadData(page){
 		var date = "";
-		console.log("当前页：" + page);
+		// console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
 		//请求指定页数据
@@ -41,6 +43,7 @@ $(document).ready(function() {
 	//分页
 	pagination.easyPaging(commentsCount.val(), {
 		onSelect: function(page) {
+			console.log("总数：" + commentsCount.val());
 			loadData(page);
 		}
 	});
@@ -58,7 +61,6 @@ $(document).ready(function() {
 	jump.on("click", function (){
 		var date = "";
 		var tag = 1;
-		console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
 		//请求指定页数据
@@ -69,15 +71,12 @@ $(document).ready(function() {
 			commentsContent.html("");
 			addItems(data["comments"], "#comment_template");
 			showContent();
+
+			$(".pagination-container").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
 				onSelect: function(page) {
-					if(tag == 1){
-						return;
-					}
-					else{
-						loadData(page);
-						tag = 0;
-					}
+
+					loadData(page);
 					
 				}
 			});

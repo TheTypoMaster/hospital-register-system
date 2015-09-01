@@ -5,40 +5,54 @@ $(document).ready(function(){
 	    tableContainer = $(".table-container"),
 	    pagination = $(".pagination-container"),
 	    detailsPagination = $(".details-pagination-container"),
+	    detailsPaginationHtml = detailsPagination.html(),
 	    patientBtn = $(".patient-td-btn"),
 	    scheduleCount = $("#schedule_count"),
-		patientCount = $("#patient_count");
-	    	    
-
-	// checkBtn.on("click", function() {
-	// 	patientMask.fadeIn();
-	// 	patientDetailsMask.fadeIn();
-	// });
+		patientCount = $("#patient_count"),
+	    jump = $(".jump-link"),
+	    paginationCodes = $(".pagination-container").html();
 
 	//显示病人列表
-	function showList (id, count){
+	function showList (id){
 		$(id).unbind();
 		$(id).on("click", function() {
 
-			var id = $(id).attr("data-id");
-			detailsPagination.easyPaging(count, {
-				onSelect: function(page) {
-					console.log("当前页：" + page);
-					//请求指定页数据
-					$.get("/doc/get_patients", {
-						page: page,
-						schedule_id: id
-					}, function (data){
-						if(data.length !== 0){
-							$(".patient-details-container").html("");
-							addItems(data, "#patient_list", ".patient-details-container");
-						}
-					});
+			//获取日期
+			var btnParent = $(this).parent().prev().text();
+		    patientDetailsMask.find(".patient-details-td01").html(btnParent);
+
+			var id = $(this).attr("data-id");
+			$.get("/doc/get_records_bs", {
+				page: 1,
+				schedule_id: id
+			}, function (data){
+				if(data.length !== 0){
+					$(".patient-details-container").html("");
+					addItems(data["patients"], "#patient_list", ".patient-details-container");
 				}
+
+				detailsPagination.html(detailsPaginationHtml).easyPaging(data["totality"], {
+					onSelect: function(page) {
+						// console.log("当前页：" + page);
+						//请求指定页数据
+						$.get("/doc/get_records_bs", {
+							page: page,
+							schedule_id: id
+						}, function (data){
+							if(data.length !== 0){
+								$(".patient-details-container").html("");
+								addItems(data["patients"], "#patient_list", ".patient-details-container");
+							}
+						});
+					}
+				});
+
+
 			});
 
 			patientMask.fadeIn();
-			patientDetailsMask.fadeIn();
+			patientDetailsMask.fadeIn(500, changeStatus);
+			// changeStatus();
 		});
 	}
 
@@ -47,42 +61,30 @@ $(document).ready(function(){
 		patientDetailsMask.fadeOut();
 	});
 
-	//查看病人
-	patientBtn.on("click", function(){
-		var id = $(this).attr("data-period");
-		
-	});
+
+	//加载数据
+	function loadData(page){
+		// console.log("当前页：" + page);
+		var date = $(".patient-year option:selected").val() + "-" + $(".patient-month option:selected").val();
+		//请求指定页数据
+
+		$.get("/doc/get_schedules", {
+			page: parseInt(page),
+			date: date
+		}, function (data){
+			$(".table-container").html("");
+			addItems(data["result"], "#patient_date_list", ".table-container");
+			showList(".patient-td-btn", data["totality"]);// 显示病人列表
+		});
+	}
 
 	//分页插件使用
 	//日期列表
 	pagination.easyPaging(parseInt(scheduleCount.val()), {
 		onSelect: function(page) {
-			console.log("当前页：" + page);
-			var date = $(".patient-year option:selected").val() + "-" + $(".patient-month option:selected").val();
-			//请求指定页数据
-			$.get("/doc/get_schedules", {
-				page: parseInt(page),
-				date: date
-			}, function (data){
-				$(".patient-table-content").html("");
-				addItems(data, "#patient_date_list", ".patient-table-content");
-				showList(".patient-td-btn", data["totality"]);// 显示病人列表
-			});
+			loadData(page);
 		}
 	});
-	// 病人列表
-	// detailsPagination.easyPaging(100, {
-	// 	onSelect: function(page) {
-	// 		console.log("当前页：" + page);
-	// 		//请求指定页数据
-	// 		$.get("/", {
-	// 			page: page
-	// 		}, function (data){
-	// 			msgContent.html("");
-	// 			addItems(data, "#patient_list");
-	// 		});
-	// 	}
-	// });
 
 	//给模板代入参数
 	function addItems (data, tpl_name, container) {
@@ -93,5 +95,51 @@ $(document).ready(function(){
 		});
 		msgContent.append(codes);
 	}
+
+	//跳转到指定的日期条目
+	jump.on("click", function (){
+		var date = "";
+		var tag = 1;
+		msgYear = $(".patient-year option:selected").val(),
+		msgMonth = $(".patient-month option:selected").val();
+		//请求指定页数据
+		$.get("/doc/get_schedules", {
+			page: 1,
+			date: msgYear + "-" + msgMonth
+		}, function (data){
+			tableContainer.html("");
+			addItems(data["result"], "#patient_date_list", ".table-container");
+			showList(".patient-td-btn", data["totality"]);// 显示病人列表
+
+			$(".pagination-container").html(paginationCodes);
+			pagination.easyPaging(data["totality"], {
+				onSelect: function(page) {
+					console.log(data["totality"]);
+					loadData(page);
+					
+				}
+			});
+		});
+	});
+
+	//修改就诊状态
+	function changeStatus (){
+		$(".patient-status-not").on("click", function(){
+			var _this = $(this);
+			$.post("/doc/modify_status", {
+				record_id: $(this).parent().attr("data-id"),
+				status: 1
+			}, function (data){
+				if(data["error_code"] == 0){
+					_this.hide();
+				}
+				else{
+					alert(data["message"]);
+				}
+				
+			})
+		});
+	}
+	
 
 });

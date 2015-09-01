@@ -28,7 +28,7 @@
 
 			<!-- 表格内容 START -->
 			<div class="comments-content-wrapper">
-				<div class="table-tr table-tr-clickable">
+				<!-- <div class="table-tr table-tr-clickable">
 					<div class="table-td table-td01">
 						任冰
 					</div>
@@ -43,7 +43,7 @@
 					<div class="table-td table-td02">
 						医生不错，很后即可几个客人价格，认真细心。
 					</div>
-				</div>
+				</div> -->
 			</div>			
 			<!-- 表格内容 END -->
 		</div>
@@ -56,7 +56,7 @@
 					<option value="2012">2012年</option>
 					<option value="2013">2013年</option>
 					<option value="2014">2014年</option>
-					<option value="2015">2015年</option>
+					<option value="2015" selected="selected">2015年</option>
 				</select>
 				<select class="patient-month">
 					<option value="01">1月</option>
@@ -66,7 +66,7 @@
 					<option value="05">5月</option>
 					<option value="06">6月</option>
 					<option value="07">7月</option>
-					<option value="08">8月</option>
+					<option value="08" selected="selected">8月</option>
 					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
@@ -105,10 +105,10 @@
 		</div>
 	</div>
 	<script type="text/template" id="comment_template">
-		<% for(var i = 0; i < array; i ++){ %>
+		<% for(var i = 0; i < array.length; i ++){ %>
 		<div class="table-tr table-tr-clickable">
 			<div class="table-td table-td01">
-				<%- array[i]["name"] %>
+				<%- array[i]["user_name"] %>
 			</div>
 			<div class="table-td table-td02">
 				<%- array[i]["content"] %>
