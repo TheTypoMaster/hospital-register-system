@@ -190,7 +190,7 @@ class DoctorController extends BaseController {
 
     public function modify_advice(){
 
-        if ( !Input::has( 'advcie' ) ){
+        if ( !Input::has( 'advice' ) ){
             return Response::json(array( 'error_code' => 1, 'message' => '不能为空' ));
         }
 
@@ -241,11 +241,9 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号记录' ));
         }
 
-        $register_account = RegisterAccount::find( $record->account_id );
-
         // 检查该就诊记录是否该医生的
-        if ( $register_account->user_id != Session::get( 'doctor.id' ) ){
-            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号' ));
+        if ( $record->doctor_id != Session::get( 'doctor.id' ) ){
+            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号', '1' => Session::get( 'doctor.id' ), '2' => $record->doctor_id ));
         }
 
         // 检查就诊状态
@@ -259,7 +257,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
         }
 
-        return Response::json(array( 'error_code' => 0, 'message' => '设置成功' ));
+        return Response::json(array( 'error_code' => 0, 'message' => '设置成功', 'return_date' => $record->return_date ));
     }
 
     public function modify_message_status(){

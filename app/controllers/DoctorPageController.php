@@ -85,7 +85,7 @@ class DoctorPageController extends BaseController {
             }
         }
 
-        return Response::json(array( 'error_code' => 0, 'result' => $schedules_map ));
+        return Response::json(array( 'error_code' => 0, 'totality' => $schedules->getTotal(), 'result' => $schedules_map ));
     }
 
     public function get_records(){
@@ -100,7 +100,7 @@ class DoctorPageController extends BaseController {
         foreach( $records as $record ){
             $user = $record->user;
             $result[] = array(
-                'record_id'   => $user->id,
+                'record_id'   => $record->id,
                 'user_name'   => $user->real_name,
             );
         }
@@ -119,7 +119,7 @@ class DoctorPageController extends BaseController {
 
         $result = array(
             'record_id'       => $record->id,
-            'datetime'       => $record->created_at->format('Y-m-d H:i'),
+            'datetime'        => $record->created_at->format('Y-m-d H:i'),
             'period'          => $record->period->schedule['period'],
             'return_date'     => $record->return_date,
             'doctor'          => array(
