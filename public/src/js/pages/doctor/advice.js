@@ -95,6 +95,7 @@ $(document).ready(function() {
 
 	//提交医嘱
 	function adviceSub(id) {
+		adviceSubmit.unbind();
 		adviceSubmit.on("click", function() {
 			var content = $(adviceContent).val();
 
