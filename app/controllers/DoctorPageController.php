@@ -262,18 +262,11 @@ class DoctorPageController extends BaseController {
 
         $messages = $paginator->getCollection();
 
-        $result = $messages->toArray();
+        foreach( $messages as $message ){
+            $message->time = date( 'm-d H:i', $message->time );
+        }
 
-        DB::transaction(function() use ( $messages ) {
-            foreach( $messages as $message ){
-                if ( $message->status == 3 ){
-                    $message->status = 4;
-                    $message->save();
-                }
-            }
-        });
-
-        return Response::json(array( 'error_code' => 0, 'messages' => $result ));
+        return Response::json(array( 'error_code' => 0, 'totality' => $paginator->getTotal(), 'messages' => $messages ));
     }
 
     public function get_unread_messages(){
@@ -296,7 +289,7 @@ class DoctorPageController extends BaseController {
                       ->where( 'timestamp', '>', $ts )
                       ->where( 'timestamp', '<', $te )
                       ->whereIn( 'status', $status )
-                      ->paginate( $this->default_num_per_page );
+                      ->paginate( $this->default_num_per_page + 1 );
     }
 
     public function message(){
