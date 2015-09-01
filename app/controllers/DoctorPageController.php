@@ -2,6 +2,12 @@
 
 class DoctorPageController extends BaseController {
 
+    public function __construct(){
+        parent::__construct();
+
+        $this->default_num_per_page = 7;
+    }
+
     public function login(){
 
         return View::make( 'doctor.login' );
@@ -53,9 +59,7 @@ class DoctorPageController extends BaseController {
 
         $schedules = Schedule::where( 'doctor_id', Session::get( 'doctor.id' ) )
                              ->where( 'date', 'like', Input::get( 'date', date( 'Y-m') ).'%' )
-                             ->orderBy( 'date' )->paginate( 7 );
-
-        echo json_encode( $schedules->getItems() ).PHP_EOL;
+                             ->orderBy( 'date' )->paginate( $this->default_num_per_page );
 
         $schedules_map = array();
 
@@ -88,7 +92,7 @@ class DoctorPageController extends BaseController {
         
         $paginator = RegisterRecord::where( 'doctor_id', Session::get( 'doctor.id' ) )
                                    ->where( 'created_at', 'like', Input::get( 'date', date( 'Y-m-d' ) ).'%' )
-                                   ->with('user')->paginate( 7 );
+                                   ->with('user')->paginate( $this->default_num_per_page );
 
         $result = array();
         $records = $paginator->getCollection();
@@ -103,9 +107,8 @@ class DoctorPageController extends BaseController {
 
         return Response::json(array(
                     'error_code'  => 0,
-                    'total'       => $paginator->getTotal(),
-                    'last_page'   => $paginator->getLastPage(),
-                    'records'     => $result ));
+                    'records'     => $result,
+                    'last_page'   => $paginator->getLastPage() ));
     }
 
     public function get_record_detail(){
@@ -116,8 +119,9 @@ class DoctorPageController extends BaseController {
 
         $result = array(
             'record_id'       => $record->id,
-            'timestamp'       => strtotime( $record->created_at->format('Y-m-d H:i:s') ),
+            'datetime'       => $record->created_at->format('Y-m-d H:i'),
             'period'          => $record->period->schedule['period'],
+            'return_date'     => $record->return_date,
             'doctor'          => array(
                                     'name'        => $doctor->name,
                                     'title'       => $doctor->title,
@@ -134,7 +138,7 @@ class DoctorPageController extends BaseController {
                                    ->join( 'users', 'users.id', '=', 'register_records.user_id' )
                                    ->where( 'schedules.id', Input::get( 'schedule_id' ) )
                                    ->where( 'schedules.doctor_id', Session::get( 'doctor.id' ) )
-                                   ->paginate( 7 );
+                                   ->paginate( $this->default_num_per_page );
 
         return Response::json(array( 'error_code' => 0, 'totality' => $paginator->getTotal(), 'patients' => $paginator->getCollection() ));
     }
@@ -183,7 +187,7 @@ class DoctorPageController extends BaseController {
                            ->join( 'users', 'register_records.user_id', '=', 'users.id' )
                            ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                            ->Where( 'comments.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                           ->orderBy( 'comments.created_at' )->paginate( 7 );
+                           ->orderBy( 'comments.created_at' )->paginate( $this->default_num_per_page );
 
         //var_dump( DB::getQueryLog() );
 
@@ -198,7 +202,7 @@ class DoctorPageController extends BaseController {
                            ->join( 'users', 'register_records.user_id', '=', 'users.id' )
                            ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                            ->Where( 'comments.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                           ->orderBy( 'comments.created_at' )->paginate( 7 );
+                           ->orderBy( 'comments.created_at' )->paginate( $this->default_num_per_page );
 
         return View::make( 'doctor.comment',  
                             array( 'name' => Session::get( 'doctor.name' ),
@@ -214,7 +218,7 @@ class DoctorPageController extends BaseController {
                                           ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                                           ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
                                           ->WhereNotNull( 'advice' )
-                                          ->paginate( 7 );
+                                          ->paginate( $this->default_num_per_page );
 
         return Response::json(array( 'error_coee' => 0, 'totality' => $register_records->getTotal(), 'advice' => $register_records->getItems() ));
     }
@@ -224,10 +228,10 @@ class DoctorPageController extends BaseController {
         $register_records = RegisterRecord::selectRaw( 'register_records.id as id, register_records.advice as content, users.real_name as name' )
                                           ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
                                           ->join( 'users', 'register_records.user_id', '=', 'users.id' )
-                                          //->where( 'status', '>', 0 )
+                                          ->where( 'status', '>', 0 )
                                           ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                                           ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                                          ->WhereNotNull( 'advice' )->paginate( 7 );
+                                          ->WhereNotNull( 'advice' )->paginate( $this->default_num_per_page );
         
         return View::make( 'doctor.advice', 
                             array( 'name' => Session::get( 'doctor.name' ),
@@ -241,13 +245,58 @@ class DoctorPageController extends BaseController {
                                           ->join( 'users', 'register_records.user_id', '=', 'users.id' )
                                           ->where( 'status', '=', 0 )
                                           ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                                          ->WhereNull( 'advice' )->paginate( 7 );
+                                          ->WhereNull( 'advice' )->paginate( $this->default_num_per_page );
 
         return Response::json(array( 'error_code' => 1, 'totality' => $register_records->getTotal(), 'records' => $register_records->getItems() ));
     }
 
     public function get_messages(){
 
+        $date = Input::get( 'date' ).'-01 00:00:00';
+
+        $timestamp_start = strtotime( $date );
+
+        $timestamp_end = strtotime( '+1 months', $timestamp_start );
+
+        $paginator = $this->__get_messages(array( 3, 4 ), $timestamp_start, $timestamp_end);
+
+        $messages = $paginator->getCollection();
+
+        $result = $messages->toArray();
+
+        DB::transaction(function() use ( $messages ) {
+            foreach( $messages as $message ){
+                if ( $message->status == 3 ){
+                    $message->status = 4;
+                    $message->save();
+                }
+            }
+        });
+
+        return Response::json(array( 'error_code' => 0, 'messages' => $result ));
+    }
+
+    public function get_unread_messages(){
+
+        $date = Input::get( 'date' ).'-01 00:00:00';
+
+        $timestamp_start = strtotime( $date );
+
+        $timestamp_end = strtotime( '+1 months', $timestamp_start );
+
+        $paginator = $this->__get_messages(array( 3 ), $timestamp_start, $timestamp_end);
+
+        return Response::json(array( 'error_code' => 0, 'messages' => $paginator->getCollection() ));
+    }
+
+    protected function __get_messages( $status, $ts, $te ){
+
+        return Message::selectRaw( 'id, content, status, timestamp as time' )
+                      ->where( 'to_uid', Session::get( 'user.id' ) )
+                      ->where( 'timestamp', '>', $ts )
+                      ->where( 'timestamp', '<', $te )
+                      ->whereIn( 'status', $status )
+                      ->paginate( $this->default_num_per_page );
     }
 
     public function message(){

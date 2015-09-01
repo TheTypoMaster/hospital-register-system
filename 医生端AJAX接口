@@ -127,6 +127,25 @@ response:
     ]
 }
 
+获取未添加医嘱的挂号记录:
+GET /doc/get_null_advice:
+request:
+    page:           <int>
+    date:           <date format:yyyy-dd>
+response:
+{
+    error_code:     <int>,
+    totality:       <int>,
+    advice:
+    [
+        {
+            record_id:  <int>,
+            user_id:    <int>,
+            user_name:  <string>
+        }
+    ]
+} 
+
 获取消息:
 GET /doc/get_messages:
 request:
@@ -143,6 +162,7 @@ response:
             id:         <int>,
             content:    <string>,
             time:       <timestamp>
+            status:     <int>               // 3 - 未读, 4 - 已读
         }
     ]
 }

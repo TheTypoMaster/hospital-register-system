@@ -231,4 +231,38 @@ class DoctorController extends BaseController {
 
         return Response::json(array( 'error_code' => 0, 'message' => '修改成功' ));
     }
+
+    public function modify_return(){
+
+        $record = RegisterRecord::find( Input::get( 'record_id' ) );
+
+        // 是否存在该记录
+        if ( !isset( $record ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号记录' ));
+        }
+
+        $register_account = RegisterAccount::find( $record->account_id );
+
+        // 检查该就诊记录是否该医生的
+        if ( $register_account->user_id != Session::get( 'doctor.id' ) ){
+            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号' ));
+        }
+
+        // 检查就诊状态
+        if ( !(int)($record->status) ){
+            return Response::json(array( 'error_code' => 4, 'message' => '尚未就诊' ));
+        }
+
+        $record->return_date = Input::get( 'date' );
+
+        if ( !$record->save() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '设置成功' ));
+    }
+
+    public function modify_message_status(){
+        
+    }
 }
