@@ -64,6 +64,7 @@ module.exports = (grunt)->
                     'dist/css/doctor/comment.css': ['src/css/doctor/comment.less']
                     'dist/css/doctor/advice.css': ['src/css/doctor/advice.less']
                     'dist/css/doctor/message.css': ['src/css/doctor/message.less']
+                    '../chat/static/css/index.css': ['../chat/static/css/index.less']
 
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-clean'
