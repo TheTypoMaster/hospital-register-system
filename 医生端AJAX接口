@@ -83,8 +83,9 @@ response:
     [
         {
             id:         <int>
-            time:       <time format:mm-ss>,
             name:       <string>
+            status:     <int>           // 0 - 未就诊，1 - 已就诊，2 - 需复诊
+            time:       <time format:mm-ss>,
         }
     ]
 }

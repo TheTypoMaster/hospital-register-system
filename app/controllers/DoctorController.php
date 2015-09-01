@@ -212,7 +212,7 @@ class DoctorController extends BaseController {
 
     public function modify_status(){
 
-        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) );
+        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) )->first();
 
         // 是否存在该记录
         if ( !isset( $record ) ){
@@ -252,6 +252,7 @@ class DoctorController extends BaseController {
         }
 
         $record->return_date = Input::get( 'date' );
+        $record->status      = 2;                       // 修改状态 --> 2 - 需复诊
 
         if ( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
