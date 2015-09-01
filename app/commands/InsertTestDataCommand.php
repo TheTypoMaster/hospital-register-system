@@ -125,7 +125,7 @@ class InsertTestDataCommand extends Command {
 
 	protected function insert_accounts(){
 
-		$users = User::get();
+		$users = User::all();
 
 		foreach( $users as $user ){
 
@@ -147,7 +147,7 @@ class InsertTestDataCommand extends Command {
 
 	protected function insert_schedules(){
 
-		$doctors = Doctor::get();
+		$doctors = Doctor::all();
 
 		foreach( $doctors as $doctor ){
 
@@ -186,7 +186,8 @@ class InsertTestDataCommand extends Command {
 	}
 
 	protected function insert_periods(){
-		$schedules = Schedule::get();
+
+		$schedules = Schedule::all();
 
 		foreach( $schedules as $schedule ){
 			// 1/4几率将该schedule设为无号源
@@ -214,25 +215,23 @@ class InsertTestDataCommand extends Command {
 
 	public function insert_records(){
 		
-		$accounts = RegisterAccount::get();
-
-		$periods = Period::get();
-
-		$account_num = $accounts->count();
-
+		$periods = Period::all();
+		$accounts = RegisterAccount::all();
 		$peirod_num = $periods->count();
+		$account_num = $accounts->count();
 
 		for ( $i = 0; $i < 2000; ++$i ){
 			$record = new RegisterRecord();
 
 			$account = $accounts[ rand( 0, $account_num - 1 ) ];
-
 			$period = $periods[ rand( 0, $peirod_num - 1 ) ];
 
-			$dt = $this->get_random_datetime();
-			$record->created_at = $dt ;
+			$dt = rand( 0, 99 ) < 90 ? $this->get_random_datetime() : date( 'Y-m-d H:i:s' ) ;
+			$record->created_at = $dt;
 			$record->start = date( 'Y-m-d H:i:s', strtotime( $dt ) + 3600 );
-			$record->return_date = $this->get_random_date();
+			if ( rand( 0, 1 ) ){
+				$record->return_date = $this->get_random_date();
+			}
 			$record->status = rand( 0, 1 );
 			$record->fee = 1.0;
 
@@ -261,7 +260,7 @@ class InsertTestDataCommand extends Command {
 
 	protected function insert_comments(){
 
-		$records = RegisterRecord::get();
+		$records = RegisterRecord::all();
 
 		foreach( $records as $record ){
 			$comment = new Comment();

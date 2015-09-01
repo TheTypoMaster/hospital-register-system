@@ -20,19 +20,15 @@
                on_message_recieve( result.messages );
             }
 
-            console.log( result );
             setTimeout( polling, 50 );
         })
         .fail(function( result ){
-            console.log( result );
         });
     }
 
     function on_message_recieve( messages ){
 
         for ( var i = 0; i < messages.length; ++i ){
-
-            console.log( messages[i] );
 
             var user_id = messages[i]['from_uid'];
             var user = users_list[ user_id ];
@@ -67,13 +63,7 @@
 
         var user_id = $('.select').attr('user_id');
 
-        console.log( msg_wrap_list[user_id] );
-
-        console.log( message_template_compiled( new_message ) );
-
         msg_wrap_list[user_id].append( message_template_compiled( new_message ) );
-
-        console.log( msg_wrap_list[user_id] );
 
             // 发送消息
         $.ajax({
@@ -86,10 +76,8 @@
             }
         })
         .done(function( data ) {
-            console.log( data );
         })
         .fail(function( data ) {
-            console.log( data );
         });
     }
 
@@ -127,9 +115,6 @@
         $('.msg-wrap').each(function(index, element) {
             msg_wrap_list[ $(element).attr('user_id') ] = $(element);
         });
-
-        console.log( users_list );
-        console.log( msg_wrap_list );
         
         $('.user').on('click', function(event) {
 
