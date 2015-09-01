@@ -263,5 +263,27 @@ class DoctorController extends BaseController {
 
     public function modify_message_status(){
         
+        $message = Message::find( Input::get( 'message_id' ) );
+        $status = (int)(Input::get( 'status' ));
+
+        if ( $status != 3 || $status != 4 ){
+            return Response::json(array( 'error_code' => 1, 'message' => '参数错误' ));
+        }
+
+        if ( !isset( $message ) ){
+            return Response::json(array( 'error_code' => 2, 'message' => '不存在该消息' ));
+        }
+
+        if ( $message->to_uid != Session::get( 'user.id' ) ){
+            return Response::json(array( 'error_code' => 3, 'message' => '无效消息' ));
+        }
+
+        $message->status = $status;
+
+        if ( !$message->save() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '修改失败' ));
+        }
+
+        return Response::json(array( 'error_code' => 0, 'message' => '修改成功' ));
     }
 }

@@ -162,8 +162,19 @@ response:
         {
             id:         <int>,
             content:    <string>,
-            time:       <timestamp>
+            time:       <m:s H:i>           // "04-15 19:30"
             status:     <int>               // 3 - 未读, 4 - 已读
         }
     ]
+}
+
+修改消息状态:
+POST /doc/modify_message_status:
+request:
+    message_id:     <int>
+    status:         <int>                   // 3 or 4
+response:
+{
+    error_code:     <int>
+    message:        <string>
 }
