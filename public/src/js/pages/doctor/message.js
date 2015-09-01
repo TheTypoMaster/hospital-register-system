@@ -6,7 +6,8 @@ $(document).ready(function() {
 	    msgContent = $("#message_content"),
 	    msgDetails = $("#message_details"),
 	    jump = $(".jump-link"),
-	    count = $("#message_count").val();
+	    count = $("#message_count").val(),
+	    paginationCodes = $("#message_pagination").html();
 
 	function showContent (){
 		$(".table-tr-clickable").unbind();
@@ -73,15 +74,12 @@ $(document).ready(function() {
 			msgContent.html("");
 			addItems(data, "#message_template");
 			showContent();
+
+			$("#message_pagination").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
 				onSelect: function(page) {
-					if(tag == 1){
-						return;
-					}
-					else{
-						loadData(page);
-						tag = 0;
-					}
+
+					loadData(page);
 					
 				}
 			});

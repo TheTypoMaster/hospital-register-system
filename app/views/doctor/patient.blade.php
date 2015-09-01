@@ -55,7 +55,7 @@
 					<option value="2012">2012年</option>
 					<option value="2013">2013年</option>
 					<option value="2014">2014年</option>
-					<option value="2015">2015年</option>
+					<option value="2015" selected>2015年</option>
 				</select>
 				<select class="patient-month">
 					<option value="01">1月</option>
@@ -65,7 +65,7 @@
 					<option value="05">5月</option>
 					<option value="06">6月</option>
 					<option value="07">7月</option>
-					<option value="08">8月</option>
+					<option value="08" selected>8月</option>
 					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
@@ -75,7 +75,7 @@
 			</div>
 			<div class="pagination-wrapper">
 				<!-- 时间列表总条目数 START-->
-				<input type="hidden" value="变量" id="schedule_count" />
+				<input type="hidden" value="50" id="schedule_count" />
 				<!-- 时间列表总条目数 END-->
 				<ul class="pagination-container">
 					<li class="page-num active">上一页</li>
@@ -126,17 +126,17 @@
 	</div>
 	<!-- 日期列表 START -->
 	<script type="text/template" id="patient_date_list">
-		<% for(var d in array["schedules"]){ %>
+		<% for(var d in array){ %>
 		<div class="patient-tr patient-table-content">
-			<div class="patient-td"><%- d %></div>
+			<div class="patient-td"><%- array[d]["date"] %></div>
 			<div class="patient-td">
-				<button data-id="<%- array[d]['0']['id'] %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d]['id'] %>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
 			</div>
 			<div class="patient-td">
-				<button data-id="<%- array[d]['1']['id'] %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d]['id'] %>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
