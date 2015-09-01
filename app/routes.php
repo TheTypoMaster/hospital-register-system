@@ -141,8 +141,6 @@ Route::group(array( 'prefix' => 'doc' ), function(){
     Route::get( 'login', 'DoctorPageController@login' );
     Route::post( 'login', 'DoctorController@login' );
 
-    Route::get( 'insert_data', 'BaseController@insert_data' );
-
     Route::group(array( 'before' => 'auth.doc_is_in' ), function(){
 
         Route::post( 'modify_account', 'DoctorController@modify_account' );
@@ -176,5 +174,3 @@ Route::group(array( 'prefix' => 'doc' ), function(){
 });
 
 // --------------------------------- 医生客户端web接口 end ------------------------------------------
-
-Route::get( 'insert_data', 'BaseController@insert_data' );

@@ -132,7 +132,7 @@ class DoctorPageController extends BaseController {
 
     public function get_records_by_schedule(){
 
-        $paginator = RegisterRecord::selectRaw( 'register_records.id as id, periods.start as time, users.real_name as name' )
+        $paginator = RegisterRecord::selectRaw( 'register_records.id as id, register_records.status as status, periods.start as time, users.real_name as name' )
                                    ->join( 'periods', 'periods.id', '=', 'register_records.period_id' )
                                    ->join( 'schedules', 'schedules.id', '=', 'periods.schedule_id' )
                                    ->join( 'users', 'users.id', '=', 'register_records.user_id' )
