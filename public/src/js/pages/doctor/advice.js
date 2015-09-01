@@ -104,8 +104,11 @@ $(document).ready(function() {
 			}, function (data){
 				if(data["error_code"] == 0){
 					alert("添加医嘱成功");
-					patientMask.fadeOut();
-					patientDetailsMask.fadeOut();
+					// patientMask.fadeOut();
+					// patientDetailsMask.fadeOut();
+			    	adviceDetails.css("display", "none");
+			    	adviceList.css("display", "block");
+					showPannel();
 				}
 				else{
 					alert(data["message"]);

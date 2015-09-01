@@ -100,7 +100,18 @@
 					<div class="patient-details-container">
 						<!-- <div class="patient-details-tr patient-details-content">
 							<div class="patient-details-td patient-details-td01">08：20</div>
-							<div class="patient-details-td patient-details-td02">阿拉登</div>
+							<div class="patient-details-td patient-details-td02">
+								阿拉登
+								<button class="patient-status-btn">
+									<img src="/images/doc_web/u12_d.png" alt="" class="bg">
+									<span class="bg">已就诊</span>
+								</button>
+								<button class="patient-status-btn">
+									<img src="/images/doc_web/u12.png" alt="" class="bg">
+									<span class="bg">未就诊</span>
+								</button>
+							</div>
+
 						</div> -->
 					</div>
 					<!-- 病人列表 END -->
@@ -152,10 +163,28 @@
 
 	<!-- 病人列表 START -->
 	<script type="text/template" id="patient_list">
-		<% for(var i = 0; i < array.length; i ++){ array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); %>
+		<% for(var i = 0; i < array.length; i ++){ 
+				array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); 
+				if(array[i]['status'] == 0){
+					var status = "style = 'display: block;'";
+				}
+				else{
+					var status = "style = 'display: none;'";
+				}
+		%>
 		<div class="patient-details-tr patient-details-content">
 			<div class="patient-details-td patient-details-td01"><%- array[i]["time"] %></div>
-			<div class="patient-details-td patient-details-td02"><%- array[i]["name"] %></div>
+			<div class="patient-details-td patient-details-td02" data-id="<%- array[i]['id'] %>">
+				<%- array[i]["name"] %>
+				<button class="patient-status-btn">
+					<img src="/images/doc_web/u12_d.png" alt="" class="bg">
+					<span class="bg">已就诊</span>
+				</button>
+				<button class="patient-status-btn patient-status-not" <%- status%>>
+					<img src="/images/doc_web/u12.png" alt="" class="bg">
+					<span class="bg">未就诊</span>
+				</button>
+			</div>
 		</div>
 		<% } %>
 	</script>

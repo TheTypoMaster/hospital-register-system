@@ -49,10 +49,10 @@ $(document).ready(function(){
 
 
 			});
-			
 
 			patientMask.fadeIn();
-			patientDetailsMask.fadeIn();
+			patientDetailsMask.fadeIn(500, changeStatus);
+			// changeStatus();
 		});
 	}
 
@@ -121,5 +121,25 @@ $(document).ready(function(){
 			});
 		});
 	});
+
+	//修改就诊状态
+	function changeStatus (){
+		$(".patient-status-not").on("click", function(){
+			var _this = $(this);
+			$.post("/doc/modify_status", {
+				record_id: $(this).parent().attr("data-id"),
+				status: 1
+			}, function (data){
+				if(data["error_code"] == 0){
+					_this.hide();
+				}
+				else{
+					alert(data["message"]);
+				}
+				
+			})
+		});
+	}
+	
 
 });

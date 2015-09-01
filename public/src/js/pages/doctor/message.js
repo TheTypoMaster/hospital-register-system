@@ -12,18 +12,23 @@ $(document).ready(function() {
 	function showContent (){
 		$(".table-tr-clickable").unbind();
 		$(".table-tr-clickable").on("click", function() {
-			msgDetails.find("span").html($(this).find(".table-td02").html());
-			patientMask.fadeIn();
-			patientDetailsMask.fadeIn();
+			var _this = $(this);
+			// msgDetails.find("span").html(_this.find(".table-td02").html());
+			// patientMask.fadeIn();
+			// patientDetailsMask.fadeIn();
 			//修改信息阅读状态
-			if($(this).attr("data-status") == 3){
-				$.get("/", {
-					id: $(this).attr("data-id")
-				},function(){
+			if(_this.attr("data-status") == 3){
+				$.get("/doc/modify_message_status", {
+					message_id: _this.attr("data-id"),
+					status: 4
+				},function (data){
 					if(data["error_code"] == 0){
-						$(this).css({
+						_this.css({
 							"color": "#969696"
 						}).attr("data-status","4");
+					}
+					else{
+						alert(data["message"]);
 					}
 				});
 			}
