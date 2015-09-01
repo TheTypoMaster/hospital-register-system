@@ -195,7 +195,7 @@ class DoctorController extends BaseController {
         }
 
         $advice = Input::get( 'advice' );
-        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) );
+        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) )->first();
 
         if ( !isset( $record ) ){
             return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号' ));
