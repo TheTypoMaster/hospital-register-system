@@ -16,15 +16,14 @@
 		<div class="patient-caption">消息提醒</div>
 		<div id="message_content" class="patient-table">
 			<!-- 表格内容 START -->
-			<div class="table-tr table-tr-clickable">
+			<!-- <div class="table-tr table-tr-clickable">
 				<div class="table-td table-td01">
 					2015.4.30
 				</div>
 				<div class="table-td table-td02">
 					好好吃药，别着凉了！每日三次，每次10颗，饭后服用，忌吃辛辣。
 				</div>
-			</div>
-			
+			</div> -->
 			<!-- 表格内容 END -->
 		</div>
 
@@ -36,7 +35,7 @@
 					<option value="2012">2012年</option>
 					<option value="2013">2013年</option>
 					<option value="2014">2014年</option>
-					<option value="2015">2015年</option>
+					<option value="2015" selected>2015年</option>
 				</select>
 				<select class="patient-month">
 					<option value="01">1月</option>
@@ -46,7 +45,7 @@
 					<option value="05">5月</option>
 					<option value="06">6月</option>
 					<option value="07">7月</option>
-					<option value="08">8月</option>
+					<option value="08" selected>8月</option>
 					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
@@ -56,7 +55,7 @@
 			</div>
 			<div class="pagination-wrapper">
 				<!-- 时间列表总条目数 START-->
-				<input type="hidden" value="变量" id="message_count" />
+				<input type="hidden" value="30" id="message_count" />
 				<!-- 时间列表总条目数 END-->
 				<ul id="message_pagination">
 					<li class="page-num active">上一页</li>
@@ -85,15 +84,15 @@
 		</div>
 	</div>
 	<script type="text/template" id="message_template">
-		<% for(var i = 0; i < array.length; i++){ %>
-			<div class="table-tr table-tr-clickable">
-			<div class="table-td table-td01">
-				<%- array[i]["date"] %>
+		<% for(var i = 0; i < array.length; i++){ if(array[i]["status"] == 3) var style='style="color:#14aef4;"' %>
+			<div class="table-tr table-tr-clickable" data-status="<%- array[i]['status'] %>" data-id="<%- array[i]['id'] %>" <%- style %> >
+				<div class="table-td table-td01">
+					<%- array[i]["time"] %>
+				</div>
+				<div class="table-td table-td02" >
+					<%- array[i]["content"] %>
+				</div>
 			</div>
-			<div class="table-td table-td02">
-				<%- array[i]["content"] %>
-			</div>
-		</div>
 		<% } %>
 	</script>
 @stop

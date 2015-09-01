@@ -43,6 +43,7 @@ $(document).ready(function() {
 	//分页
 	pagination.easyPaging(commentsCount.val(), {
 		onSelect: function(page) {
+			console.log("总数：" + commentsCount.val());
 			loadData(page);
 		}
 	});
@@ -74,7 +75,7 @@ $(document).ready(function() {
 			$(".pagination-container").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
 				onSelect: function(page) {
-					
+
 					loadData(page);
 					
 				}

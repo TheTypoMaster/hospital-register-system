@@ -34,14 +34,14 @@
 
 			<!-- 表格内容 START -->
 			<div class="advice-content-container">
-				<div class="table-tr table-tr-clickable">
+				<!-- <div class="table-tr table-tr-clickable">
 					<div class="table-td table-td01">
 						任性
 					</div>
 					<div class="table-td table-td02">
 						好好吃药，别着凉了！
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<!-- 表格内容 END -->
 		</div>
@@ -54,7 +54,7 @@
 					<option value="2012">2012年</option>
 					<option value="2013">2013年</option>
 					<option value="2014">2014年</option>
-					<option value="2015">2015年</option>
+					<option value="2015" selected>2015年</option>
 				</select>
 				<select class="patient-month">
 					<option value="01">1月</option>
@@ -64,7 +64,7 @@
 					<option value="05">5月</option>
 					<option value="06">6月</option>
 					<option value="07">7月</option>
-					<option value="08">8月</option>
+					<option value="08" selected>8月</option>
 					<option value="09">9月</option>
 					<option value="10">10月</option>
 					<option value="11">11月</option>
@@ -72,11 +72,11 @@
 				</select>
 				<div class="jump-link">跳转</div>
 			</div>
-			<div class="patient-pagination-wrapper">
+			<div class="pagination-wrapper">
 				<!-- 时间列表总条目数 START-->
 				<input type="hidden" value="50" id="advice_count" />
 				<!-- 时间列表总条目数 END-->
-				<ul class="pagination-container">
+				<ul class="pagination-container list-pagination" id="">
 					<li class="page-num active">上一页</li>
 					<li class="page-num">#n</li>
 					<li class="page-num">#n</li>
@@ -164,17 +164,16 @@
 				</div>
 
 				<!-- 分页 START -->
-				<div class="patient-pagination-wrapper">
-					<span class="patient-page-next">下一页</span>
-					<ul>
-						<li class="patient-page-num active">1</li>
-						<li class="patient-page-num">2</li>
-						<li class="patient-page-num">3</li>
-						<li class="patient-page-num">4</li>
-						<li class="patient-page-num">5</li>
-						<li class="patient-page-num">6</li>
+				<div class="pagination-wrapper">
+					<ul class="pagination-container add-list-pagination">
+						<li class="page-num active">上一页</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">#n</li>
+						<li class="page-num">下一页</li>
 					</ul>
-					<span class="patient-page-prev">上一页</span>
 				</div>
 				<!-- 分页 END -->
 			</div>
@@ -184,7 +183,7 @@
 			<div id="advice_input" class="patient-details">
 				<div class="patient-details-table table-details-input">
 					<div class="table-details-head">
-						凌晓辉医嘱
+						<span id="advice_input_name"></span>医嘱
 					</div>
 					<div class="table-details-content">
 						<textarea id="advice_content" class="textarea"></textarea>
@@ -203,15 +202,32 @@
 		</div>
 	</div>
 	<script type="text/template" id="advice_template">
-		<div class="table-tr table-tr-clickable">
-			<div class="table-td table-td01">
-				任性
+		<% for(var i = 0; i < array.length; i ++){ %>
+			<div class="table-tr table-tr-clickable">
+				<div class="table-td table-td01">
+					<%- array[i]['name'] %>
+				</div>
+				<div class="table-td table-td02">
+					<%- array[i]['content'] %>
+				</div>
 			</div>
-			<div class="table-td table-td02">
-				好好吃药，别着凉了！
-			</div>
-		</div>
+		<% } %>
 	</script>
+
+	<script type="text/template" id="advice_list_template">
+		<% for(var i = 0; i < array.length; i ++){ %>
+			<div class="table-details-tr">
+				<span class="table-details-name">
+					<%- array[i]["user_name"] %>
+				</span>
+				<button class="table-details-add" data-record-id="<%- array[i]['record_id'] %>">
+					<img src="/images/doc_web/u12.png" alt="" class="bg">
+					<span class="bg">增加医嘱</span>
+				</button>
+			</div>
+		<% } %>
+	</script>
+
 @stop
 
 

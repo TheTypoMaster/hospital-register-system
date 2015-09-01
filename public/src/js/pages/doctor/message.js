@@ -15,6 +15,19 @@ $(document).ready(function() {
 			msgDetails.find("span").html($(this).find(".table-td02").html());
 			patientMask.fadeIn();
 			patientDetailsMask.fadeIn();
+			//修改信息阅读状态
+			if($(this).attr("data-status") == 3){
+				$.get("/", {
+					id: $(this).attr("data-id")
+				},function(){
+					if(data["error_code"] == 0){
+						$(this).css({
+							"color": "#969696"
+						}).attr("data-status","4");
+					}
+				});
+			}
+
 		});
 	}
 
@@ -39,7 +52,7 @@ $(document).ready(function() {
 			date: msgYear + "-" + msgMonth
 		}, function (data){
 			msgContent.html("");
-			addItems(data, "#message_template");
+			addItems(data["messages"], "#message_template");
 			showContent();
 		});
 	}
@@ -63,7 +76,6 @@ $(document).ready(function() {
 	jump.on("click", function (){
 		var date = "";
 		var tag = 1;
-		console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
 		//请求指定页数据
@@ -72,7 +84,7 @@ $(document).ready(function() {
 			date: msgYear + "-" + msgMonth
 		}, function (data){
 			msgContent.html("");
-			addItems(data, "#message_template");
+			addItems(data["messages"], "#message_template");
 			showContent();
 
 			$("#message_pagination").html(paginationCodes);
@@ -80,7 +92,7 @@ $(document).ready(function() {
 				onSelect: function(page) {
 
 					loadData(page);
-					
+
 				}
 			});
 		});

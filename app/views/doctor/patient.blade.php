@@ -28,7 +28,7 @@
 			</div>
 			<!-- 表格内容 START-->
 			<div class="table-container">
-				<div class="patient-tr patient-table-content">
+				<!-- <div class="patient-tr patient-table-content">
 					<div class="patient-td">04月27日</div>
 					<div class="patient-td">
 						<button type="button" disabled="disabled" class="patient-td-btn">
@@ -42,7 +42,7 @@
 							<span class="bg">查看病人</span>
 						</button>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<!-- 表格内容 END-->
 		</div>
@@ -98,17 +98,17 @@
 					</div>
 					<!-- 病人列表 START -->
 					<div class="patient-details-container">
-						<div class="patient-details-tr patient-details-content">
+						<!-- <div class="patient-details-tr patient-details-content">
 							<div class="patient-details-td patient-details-td01">08：20</div>
 							<div class="patient-details-td patient-details-td02">阿拉登</div>
-						</div>
+						</div> -->
 					</div>
 					<!-- 病人列表 END -->
 				</div>
 
 				<div class="patient-pagination-wrapper pagination-wrapper">
 					<!-- 病人列表总条目数 START-->
-					<input type="hidden" value="变量" id="patient_count" />
+					<input type="hidden" value="50" id="patient_count" />
 					<!-- 病人列表总条目数 END-->
 					<ul class="details-pagination-container">
 						<li class="page-num active">上一页</li>
@@ -128,19 +128,23 @@
 	<script type="text/template" id="patient_date_list">
 		<% for(var d in array){ %>
 		<div class="patient-tr patient-table-content">
-			<div class="patient-td"><%- array[d]["date"] %></div>
+			<div class="patient-td"><%- d %></div>
+			<% if(array[d][0]){ %>
 			<div class="patient-td">
-				<button data-id="<%- array[d]['id'] %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d][0]['id'] %>" data-period="<%- array[d][0]['period']%>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
 			</div>
+			<% } %>
+			<% if(array[d][1]){ %>
 			<div class="patient-td">
-				<button data-id="<%- array[d]['id'] %>" type="button" class="patient-td-btn">
+				<button data-id="<%- array[d][1]['id'] %>" data-period="<%- array[d][1]['period']%>" type="button" class="patient-td-btn">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">查看病人</span>
 				</button>
 			</div>
+			<% } %>
 		</div>
 		<% } %>
 	</script>
@@ -148,10 +152,10 @@
 
 	<!-- 病人列表 START -->
 	<script type="text/template" id="patient_list">
-		<% for(var i = 0; i < array.length; i ++){ %>
+		<% for(var i = 0; i < array.length; i ++){ array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); %>
 		<div class="patient-details-tr patient-details-content">
 			<div class="patient-details-td patient-details-td01"><%- array[i]["time"] %></div>
-			<div class="patient-details-td patient-details-td02"><%- content[i]["name"] %></div>
+			<div class="patient-details-td patient-details-td02"><%- array[i]["name"] %></div>
 		</div>
 		<% } %>
 	</script>
