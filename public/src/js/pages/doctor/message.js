@@ -9,32 +9,31 @@ $(document).ready(function() {
 	    count = $("#message_count").val(),
 	    paginationCodes = $("#message_pagination").html();
 
-	function showContent (){
-		$(".table-tr-clickable").unbind();
-		$(".table-tr-clickable").on("click", function() {
-			var _this = $(this);
-			// msgDetails.find("span").html(_this.find(".table-td02").html());
-			// patientMask.fadeIn();
-			// patientDetailsMask.fadeIn();
-			//修改信息阅读状态
-			if(_this.attr("data-status") == 3){
-				$.get("/doc/modify_message_status", {
-					message_id: _this.attr("data-id"),
-					status: 4
-				},function (data){
-					if(data["error_code"] == 0){
-						_this.css({
-							"color": "#969696"
-						}).attr("data-status","4");
-					}
-					else{
-						alert(data["message"]);
-					}
-				});
-			}
+	//显示内容
+	$(document).on("click", ".table-tr-clickable", function() {
+		var _this = $(this);
+		// console.log("点击");
+		// msgDetails.find("span").html(_this.find(".table-td02").html());
+		// patientMask.fadeIn();
+		// patientDetailsMask.fadeIn();
+		//修改信息阅读状态
+		if(_this.attr("data-status") == 3){
+			$.get("/doc/modify_message_status", {
+				message_id: _this.attr("data-id"),
+				status: 4
+			},function (data){
+				if(data["error_code"] == 0){
+					_this.css({
+						"color": "#969696"
+					}).attr("data-status","4");
+				}
+				else{
+					alert(data["message"]);
+				}
+			});
+		}
 
-		});
-	}
+	});
 
 	//隐藏浮层
 	patientMask.on("click", function() {
@@ -58,7 +57,6 @@ $(document).ready(function() {
 		}, function (data){
 			msgContent.html("");
 			addItems(data["messages"], "#message_template");
-			showContent();
 		});
 	}
 	//分页插件使用
@@ -90,7 +88,6 @@ $(document).ready(function() {
 		}, function (data){
 			msgContent.html("");
 			addItems(data["messages"], "#message_template");
-			showContent();
 
 			$("#message_pagination").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
@@ -102,29 +99,6 @@ $(document).ready(function() {
 			});
 		});
 	});
-
-	//测试数据
-	// var data = [{
-	// 	"date": 2010-04,
-	// 	"content": "就离开igewr 桑德菲杰拉萨的范德萨反垄断法" 
-	// },{
-	// 	"date": 2010-04,
-	// 	"content": "afdsdsff风格的风格巨亏ioipio" 
-	// },{
-	// 	"date": 2010-04,
-	// 	"content": "靠进口框架结构的范德萨反垄断法" 
-	// },{
-	// 	"date": 2010-04,
-	// 	"content": "就我们都是中国人" 
-	// },{
-	// 	"date": 2010-04,
-	// 	"content": "德国是个国家" 
-	// },{
-	// 	"date": 2010-04,
-	// 	"content": "就离开igewr 桑德菲杰拉萨的范德萨反垄断法" 
-	// }];
-	// addItems(data, "#message_template");
-	// showContent();
 
 	
 
