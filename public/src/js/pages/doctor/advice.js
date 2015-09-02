@@ -79,7 +79,7 @@ $(document).ready(function() {
 			adviceDetails.css("display", "none");
 
 			adviceInputName.html($(this).prev().html()); 
-			adviceContent.val("");
+			
 			adviceInput.fadeIn();
 			showPannel();
 			adviceSub(recordId);
@@ -108,6 +108,7 @@ $(document).ready(function() {
 					// patientMask.fadeOut();
 					// patientDetailsMask.fadeOut();
 					adviceDetails.css("display", "none");
+					adviceContent.val("");
 					adviceList.css("display", "block");
 					showPannel();
 				}
