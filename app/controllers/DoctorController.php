@@ -207,7 +207,6 @@ class DoctorController extends BaseController {
         }
 
         $record->advice = $advice;
-
         if( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
@@ -234,6 +233,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 4, 'message' => '参数错误' ));
         }
 
+        $record->status = $status;
         if ( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '修改失败' ));
         }
