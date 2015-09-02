@@ -20,14 +20,16 @@
 				</div>
 				<form action="/" method="post" class="login-form">
 					<div class="login-input login-input-name">
-						<img class="bg" src="/images/doc_web/login_input_bg.png" alt="">
-						<img class="login-icon" src="/images/doc_web/login_name.png">
+						<!-- <img class="bg" src="/images/doc_web/login_input_bg.png" alt=""> -->
+						
 						<input name="account" type="text" placeholder="用户名">
+						<img class="login-icon" src="/images/doc_web/login_name.png">
 					</div>
 					<div class="login-input login-input-psd">
-						<img class="bg" src="/images/doc_web/login_input_bg.png" alt="">
-						<img class="login-icon" src="/images/doc_web/login_psd.png">
+						<!-- <img class="bg" src="/images/doc_web/login_input_bg.png" alt=""> -->
+						
 						<input name="password" type="password" placeholder="密码">
+						<img class="login-icon" src="/images/doc_web/login_psd.png">
 					</div>
 					<div class="login-words">
 						<a href="/">
