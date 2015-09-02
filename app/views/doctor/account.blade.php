@@ -54,7 +54,7 @@
 			</div>
 			<div class="account-avatar-container">
 				<div class="account-avatar">
-					<img src="/images/doc_web/u54.jpg">
+					<img src="{{{ $photo }}}">
 				</div>
 				<div id="account_upload_btn" class="account-upload-btn">
 					<form action="/doc/upload_portrait" method="post" enctype="multipart/form-data" id="portrait">

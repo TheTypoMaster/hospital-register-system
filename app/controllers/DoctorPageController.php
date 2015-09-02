@@ -15,7 +15,7 @@ class DoctorPageController extends BaseController {
 
     public function account(){
 
-        $doctor = Doctor::where( 'user_id', Session::get( 'user.id' ) )->first();
+        $doctor = Doctor::where( 'user_id', Session::get( 'user.id' ) )->first(); 
 
         $hospital_id = $doctor->department->hospital_id;
         $default_department = $doctor->department_id;
@@ -23,11 +23,13 @@ class DoctorPageController extends BaseController {
 
         $render_data = array(
             'name'                => $doctor->name,
+            'photo'               => $doctor->photo,
             'title'               => $doctor->title,
             'specialty'           => strip_tags( $doctor->specialty ),
             'description'         => strip_tags( $doctor->description ),
             'default_department'  => $doctor->department_id,
-            'departments'         => $departments
+            'departments'         => $departments,
+            'top_photo'           => Session::get( 'doctor.photo' )
         );
 
         return View::make( 'doctor.account', $render_data );
@@ -291,6 +293,7 @@ class DoctorPageController extends BaseController {
             'year'        => $year,
             'month'       => $month,
             'name'        => Session::get( 'doctor.name' ),
+            'top_photo'   => Session::get( 'doctor.photo' ),
             'total_page'  => $total_page
         );
     }

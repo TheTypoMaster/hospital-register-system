@@ -26,7 +26,7 @@
                     </a> -->
                 <!-- </button> -->
                 <div class="top-right">
-                    <img class="photo" src="/images/doc_web/u8.png" alt="王磊">
+                    <img class="photo" src="{{{ $top_photo }}}">
                     <span class="name">{{{ $name }}}</span>
                 </div>
             </div>

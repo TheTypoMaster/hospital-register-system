@@ -87,6 +87,7 @@ class DoctorController extends BaseController {
         Session::put( 'user.id', $user->id );
         Session::put( 'doctor.id', $doctor->id );
         Session::put( 'doctor.name', $doctor->name );
+        Session::put( 'doctor.photo', $doctor->photo );
 
         return Response::json(array( 'error_code' => 0, 'message' => '登录成功' ));
     }
@@ -94,7 +95,9 @@ class DoctorController extends BaseController {
     public function logout(){
 
         Session::forget( 'user.id' );
+        Session::forget( 'doctor.id' );
         Session::forget( 'doctor.name' );
+        Session::forget( 'doctor.photo' );
 
         return Redirect::to( '/doc/login' );
     }
@@ -168,14 +171,16 @@ class DoctorController extends BaseController {
 
             $doctor->photo = $photo_path.$photo_full_name;
 
-            DB::transaction(function() use ( $doctor ){
+            DB::transaction(function() use ( $doctor, $previous_photo ){
                 $doctor->save();
-            });
 
-            // Save and delete previous photo
-            if ( isset( $previous_photo ) ){
-                File::delete( $previous_photo );
-            }
+                // Save and delete previous photo
+                if ( isset( $previous_photo ) ){
+                    File::delete( $previous_photo );
+                }
+
+                Session::put( 'doctor.photo', $doctor->photo );
+            });
 
             $portrait->move( public_path().$photo_path , $photo_full_name );
         }
