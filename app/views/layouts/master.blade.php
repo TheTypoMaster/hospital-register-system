@@ -29,7 +29,7 @@
         @show
 
         @section('js-lib')
-            <script src="/dis/js/lib/jquery-1.11.2.min.js"></script>
+            <script src="/dist/js/lib/jquery-1.11.2.min.js"></script>
         @show
 
         @section('js-common')
