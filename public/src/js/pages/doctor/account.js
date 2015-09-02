@@ -69,16 +69,23 @@ $(document).ready(function() {
 		    room = parseInt("10", $("#account_room option:selected").val()),
 		    skill = $("#account_skill").val(),
 		    brief = $("#account_brief").val();
-		    console.log(room);
+		    // console.log(room);
 	    $.post("/doc/modify_account", {
 	    	name: name,
 	    	title: quality,
 	    	department: room,
 	    	specialty: skill,
 	    	description: brief
-	    },function (msg){
-	    	console.log(msg["error_code"]);
-	    }, "json");
+	    }, function (msg){
+	    	if(msg["error_code"] == 0){
+	    		$(".top-right .name").text(name);
+	    		alert("修改个人资料成功");
+	    	}
+	    	else{
+	    		alert(msg["message"]);
+	    	}
+	    	// console.log(msg["error_code"]);
+	    });
 
 
 	    accountInput.addClass("account-no-edit").attr("readonly", "readonly");
@@ -103,7 +110,7 @@ $(document).ready(function() {
 		type: "post",
 		done: function(e, data){
 			console.log(data.result.path);
-			$(".account-avatar img").attr("src", data.result.path);
+			$(".account-avatar img, .top-right .photo").attr("src", data.result.path);
 		}
 	});
 

@@ -80,13 +80,21 @@
 		</div>
 	</div>
 	<script type="text/template" id="message_template">
-		<% for(var i = 0; i < array.length; i++){ if(array[i]["status"] == 3) var style='style="color:#14aef4;"' %>
-			<div class="table-tr table-tr-clickable" data-status="<%- array[i]['status'] %>" data-id="<%- array[i]['id'] %>" <%- style %> >
+		<% for(var i = 0; i < array.length; i++){ 
+			if(array[i]["status"] == 3){
+				var style = "inline-block;" ;
+			} 
+			else{
+				var style = "none;";
+			}
+		%>
+			<div class="table-tr table-tr-clickable" data-status="<%- array[i]['status'] %>" data-id="<%- array[i]['id'] %>" >
 				<div class="table-td table-td01">
 					<%- array[i]["time"] %>
 				</div>
 				<div class="table-td table-td02" >
 					<%- array[i]["content"] %>
+					<span class="message-tag" style="display:<%- style %>" >•</span>
 				</div>
 			</div>
 		<% } %>
