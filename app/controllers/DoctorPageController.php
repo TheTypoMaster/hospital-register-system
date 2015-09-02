@@ -294,6 +294,20 @@ class DoctorPageController extends BaseController {
 
     public function message(){
 
-        return View::make( 'doctor.message', array( 'name' => Session::get( 'doctor.name' ) ) );
+        $date_array = getdate();
+
+        $year = $date_array['year'];
+        $month = $date_array['mon'];
+
+        $timestamp_start = strtotime( "$year-$month-01 00:00:00" );
+        $timestamp_end   = strtotime( '+1 months', $timestamp_start );
+
+        $paginator = $this->__get_messages( array( 3, 4 ), $timestamp_start, $timestamp_end );
+
+        return View::make( 'doctor.message', 
+                            array( 'year_start' => 2015,
+                                   'year'  => $year, 'month' => $month, 
+                                   'total' => $paginator->getTotal(),
+                                   'name'  => Session::get( 'doctor.name' ) ) );
     }
 }

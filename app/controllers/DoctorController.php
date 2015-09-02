@@ -125,7 +125,7 @@ class DoctorController extends BaseController {
             }
         }
 
-        if ( !$doctor->save() ){
+        if( !$doctor->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '保存失败' ));
         }
 
@@ -155,7 +155,7 @@ class DoctorController extends BaseController {
 
         $user_id = Session::get( 'user.id' );
 
-        $doctor = Doctor::where( 'user_id', $user_id )->first();
+        $doctor = Doctor::find( Session::get( 'doctor.id' ) );
 
         try{    
 
@@ -168,9 +168,9 @@ class DoctorController extends BaseController {
 
             $doctor->photo = $photo_path.$photo_full_name;
 
-            if ( !$doctor->save() ){
-                return Response::json(array( 'error_code' => 5, 'message' => '错误' ));
-            }
+            DB::transaction(function() use ( $doctor ){
+                $doctor->save();
+            });
 
             // Save and delete previous photo
             if ( isset( $previous_photo ) ){
@@ -182,7 +182,7 @@ class DoctorController extends BaseController {
 
         catch( Exception $e ){
 
-            return Response::json(array( 'error_code' => 1, 'message' => $e->getMessage() ));
+            return Response::json(array( 'error_code' => 1, 'message' => '保存失败' ));
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '保存成功', 'path' => $doctor->photo, 'size' => $file_size ));
@@ -191,20 +191,25 @@ class DoctorController extends BaseController {
     public function modify_advice(){
 
         if ( !Input::has( 'advice' ) ){
-            return Response::json(array( 'error_code' => 1, 'message' => '不能为空' ));
+            return Response::json(array( 'error_code' => 2, 'message' => '不能为空' ));
         }
 
         $advice = Input::get( 'advice' );
         $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) )->first();
 
         if ( !isset( $record ) ){
-            return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号' ));
+            return Response::json(array( 'error_code' => 3, 'message' => '不存在该挂号' ));
+        }
+
+        // 检查该就诊记录是否该医生的
+        if ( $record->doctor_id != Session::get( 'doctor.id' ) ){
+            return Response::json(array( 'error_code' => 4, 'message' => '无法修改该挂号' ));
         }
 
         $record->advice = $advice;
 
-        if ( !$record->save() ){
-            return Response::json(array( 'error_code' => 3, 'message' => '添加失败' ));
+        if( !$record->save() ){
+            return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '添加成功' ));
@@ -212,24 +217,28 @@ class DoctorController extends BaseController {
 
     public function modify_status(){
 
-        $record = RegisterRecord::find( Input::get( 'record_id' ) )->where( 'doctor_id', Session::get( 'doctor.id' ) )->first();
+        $record = RegisterRecord::find( Input::get( 'record_id' ) );
 
         // 是否存在该记录
         if ( !isset( $record ) ){
             return Response::json(array( 'error_code' => 2, 'message' => '不存在该挂号' ));
         }
 
-        $status = (int)(Input::get( 'status' ));
-        if ( $status > 2 || $status < 0 ){
-            return Response::json(array( 'error_code' => 3, 'message' => '参数错误' ));
+        // 检查该就诊记录是否该医生的
+        if ( $record->doctor_id != Session::get( 'doctor.id' ) ){
+            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号' ));
         }
 
-        $record->status = $status;
+        $status = (int)(Input::get( 'status' ));
+        if ( $status > 2 || $status < 0 ){
+            return Response::json(array( 'error_code' => 4, 'message' => '参数错误' ));
+        }
+
         if ( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '修改失败' ));
         }
 
-        return Response::json(array( 'error_code' => 0, 'message' => '修改成功' ));
+        return Response::json(array( 'error_code' => 0, 'message' => '修改成功', 'status' => $record->status ));
     }
 
     public function modify_return(){
@@ -243,7 +252,7 @@ class DoctorController extends BaseController {
 
         // 检查该就诊记录是否该医生的
         if ( $record->doctor_id != Session::get( 'doctor.id' ) ){
-            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号', '1' => Session::get( 'doctor.id' ), '2' => $record->doctor_id ));
+            return Response::json(array( 'error_code' => 3, 'message' => '无法修改该挂号' ));
         }
 
         // 检查就诊状态
@@ -254,7 +263,7 @@ class DoctorController extends BaseController {
         $record->return_date = Input::get( 'date' );
         $record->status      = 2;                       // 修改状态 --> 2 - 需复诊
 
-        if ( !$record->save() ){
+        if( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
         }
 
@@ -267,20 +276,20 @@ class DoctorController extends BaseController {
         $status = (int)(Input::get( 'status' ));
 
         if ( $status != 3 || $status != 4 ){
-            return Response::json(array( 'error_code' => 1, 'message' => '参数错误' ));
+            return Response::json(array( 'error_code' => 2, 'message' => '参数错误' ));
         }
 
         if ( !isset( $message ) ){
-            return Response::json(array( 'error_code' => 2, 'message' => '不存在该消息' ));
+            return Response::json(array( 'error_code' => 3, 'message' => '不存在该消息' ));
         }
 
         if ( $message->to_uid != Session::get( 'user.id' ) ){
-            return Response::json(array( 'error_code' => 3, 'message' => '无效消息' ));
+            return Response::json(array( 'error_code' => 4, 'message' => '无效消息' ));
         }
 
         $message->status = $status;
-
-        if ( !$message->save() ){
+        
+        if( !$message->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '修改失败' ));
         }
 
