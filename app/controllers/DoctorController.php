@@ -280,7 +280,7 @@ class DoctorController extends BaseController {
         $message = Message::find( Input::get( 'message_id' ) );
         $status = (int)(Input::get( 'status' ));
 
-        if ( $status != 3 || $status != 4 ){
+        if ( $status != 3 && $status != 4 ){
             return Response::json(array( 'error_code' => 2, 'message' => '参数错误' ));
         }
 
