@@ -18,14 +18,13 @@ $(document).ready(function() {
 		// patientDetailsMask.fadeIn();
 		//修改信息阅读状态
 		if(_this.attr("data-status") == 3){
-			$.get("/doc/modify_message_status", {
+			$.post("/doc/modify_message_status", {
 				message_id: _this.attr("data-id"),
 				status: 4
 			},function (data){
 				if(data["error_code"] == 0){
-					_this.css({
-						"color": "#969696"
-					}).attr("data-status","4");
+					_this.find(".message-tag").css("display", "none");
+					_this.attr("data-status","4");
 				}
 				else{
 					alert(data["message"]);
