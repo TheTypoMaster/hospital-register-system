@@ -102,7 +102,8 @@ $(document).ready(function() {
 		url: "/doc/upload_portrait",
 		type: "post",
 		done: function(e, data){
-			console.log("done!");
+			console.log(data.result.path);
+			$(".account-avatar img").attr("src", data.result.path);
 		}
 	});
 
