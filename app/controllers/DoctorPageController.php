@@ -59,7 +59,8 @@ class DoctorPageController extends BaseController {
 
         $schedules = Schedule::where( 'doctor_id', Session::get( 'doctor.id' ) )
                              ->where( 'date', 'like', Input::get( 'date', date( 'Y-m') ).'%' )
-                             ->orderBy( 'date' )->paginate( $this->default_num_per_page );
+                             ->orderBy( 'date' )->get();
+                             //->paginate( $this->default_num_per_page );
 
         $schedules_map = array();
 
@@ -74,18 +75,23 @@ class DoctorPageController extends BaseController {
             $schedules_map[ $schedule->date ][ $schedule->period ] = array(
                 'id' => $schedule->id,
                 'period' => $schedule->period,
-                'status' => false
             );
-
-            foreach( $schedule->periods as $period ){
-                if ( $period->current > 0 ){
-                    $schedules_map[ $schedule->date ][ $schedule->period ]['status'] = true;
-                    break;
-                }
-            }
         }
 
-        return Response::json(array( 'error_code' => 0, 'totality' => $schedules->getTotal(), 'result' => $schedules_map ));
+        $page = (int)(Input::get( 'page' ));
+        $schedule_count = count( $schedules_map );
+        $max_page = $schedule_count % $this->default_num_per_page;
+
+        if ( $page > $max_page ){
+            $page = $max_page;
+        }
+        if ( $page < 1 ){
+            $page = 1;
+        }
+
+        $result = array_slice( $schedules_map, ( $page - 1 ) * $this->default_num_per_page, $this->default_num_per_page  );
+
+        return Response::json(array( 'error_code' => 0, 'totality' => $schedule_count, 'schedules' => $result ));
     }
 
     public function get_records(){
@@ -145,39 +151,12 @@ class DoctorPageController extends BaseController {
 
     public function patient(){
 
-        $schedules = Schedule::where( 'doctor_id', Session::get( 'doctor.id' ) )
-                             ->where( 'date', 'like', Input::get( 'date', date( 'Y-m') ).'%' )
-                             ->orderBy( 'date' )->paginate( 7 );
+        $total_page = Schedule::select( 'id' )
+                              ->where( 'doctor_id', Session::get( 'doctor.id' ) )
+                              ->where( 'date', 'like', Input::get( 'date', date( 'Y-m') ).'%' )
+                              ->orderBy( 'date' )->count();
 
-        $schedules_map = array();
-
-        foreach( $schedules as $schedule ){
-
-            $date_parse = date( 'm-d', strtotime( $schedule->date ) );
-
-            if ( !array_key_exists( $schedule->date, $schedules_map ) ){
-                $schedules_map[ $schedule->date ] = array();
-            }
-
-            $schedules_map[ $schedule->date ][ $schedule->period ] = array(
-                'id' => $schedule->id,
-                'period' => $schedule->period,
-                'status' => false
-            );
-
-            foreach( $schedule->periods as $period ){
-                if ( $period->current > 0 ){
-                    $schedules_map[ $schedule->date ][ $schedule->period ]['status'] = true;
-                    break;
-                }
-            }
-        }
-
-//        return Response::json(array( 'error_code' => 0, 'result' => $schedules_map ));
-
-        return View::make( 'doctor.patient',
-                            array( 'name' => Session::get( 'doctor.name' ),
-                                   'schedules' => $schedules_map ) );
+        return View::make( 'doctor.patient', $this->__get_default_pagination_info( $total_page ) );
     }
 
     public function get_comments(){
@@ -189,53 +168,46 @@ class DoctorPageController extends BaseController {
                            ->Where( 'comments.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
                            ->orderBy( 'comments.created_at' )->paginate( $this->default_num_per_page );
 
-        //var_dump( DB::getQueryLog() );
-
         return Response::json(array( 'error_code' => 0, 'totality' => $comments->getTotal(), 'comments' => $comments->getItems() ));
     }
 
     public function comment(){
 
-        $comments = Comment::selectRaw( 'comments.content as content, users.id as user_id, users.nickname as user_name' )
-                           ->join( 'register_records', 'comments.record_id', '=', 'register_records.id' )
-                           ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
-                           ->join( 'users', 'register_records.user_id', '=', 'users.id' )
-                           ->where( 'doctors.id', Session::get( 'doctor.id' ) )
-                           ->Where( 'comments.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                           ->orderBy( 'comments.created_at' )->paginate( $this->default_num_per_page );
+        $total_page = Comment::join( 'register_records', 'comments.record_id', '=', 'register_records.id' )
+                             ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
+                             ->join( 'users', 'register_records.user_id', '=', 'users.id' )
+                             ->where( 'doctors.id', Session::get( 'doctor.id' ) )
+                             ->Where( 'comments.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
+                             ->orderBy( 'comments.created_at' )->count();
 
-        return View::make( 'doctor.comment',  
-                            array( 'name' => Session::get( 'doctor.name' ),
-                                   'total' => $comments->getTotal() ) );
+        return View::make( 'doctor.comment',  $this->__get_default_pagination_info( $total_page ) );
     }
 
     public function get_advice(){
 
-        $register_records = RegisterRecord::selectRaw( 'register_records.id as id, register_records.advice as content, users.real_name as name' )
-                                          ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
-                                          ->join( 'users', 'register_records.user_id', '=', 'users.id' )
-                                          ->where( 'status', '>', 0 )
-                                          ->where( 'doctors.id', Session::get( 'doctor.id' ) )
-                                          ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                                          ->WhereNotNull( 'advice' )
-                                          ->paginate( $this->default_num_per_page );
+        $paginator = RegisterRecord::selectRaw( 'register_records.id as id, register_records.advice as content, users.real_name as name' )
+                                   ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
+                                   ->join( 'users', 'register_records.user_id', '=', 'users.id' )
+                                   ->where( 'status', '>', 0 )
+                                   ->where( 'doctors.id', Session::get( 'doctor.id' ) )
+                                   ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
+                                   ->WhereNotNull( 'advice' )
+                                   ->paginate( $this->default_num_per_page );
 
-        return Response::json(array( 'error_coee' => 0, 'totality' => $register_records->getTotal(), 'advice' => $register_records->getItems() ));
+        return Response::json(array( 'error_coee' => 0, 'totality' => $paginator->getTotal(), 'advice' => $paginator->getCollection() ));
     }
 
     public function advice(){
 
-        $register_records = RegisterRecord::selectRaw( 'register_records.id as id, register_records.advice as content, users.real_name as name' )
-                                          ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
-                                          ->join( 'users', 'register_records.user_id', '=', 'users.id' )
-                                          ->where( 'status', '>', 0 )
-                                          ->where( 'doctors.id', Session::get( 'doctor.id' ) )
-                                          ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                                          ->WhereNotNull( 'advice' )->paginate( $this->default_num_per_page );
+        $total_page = RegisterRecord::join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
+                               ->join( 'users', 'register_records.user_id', '=', 'users.id' )
+                               ->where( 'status', '>', 0 )
+                               ->where( 'doctors.id', Session::get( 'doctor.id' ) )
+                               ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
+                               ->WhereNotNull( 'advice' )
+                               ->count();
         
-        return View::make( 'doctor.advice', 
-                            array( 'name' => Session::get( 'doctor.name' ),
-                                    'records' => $register_records ) );
+        return View::make( 'doctor.advice', $this->__get_default_pagination_info( $total_page ) );
     }
 
     public function get_null_advice(){
@@ -304,10 +276,22 @@ class DoctorPageController extends BaseController {
 
         $paginator = $this->__get_messages( array( 3, 4 ), $timestamp_start, $timestamp_end );
 
-        return View::make( 'doctor.message', 
-                            array( 'year_start' => 2015,
-                                   'year'  => $year, 'month' => $month, 
-                                   'total' => $paginator->getTotal(),
-                                   'name'  => Session::get( 'doctor.name' ) ) );
+        return View::make( 'doctor.message', $this->__get_default_pagination_info( $paginator->getTotal() ) );
+    }
+
+    protected function __get_default_pagination_info( $total_page ){
+
+        $date_array = getdate();
+
+        $year = $date_array['year'];
+        $month = $date_array['mon'];
+
+        return array(
+            'year_start'  => 2015,
+            'year'        => $year,
+            'month'       => $month,
+            'name'        => Session::get( 'doctor.name' ),
+            'total_page'  => $total_page
+        );
     }
 }

@@ -23,9 +23,7 @@ class chat_handler( base_handler ):
 
     def __find_users( self, user_id ):
 
-        sql = 'select id, nickname, photo from users where id <> {current}'.format( current = user_id )
-
-        print sql
+        sql = 'select id, real_name, photo from users where id <> {current}'.format( current = user_id )
 
         self.mysql_cursor.execute( sql )
 
@@ -33,7 +31,7 @@ class chat_handler( base_handler ):
 
     def __get_user_info( self, user_id ):
 
-        sql = 'select id, nickname, photo from users where id = {user_id}'.format( user_id = user_id )
+        sql = 'select id, photo, real_name from users where id = {user_id}'.format( user_id = user_id )
 
         self.mysql_cursor.execute( sql )
 
@@ -47,8 +45,6 @@ class chat_handler( base_handler ):
         sql = 'insert into messages (from_uid, to_uid, timestamp, content, status) \
                values ({from_uid}, {to_uid}, {timestamp}, "{content}", {status})'.format( 
                 from_uid = from_uid, to_uid = to_uid, timestamp = timestamp, content = content, status = init_status )
-
-        print sql
 
         try:
             self.mysql_cursor.execute( sql )
@@ -85,7 +81,7 @@ class chat_handler( base_handler ):
             'get':{
                 'recieve': self.recieve,
                 'record': self.record,
-                'user_info': self.user_info,
+                'get_user_info': self.get_user_info,
                 'validate_login': self.validate_login
             },
             'post': {
@@ -180,7 +176,7 @@ class chat_handler( base_handler ):
                 results = list( messages )
                 break
 
-            yield tornado.gen.sleep( 0.005 )
+            yield tornado.gen.sleep( 0.05 )
             current_timestamp = int( time.time() )
 
         print 'user id: {user_id}, end time: {time}'.format( user_id=self.current_user, time=current_timestamp )
@@ -189,14 +185,24 @@ class chat_handler( base_handler ):
 
         raise tornado.gen.Return( json.dumps( { 'error_code': 0, 'messages': results } ) )
 
+    @tornado.gen.coroutine
+    def get_user_info( self ):
+
+        user_info = self.__get_user_info( self.get_argument( 'user_id' ) )
+
+        results = {
+            'user_id': user_info[0],
+            'photo': user_info[1],
+            'user_name': user_info[2]
+        }
+
+        raise tornado.gen.Return( json.dumps( { 'error_code': 0, 'user_info': results } ) );
+
     def record( self ):
 
         pass
 
-    def user_info( self ):
-
-        pass
-
+    @tornado.gen.coroutine
     def not_found( self ):
 
-        return 'Not Found'
+        raise tornado.gen.Return( 'Not Found');

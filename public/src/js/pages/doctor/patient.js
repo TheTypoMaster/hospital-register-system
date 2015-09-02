@@ -70,7 +70,7 @@ $(document).ready(function(){
 			date: date
 		}, function (data){
 			$(".table-container").html("");
-			addItems(data["result"], "#patient_date_list", ".table-container");
+			addItems(data["schedules"], "#patient_date_list", ".table-container");
 			// showList(".patient-td-btn", data["totality"]);// 显示病人列表
 		});
 	}
@@ -105,7 +105,7 @@ $(document).ready(function(){
 			date: msgYear + "-" + msgMonth
 		}, function (data){
 			tableContainer.html("");
-			addItems(data["result"], "#patient_date_list", ".table-container");
+			addItems(data["schedules"], "#patient_date_list", ".table-container");
 			// showList(".patient-td-btn", data["totality"]);// 显示病人列表
 
 			$(".pagination-container").html(paginationCodes);

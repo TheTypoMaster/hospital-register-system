@@ -9,35 +9,40 @@
     </head>
     <body>
         <div class="chat-body clearfix">
-            <ul class="users-list">
-                {% for id, nickname, photo in users %}
-                <li user_id="{{ id }}" class="user">
-                    {% if photo %}
-                    <img src="{{ photo }}" class="photo" />
-                    {% else %}
-                    <img src="{{ static_url('images/u70.png') }}" class="photo" />
+            <div id="users-list-wrapper">
+                <ul class="users-list" id="users-list">
+                    {% for id, nickname, photo in users %}
+                    <li user_id="{{ id }}" class="user">
+                        {% if photo %}
+                        <img src="{{ photo }}" class="photo" />
+                        {% else %}
+                        <img src="{{ static_url('images/u70.png') }}" class="photo" />
+                        {% end %}
+                        <span class="name">{{ nickname }}</span>
+                    </li>
                     {% end %}
-                    <span class="name">{{ nickname }}</span>
-                </li>
-                {% end %}
-            </ul>
+                </ul>
+            </div>
             <div class="chat-main">
                 <div class="cur-time">17:30</div>
-                {% for id, nickname, photo in users %}
-                <div user_id="{{ id }}" class="msg-wrap hidden">
+                <div class="msg-list">
+                    {% for id, nickname, photo in users %}
+                    <div user_id="{{ id }}" class="msg-wrap hidden">
+                    </div>
+                    {% end %}
                 </div>
-                {% end %}
                 <div user_id="" class="input-wrap">
-                    <div class="tool"></div>
                     <div class="input-inner">
                         <textarea id="message-input" class="input-content"></textarea>
                     </div>
+                    <button class="send-btn">发送</button>
                 </div>
             </div>
         </div>
 
         <script src="{{ static_url( "js/lib/jquery-1.11.2.min.js" ) }}"></script>
         <script src="{{ static_url( "js/lib/lodash.min.js" ) }}"></script>
+        <script src="{{ static_url( "js/lib/iscroll.js" ) }}"></script>
 
         <script src="{{ static_url( "js/index.js" ) }}"></script>
 
@@ -62,21 +67,20 @@
         <!-- 聊天记录模板 start -->
         <script type="text/template" id="message-record-template">
             <div from_uid="<%- from_uid %>" class="msg-wrap">
-                <div class="cur-time"><%- current_time %></div>
-                <div class="msg-inner">
-                </div>
+                <ul class="msg-inner">
+                </ul>
             </div>
         </script>
         <!-- 聊天记录模板 end -->
 
         <!-- 聊天消息模板 start -->
         <script type="text/template" id="message-template">
-            <div class="item <%- classname %> clearfix">
+            <li class="item <%- classname %> clearfix">
                 <img src="<%- photo %>" class="photo" />
                 <div class="msg-scope">
                     <div class="content"><%- content %></div>
                 </div>
-            </div>
+            </li>
         </script>
         <!-- 聊天消息模板 end -->
     </body>
