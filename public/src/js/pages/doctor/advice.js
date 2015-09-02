@@ -1,40 +1,40 @@
 $(document).ready(function() {
 
 	var patientMask = $(".page-mask"),
-	    patientDetailsMask = $(".page-details-mask"),
-	    adviceDetails = $(".patient-details"),
-	    addBtn = $(".add-btn"),
-	    detailsAdd = $(".table-details-add"),
-	    adviceInput = $("#advice_input"),
-	    adviceShow = $("#advice_show"),
-	    adviceList = $("#advice_list"),
-	    adviceListAdd = adviceList.find(".table-details-content"),
-	    adviceSubmit = $(".submit-btn"),
-	    adviceContent = $("#advice_content"),
-	    pagination = $(".list-pagination"),
-	    paginationAdd = $(".add-list-pagination"),
-	    paginationAddHtml = $(".add-list-pagination").html(),
-	    adviceContainer = $(".advice-content-container"),
-	    adviceInputName = $("#advice_input_name");
-	    jump = $(".jump-link"),
-	    paginationCodes = pagination.html(),
-	    curPage = 1;//记录当前页的页码
+		patientDetailsMask = $(".page-details-mask"),
+		adviceDetails = $(".patient-details"),
+		addBtn = $(".add-btn"),
+		detailsAdd = $(".table-details-add"),
+		adviceInput = $("#advice_input"),
+		adviceShow = $("#advice_show"),
+		adviceList = $("#advice_list"),
+		adviceListAdd = adviceList.find(".table-details-content"),
+		adviceSubmit = $(".submit-btn"),
+		adviceContent = $("#advice_content"),
+		pagination = $(".list-pagination"),
+		paginationAdd = $(".add-list-pagination"),
+		paginationAddHtml = $(".add-list-pagination").html(),
+		adviceContainer = $(".advice-content-container"),
+		adviceInputName = $("#advice_input_name");
+		jump = $(".jump-link"),
+		paginationCodes = pagination.html(),
+		curPage = 1;//记录当前页的页码
 
-    function showPannel () {
-    	patientMask.fadeIn();
-    	patientDetailsMask.fadeIn();
-    }
+	function showPannel () {
+		patientMask.fadeIn();
+		patientDetailsMask.fadeIn();
+	}
 
-    //查看医嘱
-    function showContent() {
-    	var checkBtn = $(".table-tr-clickable");
+	//查看医嘱
+	function showContent() {
+		var checkBtn = $(".table-tr-clickable");
 		checkBtn.on("click", function() {
-	    	adviceDetails.css("display", "none");
-	    	adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
-	    	adviceShow.fadeIn();
+			adviceDetails.css("display", "none");
+			adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
+			adviceShow.fadeIn();
 			showPannel();
 		});
-    }
+	}
 	
 	//一级增加医嘱
 	addBtn.on("click", function() {
@@ -66,8 +66,8 @@ $(document).ready(function() {
 
 		});
 
-    	adviceDetails.css("display", "none");
-    	adviceList.fadeIn();
+		adviceDetails.css("display", "none");
+		adviceList.fadeIn();
 		showPannel();
 		
 	});
@@ -76,11 +76,11 @@ $(document).ready(function() {
 		detailsAdd = $(".table-details-add");
 		var recordId = detailsAdd.attr("data-record-id");
 		detailsAdd.on("click", function() {
-	    	adviceDetails.css("display", "none");
+			adviceDetails.css("display", "none");
 
-	    	adviceInputName.html($(this).prev().html()); 
-
-	    	adviceInput.fadeIn();
+			adviceInputName.html($(this).prev().html()); 
+			adviceContent.val("");
+			adviceInput.fadeIn();
 			showPannel();
 			adviceSub(recordId);
 		});
@@ -107,8 +107,8 @@ $(document).ready(function() {
 					alert("添加医嘱成功");
 					// patientMask.fadeOut();
 					// patientDetailsMask.fadeOut();
-			    	adviceDetails.css("display", "none");
-			    	adviceList.css("display", "block");
+					adviceDetails.css("display", "none");
+					adviceList.css("display", "block");
 					showPannel();
 				}
 				else{
@@ -123,7 +123,7 @@ $(document).ready(function() {
 	//加载数据
 	function loadData(page){
 		var date = "",
-		    curPage = page;
+			curPage = page;
 		// console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
