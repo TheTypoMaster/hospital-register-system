@@ -9,32 +9,31 @@ $(document).ready(function() {
 	    count = $("#message_count").val(),
 	    paginationCodes = $("#message_pagination").html();
 
-	function showContent (){
-		$(".table-tr-clickable").off();
-		$(document).on("click", ".table-tr-clickable", function() {
-			var _this = $(this);
-			// msgDetails.find("span").html(_this.find(".table-td02").html());
-			// patientMask.fadeIn();
-			// patientDetailsMask.fadeIn();
-			//修改信息阅读状态
-			if(_this.attr("data-status") == 3){
-				$.get("/doc/modify_message_status", {
-					message_id: _this.attr("data-id"),
-					status: 4
-				},function (data){
-					if(data["error_code"] == 0){
-						_this.css({
-							"color": "#969696"
-						}).attr("data-status","4");
-					}
-					else{
-						alert(data["message"]);
-					}
-				});
-			}
+	//显示内容
+	$(document).on("click", ".table-tr-clickable", function() {
+		var _this = $(this);
+		// console.log("点击");
+		// msgDetails.find("span").html(_this.find(".table-td02").html());
+		// patientMask.fadeIn();
+		// patientDetailsMask.fadeIn();
+		//修改信息阅读状态
+		if(_this.attr("data-status") == 3){
+			$.get("/doc/modify_message_status", {
+				message_id: _this.attr("data-id"),
+				status: 4
+			},function (data){
+				if(data["error_code"] == 0){
+					_this.css({
+						"color": "#969696"
+					}).attr("data-status","4");
+				}
+				else{
+					alert(data["message"]);
+				}
+			});
+		}
 
-		});
-	}
+	});
 
 	//隐藏浮层
 	patientMask.on("click", function() {
@@ -58,7 +57,6 @@ $(document).ready(function() {
 		}, function (data){
 			msgContent.html("");
 			addItems(data["messages"], "#message_template");
-			showContent();
 		});
 	}
 	//分页插件使用
@@ -90,7 +88,6 @@ $(document).ready(function() {
 		}, function (data){
 			msgContent.html("");
 			addItems(data["messages"], "#message_template");
-			showContent();
 
 			$("#message_pagination").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {

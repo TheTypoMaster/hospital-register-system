@@ -16,7 +16,7 @@ $(document).ready(function() {
 		adviceInputName = $("#advice_input_name");
 		jump = $(".jump-link"),
 		paginationCodes = pagination.html(),
-		curPage = 1;//记录当前页的页码
+		recordId = 0;//记录当前页的页码
 
 	function showPannel () {
 		patientMask.fadeIn();
@@ -24,15 +24,12 @@ $(document).ready(function() {
 	}
 
 	//查看医嘱
-	function showContent() {
-		$(".table-tr-clickable").off();
-		$(document).on("click", ".table-tr-clickable", function() {
-			adviceDetails.css("display", "none");
-			adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
-			adviceShow.fadeIn();
-			showPannel();
-		});
-	}
+	$(document).on("click", ".table-tr-clickable", function() {
+		adviceDetails.css("display", "none");
+		adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
+		adviceShow.fadeIn();
+		showPannel();
+	});
 	
 	//一级增加医嘱
 	$(document).on("click", ".add-btn", function() {
@@ -42,7 +39,6 @@ $(document).ready(function() {
 		}, function (data){
 			adviceListAdd.html("");
 			addItems(data["records"], "#advice_list_template", "#advice_list .table-details-content");
-			addBoard();
 
 			paginationAdd.html(paginationAddHtml).easyPaging(data["totality"], {
 				onSelect: function (page){
@@ -57,7 +53,6 @@ $(document).ready(function() {
 					}, function (data){
 						adviceListAdd.html("");
 						addItems(data["records"], "#advice_list_template", "#advice_list .table-details-content");
-						addBoard();
 					});
 				}
 			});
@@ -70,20 +65,15 @@ $(document).ready(function() {
 		
 	});
 	//二级增加医嘱
-	function addBoard (){
-		$(".table-details-add").off();
-		var recordId = $(".table-details-add").attr("data-record-id");
-		$(document).on("click", ".table-details-add", function() {
-			adviceDetails.css("display", "none");
+	$(document).on("click", ".table-details-add", function() {
+		recordId = $(this).attr("data-record-id");
+		adviceDetails.css("display", "none");
 
-			adviceInputName.html($(this).prev().html()); 
-			
-			adviceInput.fadeIn();
-			showPannel();
-			adviceSub(recordId);
-		});
-	}
-	
+		adviceInputName.html($(this).prev().html()); 
+		
+		adviceInput.fadeIn();
+		showPannel();
+	});
 
 	//隐藏浮层
 	patientMask.on("click", function() {
@@ -92,32 +82,28 @@ $(document).ready(function() {
 	});
 
 	//提交医嘱
-	function adviceSub(id) {
-		$(".submit-btn").off();
-		$(document).on("click", ".submit-btn", function() {
-			var content = $(adviceContent).val();
+	$(document).on("click", ".submit-btn", function() {
+		var content = $(adviceContent).val();
 
-			$.post("/doc/modify_advice", {
-				record_id: id,
-				advice: content
-			}, function (data){
-				if(data["error_code"] == 0){
-					alert("添加医嘱成功");
-					// patientMask.fadeOut();
-					// patientDetailsMask.fadeOut();
-					adviceDetails.css("display", "none");
-					adviceContent.val("");
-					adviceList.css("display", "block");
-					showPannel();
-				}
-				else{
-					alert(data["message"]);
-				}
-			});
-
+		$.post("/doc/modify_advice", {
+			record_id: recordId,
+			advice: content
+		}, function (data){
+			if(data["error_code"] == 0){
+				alert("添加医嘱成功");
+				// patientMask.fadeOut();
+				// patientDetailsMask.fadeOut();
+				adviceDetails.css("display", "none");
+				adviceContent.val("");
+				adviceList.css("display", "block");
+				showPannel();
+			}
+			else{
+				alert(data["message"]);
+			}
 		});
-	}
-	
+
+	});
 
 	//加载数据
 	function loadData(page){
@@ -133,7 +119,6 @@ $(document).ready(function() {
 		}, function (data){
 			adviceContainer.html("");
 			addItems(data["advice"], "#advice_template", ".advice-content-container");
-			showContent();
 		});
 	}
 	//分页
@@ -166,7 +151,6 @@ $(document).ready(function() {
 		}, function (data){
 			adviceContainer.html("");
 			addItems(data["advice"], "#advice_template");
-			showContent();
 
 			$(".pagination-container").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {

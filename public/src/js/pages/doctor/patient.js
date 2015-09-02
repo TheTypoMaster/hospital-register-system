@@ -9,56 +9,49 @@ $(document).ready(function(){
 	    patientBtn = $(".patient-td-btn"),
 	    scheduleCount = $("#schedule_count"),
 		patientCount = $("#patient_count"),
+		scheduleId = 0;
 	    jump = $(".jump-link"),
 	    paginationCodes = $(".pagination-container").html();
 
-	//显示病人列表按钮事件
-	function showList (id){
-		$(id).off();
-		$(document).on("click", id, function() {
+	//显示病人列表
+	$(document).on("click", ".patient-td-btn", function() {
 
-			//获取日期
-			var btnParent = $(this).parent().prev().text();
-		    patientDetailsMask.find(".patient-details-td01").html(btnParent);
+		//获取日期
+		var btnParent = $(this).parent().prev().text();
+	    patientDetailsMask.find(".patient-details-td01").html(btnParent);
 
-		    //清除页面数据
-		    $(".patient-details-container").html("");
+		var id = $(this).attr("data-id");
+		$.get("/doc/get_records_bs", {
+			page: 1,
+			schedule_id: id
+		}, function (data){
+			if(data.length !== 0){
+				$(".patient-details-container").html("");
+				addItems(data["patients"], "#patient_list", ".patient-details-container");
+			}
 
-			var id = $(this).attr("data-id");
-			$.get("/doc/get_records_bs", {
-				page: 1,
-				schedule_id: id
-			}, function (data){
-				if(data.length !== 0){
-					$(".patient-details-container").html("");
-					addItems(data["patients"], "#patient_list", ".patient-details-container");
+			detailsPagination.html(detailsPaginationHtml).easyPaging(data["totality"], {
+				onSelect: function(page) {
+					// console.log("当前页：" + page);
+					//请求指定页数据
+					$.get("/doc/get_records_bs", {
+						page: page,
+						schedule_id: id
+					}, function (data){
+						if(data.length !== 0){
+							$(".patient-details-container").html("");
+							addItems(data["patients"], "#patient_list", ".patient-details-container");
+						}
+					});
 				}
-
-				detailsPagination.html(detailsPaginationHtml).easyPaging(data["totality"], {
-					onSelect: function(page) {
-						//清除页面数据
-						$(".patient-details-container").html("");
-						//请求指定页数据
-						$.get("/doc/get_records_bs", {
-							page: page,
-							schedule_id: id
-						}, function (data){
-							if(data.length !== 0){
-								
-								addItems(data["patients"], "#patient_list", ".patient-details-container");
-							}
-						});
-					}
-				});
-
-
 			});
 
-			patientMask.fadeIn();
-			patientDetailsMask.fadeIn();
-			// changeStatus();
+
 		});
-	}
+
+		patientMask.fadeIn();
+		patientDetailsMask.fadeIn();
+	});
 
 	patientMask.on("click", function() {
 		patientMask.fadeOut();
@@ -78,7 +71,7 @@ $(document).ready(function(){
 		}, function (data){
 			$(".table-container").html("");
 			addItems(data["result"], "#patient_date_list", ".table-container");
-			showList(".patient-td-btn", data["totality"]);// 显示病人列表
+			// showList(".patient-td-btn", data["totality"]);// 显示病人列表
 		});
 	}
 
@@ -113,7 +106,7 @@ $(document).ready(function(){
 		}, function (data){
 			tableContainer.html("");
 			addItems(data["result"], "#patient_date_list", ".table-container");
-			showList(".patient-td-btn", data["totality"]);// 显示病人列表
+			// showList(".patient-td-btn", data["totality"]);// 显示病人列表
 
 			$(".pagination-container").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {
@@ -127,23 +120,21 @@ $(document).ready(function(){
 	});
 
 	//修改就诊状态
-	// function changeStatus (){
-		$(document).on("click", ".patient-status-not", function(){
-			var _this = $(this);
-			$.post("/doc/modify_status", {
-				record_id: $(this).parent().attr("data-id"),
-				status: 1
-			}, function (data){
-				if(data["error_code"] == 0){
-					_this.hide();
-				}
-				else{
-					alert(data["message"]);
-				}
-				
-			})
-		});
-	// }
+	$(document).on("click", ".patient-status-not", function(){
+		var _this = $(this);
+		$.post("/doc/modify_status", {
+			record_id: $(this).parent().attr("data-id"),
+			status: 1
+		}, function (data){
+			if(data["error_code"] == 0){
+				_this.hide();
+			}
+			else{
+				alert(data["message"]);
+			}
+			
+		})
+	});
 	
 
 });

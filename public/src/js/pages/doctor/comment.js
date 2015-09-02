@@ -9,14 +9,11 @@ $(document).ready(function() {
 	    paginationCodes = $(".pagination-container").html();
 
     //显示评论内容
-    function showContent (){
-    	$(".table-tr-clickable").off();
-    	$(document).on("click", ".table-details-add", function() {
-    		patientDetailsMask.find(".table-details-content span").html($(this).find(".table-td02").html());
-    		patientMask.fadeIn();
-    		patientDetailsMask.fadeIn();
-    	});
-    }
+	$(document).on("click", ".table-tr-clickable", function() {
+		patientDetailsMask.find(".table-details-content span").html($(this).find(".table-td02").html());
+		patientMask.fadeIn();
+		patientDetailsMask.fadeIn();
+	});
 	
 
 	patientMask.on("click", function() {
@@ -37,7 +34,6 @@ $(document).ready(function() {
 		}, function (data){
 			commentsContent.html("");
 			addItems(data["comments"], "#comment_template");
-			showContent();
 		});
 	}
 	//分页
@@ -70,7 +66,6 @@ $(document).ready(function() {
 		}, function (data){
 			commentsContent.html("");
 			addItems(data["comments"], "#comment_template");
-			showContent();
 
 			$(".pagination-container").html(paginationCodes);
 			pagination.easyPaging(data["totality"], {

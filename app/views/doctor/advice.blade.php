@@ -161,7 +161,7 @@
 	</div>
 	<script type="text/template" id="advice_template">
 		<% for(var i = 0; i < array.length; i ++){ %>
-			<div class="table-tr table-tr-clickable">
+			<div class="table-tr table-tr-clickable" data-id="<%- array[i]['id'] %>">
 				<div class="table-td table-td01">
 					<%- array[i]['name'] %>
 				</div>
