@@ -10,7 +10,7 @@
     <body>
         <div class="chat-body clearfix">
             <div id="users-list-wrapper">
-                <ul class="users-list" id="users-list">
+                <ul class="users-list" id="users-list"><!--
                     {% for id, nickname, photo in users %}
                     <li user_id="{{ id }}" class="user">
                         {% if photo %}
@@ -19,8 +19,9 @@
                         <img src="{{ static_url('images/u70.png') }}" class="photo" />
                         {% end %}
                         <span class="name">{{ nickname }}</span>
+                        <span class="unread-count">5</span>
                     </li>
-                    {% end %}
+                    {% end %}-->
                 </ul>
             </div>
             <div class="chat-main">
@@ -28,6 +29,50 @@
                 <div class="msg-list">
                     {% for id, nickname, photo in users %}
                     <div user_id="{{ id }}" class="msg-wrap hidden">
+                        <ul class="msg-inner">
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                            <li class="item from clearfix">
+                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
+                                <div class="msg-scope">
+                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                     {% end %}
                 </div>

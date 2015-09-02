@@ -54,7 +54,9 @@ class DoctorPageController extends BaseController {
 
         $chat_url = 'http://localhost:8080/chat/validate_login?'.http_build_query( $parameter, '', '&' );
 
-        return View::make( 'doctor.chat', array( 'chat_url' => $chat_url, 'name' => Session::get( 'doctor.name' ) ) );
+        return View::make( 'doctor.chat', array( 'chat_url' => $chat_url, 
+                                                 'name' => Session::get( 'doctor.name' ),
+                                                 'top_photo' => Session::get( 'doctor.photo' ) ) );
     }
 
     public function get_schedules(){

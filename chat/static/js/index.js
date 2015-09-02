@@ -2,9 +2,9 @@
 (function(){
 
     var current_user_info, message_input_area, message_container, 
-        message_template_compiled, record_template_compiled, user_info_template_compiled，
-        user_list_scroll, msg_wrap_list_scroll，
-        users_list = [], msg_wrap_list = [];
+        message_template_compiled, record_template_compiled, user_info_template_compiled,
+        user_list_scroll, msg_wrap_list_scroll,
+        users_list = [], msg_wrap_list = [],
 
     // 长轮询接收消息
     // 获取消息50毫秒后重新接收
@@ -32,10 +32,14 @@
 
         var users_missed = [];
 
+        var selected_user = $('.select').attr('user_id');
+
         for ( var i = 0; i < messages.length; ++i ){
 
             var user_id = messages[i]['from_uid'];
             var user = users_list[ user_id ];
+
+            user.children('.unread-count').show();
 
             new_message = {
                 'classname': 'from',
@@ -84,6 +88,7 @@
         // 添加到聊天列表
         var new_user = $( user_info_template_compiled( user_info ) );
         new_user.appendTo( '.users-list' );
+        new_user.children('.unread-count').show();
         users_list[ user_id ] = new_user;
 
         // 添加相应聊天记录模块
@@ -99,12 +104,11 @@
 
     // 发送消息
     function send_message(){
-        var user = $('.select');
-        var selected_user = user.first();
+        var selected_user = $('.select');
         var content = message_input_area.val();
 
         // 未选择用户 或者 输入区内容为空时不发送
-        if ( user.length == 0 || content.length == 0 ){
+        if ( selected_user.length == 0 || content.length == 0 ){
             return;
         }
 
@@ -188,8 +192,6 @@
         $('.msg-wrap').each(function(index, element) {
             msg_wrap_list[ $(element).attr('user_id') ] = $(element);
         });
-
-        console.log( msg_wrap_list );
         
         // 点击用户名字，显示相应聊天记录框
         $('.user').on('click', '.name', function(event) {
@@ -199,6 +201,10 @@
             var parent = $(this).parent('.user');
 
             parent.siblings('.select').removeClass('select');
+
+            var unread_count_ele = $(this).children('.unread-count');
+            unread_count_ele.html('0');
+            unread_count_ele.hide();
 
             parent.addClass('select');
 
