@@ -26,7 +26,7 @@ module.exports = (grunt)->
             compile:
                 options:
                     livereload: 1337
-                files: ['src/**/*.less', 'src/**/*.js']
+                files: ['src/**/*.less', 'src/**/*.js', '../chat/static/**/*.less']
                 tasks: ['less', 'copy']            
 
         less:
