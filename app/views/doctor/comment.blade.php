@@ -51,32 +51,28 @@
 		<div class="patient-footer">
 			<div class="patient-select">
 				<select class="patient-year">
-					<option value="2010">2010年</option>
-					<option value="2011">2011年</option>
-					<option value="2012">2012年</option>
-					<option value="2013">2013年</option>
-					<option value="2014">2014年</option>
-					<option value="2015" selected="selected">2015年</option>
+					@for ( $ys = $year_start - 1; $ys <= $year + 1; ++$ys )
+						@if ( $ys == $year )
+						<option value="{{{ $ys }}}" selected>{{{ $ys }}}年</option>
+						@else
+						<option value="{{{ $ys }}}">{{{ $ys }}}年</option>
+						@endif
+					@endfor
 				</select>
 				<select class="patient-month">
-					<option value="01">1月</option>
-					<option value="02">2月</option>
-					<option value="03">3月</option>
-					<option value="04">4月</option>
-					<option value="05">5月</option>
-					<option value="06">6月</option>
-					<option value="07">7月</option>
-					<option value="08" selected="selected">8月</option>
-					<option value="09">9月</option>
-					<option value="10">10月</option>
-					<option value="11">11月</option>
-					<option value="12">12月</option>
+					@for ( $m = 1; $m != 13; ++$m )
+						@if ( $m == $month )
+							<option value="{{{ sprintf('%02d', $m) }}}" selected>{{{ $m }}}月</option>
+						@else
+							<option value="{{{ sprintf('%02d', $m) }}}">{{{ $m }}}月</option>
+						@endif
+					@endfor
 				</select>
 				<div class="jump-link">跳转</div>
 			</div>
 			<div class="pagination-wrapper">
 				<!-- 时间列表总条目数 START-->
-				<input type="hidden" value="{{{ $total }}}" id="comment_count" />
+				<input type="hidden" value="{{{ $total_page }}}" id="comment_count" />
 				<!-- 时间列表总条目数 END-->
 				<ul class="pagination-container">
 					<li class="page-num active">上一页</li>
