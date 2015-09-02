@@ -110,55 +110,13 @@
 					</div>
 					<div class="table-details-content">
 						<!-- 表格内容行 START -->
-						<div class="table-details-tr">
+						<!-- <div class="table-details-tr">
 							<span class="table-details-name">凌晓辉</span>
 							<button class="table-details-add">
 								<img src="/images/doc_web/u12.png" alt="" class="bg">
 								<span class="bg">增加医嘱</span>
 							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>
-						<div class="table-details-tr">
-							<span class="table-details-name">凌晓辉</span>
-							<button class="table-details-add">
-								<img src="/images/doc_web/u12.png" alt="" class="bg">
-								<span class="bg">增加医嘱</span>
-							</button>
-						</div>						
+						</div> -->						
 						<!-- 表格内容行 END -->
 					</div>
 				</div>

@@ -4,12 +4,10 @@ $(document).ready(function() {
 		patientDetailsMask = $(".page-details-mask"),
 		adviceDetails = $(".patient-details"),
 		addBtn = $(".add-btn"),
-		detailsAdd = $(".table-details-add"),
 		adviceInput = $("#advice_input"),
 		adviceShow = $("#advice_show"),
 		adviceList = $("#advice_list"),
 		adviceListAdd = adviceList.find(".table-details-content"),
-		adviceSubmit = $(".submit-btn"),
 		adviceContent = $("#advice_content"),
 		pagination = $(".list-pagination"),
 		paginationAdd = $(".add-list-pagination"),
@@ -27,8 +25,8 @@ $(document).ready(function() {
 
 	//查看医嘱
 	function showContent() {
-		var checkBtn = $(".table-tr-clickable");
-		checkBtn.on("click", function() {
+		$(".table-tr-clickable").off();
+		$(document).on("click", ".table-tr-clickable", function() {
 			adviceDetails.css("display", "none");
 			adviceShow.find(".table-details-content span").html($(this).find(".table-td02").html());
 			adviceShow.fadeIn();
@@ -37,7 +35,7 @@ $(document).ready(function() {
 	}
 	
 	//一级增加医嘱
-	addBtn.on("click", function() {
+	$(document).on("click", ".add-btn", function() {
 		$.get("/doc/get_null_advice", {
 			page: 1,
 			date: $(".patient-year option:selected").val() + "-" + $(".patient-month option:selected").val()
@@ -73,9 +71,9 @@ $(document).ready(function() {
 	});
 	//二级增加医嘱
 	function addBoard (){
-		detailsAdd = $(".table-details-add");
-		var recordId = detailsAdd.attr("data-record-id");
-		detailsAdd.on("click", function() {
+		$(".table-details-add").off();
+		var recordId = $(".table-details-add").attr("data-record-id");
+		$(document).on("click", ".table-details-add", function() {
 			adviceDetails.css("display", "none");
 
 			adviceInputName.html($(this).prev().html()); 
@@ -95,8 +93,8 @@ $(document).ready(function() {
 
 	//提交医嘱
 	function adviceSub(id) {
-		adviceSubmit.unbind();
-		adviceSubmit.on("click", function() {
+		$(".submit-btn").off();
+		$(document).on("click", ".submit-btn", function() {
 			var content = $(adviceContent).val();
 
 			$.post("/doc/modify_advice", {

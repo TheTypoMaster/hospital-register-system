@@ -166,10 +166,10 @@
 		<% for(var i = 0; i < array.length; i ++){ 
 				array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); 
 				if(array[i]['status'] == 0){
-					var status = "style = 'display: block;'";
+					var status = "block";
 				}
 				else{
-					var status = "style = 'display: none;'";
+					var status = "none";
 				}
 		%>
 		<div class="patient-details-tr patient-details-content">
@@ -180,7 +180,7 @@
 					<img src="/images/doc_web/u12_d.png" alt="" class="bg">
 					<span class="bg">已就诊</span>
 				</button>
-				<button class="patient-status-btn patient-status-not" <%- status%>>
+				<button class="patient-status-btn patient-status-not" style="display:<%- status %>;">
 					<img src="/images/doc_web/u12.png" alt="" class="bg">
 					<span class="bg">未就诊</span>
 				</button>

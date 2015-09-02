@@ -10,8 +10,8 @@ $(document).ready(function() {
 
     //显示评论内容
     function showContent (){
-    	checkBtn = $(".table-tr-clickable");
-    	checkBtn.on("click", function() {
+    	$(".table-tr-clickable").off();
+    	$(document).on("click", ".table-details-add", function() {
     		patientDetailsMask.find(".table-details-content span").html($(this).find(".table-td02").html());
     		patientMask.fadeIn();
     		patientDetailsMask.fadeIn();
