@@ -147,6 +147,7 @@ Route::group(array( 'prefix' => 'doc' ), function(){
         Route::post( 'modify_advice', 'DoctorController@modify_advice' );
         Route::post( 'modify_status', 'DoctorController@modify_status' );
         Route::post( 'modify_return', 'DoctorController@modify_return' );
+        Route::post( 'modify_message_status', 'DoctorController@modify_message_status' );
 
         Route::get( 'logout', 'DoctorController@logout' );
         Route::post( 'modify', 'DoctorController@modify_doctor' );
