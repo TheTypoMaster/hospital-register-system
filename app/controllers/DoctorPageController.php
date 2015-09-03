@@ -196,6 +196,7 @@ class DoctorPageController extends BaseController {
                                    ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                                    ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
                                    ->WhereNotNull( 'advice' )
+                                   ->orderBy( 'register_records.created_at' )
                                    ->paginate( $this->default_num_per_page );
 
         return Response::json(array( 'error_coee' => 0, 'totality' => $paginator->getTotal(), 'advice' => $paginator->getCollection() ));
@@ -219,11 +220,14 @@ class DoctorPageController extends BaseController {
         $register_records = RegisterRecord::selectRaw( 'register_records.id as record_id, users.id as user_id, users.real_name as user_name' )
                                           ->join( 'doctors', 'register_records.doctor_id', '=', 'doctors.id' )
                                           ->join( 'users', 'register_records.user_id', '=', 'users.id' )
-                                          ->where( 'status', '=', 0 )
+                                          ->where( 'status', '>', 0 )
+                                          ->where( 'doctors.id', Session::get( 'doctor.id' ) )
                                           ->Where( 'register_records.created_at', 'like', Input::get( 'date', date( 'Y-m' ) ).'%' )
-                                          ->WhereNull( 'advice' )->paginate( $this->default_num_per_page );
+                                          ->WhereNull( 'advice' )
+                                          ->orderBy( 'register_records.created_at' )
+                                          ->paginate( $this->default_num_per_page );
 
-        return Response::json(array( 'error_code' => 1, 'totality' => $register_records->getTotal(), 'records' => $register_records->getItems() ));
+        return Response::json(array( 'error_code' => 0, 'totality' => $register_records->getTotal(), 'records' => $register_records->getItems() ));
     }
 
     public function get_messages(){
