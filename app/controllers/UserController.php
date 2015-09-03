@@ -469,9 +469,7 @@ class UserController extends BaseController{
             $photo_path = '/images/upload/';
             $photo_full_name = uniqid( $user_id.time() ).'.'.$file_ext;
 
-            if ( isset( $user->photo ) ){
-                $previous_photo = $user->photo;
-            }
+            $previous_photo = public_path().$doctor->photo;
 
             $user->photo = $photo_path.$photo_full_name;
 
@@ -480,8 +478,8 @@ class UserController extends BaseController{
             }
 
             // Save and delete previous photo
-            if ( isset( $previous_photo ) ){
-                File::delete( $previous_photo );
+            if ( File::exists( $previous_photo ) ){
+                File::delete( public_path().$previous_photo );
             }
 
             $head_portrait->move( public_path().$photo_path , $photo_full_name );

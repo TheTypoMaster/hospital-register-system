@@ -164,22 +164,20 @@ class DoctorController extends BaseController {
             $photo_path = '/images/upload/';
             $photo_full_name = uniqid( $user_id.time() ).'.'.$file_ext;
 
-            if ( isset( $doctor->photo ) ){
-                $previous_photo = $doctor->photo;
-            }
+            $previous_photo = public_path().$doctor->photo;
 
             $doctor->photo = $photo_path.$photo_full_name;
 
-            DB::transaction(function() use ( $doctor, $previous_photo ){
+            DB::transaction(function() use ( $doctor ){
                 $doctor->save();
-
-                // Save and delete previous photo
-                if ( isset( $previous_photo ) ){
-                    File::delete( $previous_photo );
-                }
-
-                Session::put( 'doctor.photo', $doctor->photo );
             });
+
+            // Save and delete previous photo
+            if ( File::exists( $previous_photo ) ){
+                File::delete( $previous_photo );
+            }
+
+            Session::put( 'doctor.photo', $doctor->photo );
 
             $portrait->move( public_path().$photo_path , $photo_full_name );
         }
