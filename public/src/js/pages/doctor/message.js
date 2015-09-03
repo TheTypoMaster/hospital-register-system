@@ -24,6 +24,7 @@ $(document).ready(function() {
 			},function (data){
 				if(data["error_code"] == 0){
 					_this.find(".message-tag").css("display", "none");
+					_this.find(".table-td02").addClass('al-read');
 					_this.attr("data-status","4");
 				}
 				else{
@@ -46,7 +47,6 @@ $(document).ready(function() {
 	//加载数据
 	function loadData(page){
 		var date = "";
-		console.log("当前页：" + page);
 		msgYear = $(".patient-year option:selected").val(),
 		msgMonth = $(".patient-month option:selected").val();
 		//请求指定页数据

@@ -83,16 +83,18 @@
 		<% for(var i = 0; i < array.length; i++){ 
 			if(array[i]["status"] == 3){
 				var style = "inline-block;" ;
+				var class_name = '';
 			} 
 			else{
 				var style = "none;";
+				var class_name = "al-read";
 			}
 		%>
 			<div class="table-tr table-tr-clickable" data-status="<%- array[i]['status'] %>" data-id="<%- array[i]['id'] %>" >
 				<div class="table-td table-td01">
 					<%- array[i]["time"] %>
 				</div>
-				<div class="table-td table-td02" >
+				<div class="table-td table-td02 <%- class_name %>" >
 					<%- array[i]["content"] %>
 					<span class="message-tag" style="display:<%- style %>" >•</span>
 				</div>
