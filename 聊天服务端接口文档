@@ -1,0 +1,77 @@
+聊天服务端接口文档
+
+数据格式：
+
+// 初始化 -- 验证登陆
+/*
+ */
+
+POST /chat/validate_login
+request:
+    uid:    <integer>,
+    time:   <integer,timestamp>
+    sign:   <string>
+reponse:
+    {
+        'error_code': <integer>,
+        'message': <string>
+    }
+
+// 发送消息
+POST /chat/send
+request:
+    {
+        'to_uid': <integer, unsigned>,
+        'content': <string>
+    }
+
+// 接收消息
+/*
+    异步接收消息：
+        客户端：
+            ajax异步请求消息，接收消息后50ms后重新连接
+        服务端：
+            接收请求后，查询数据库有无新消息。
+            1. 有则立即返回；
+            2. 若无，查询0.05后重新查询，
+               30s后返回，或当有新消息时返回
+ */
+GET /chat/recieve
+response:
+    {
+        'error_code': <int>
+        'messages':[
+            'from_uid':     <integer, unsigned>
+            'content':      <string>
+            'timestamp':    <timestamp>
+        ]
+    }
+
+// 获取聊天记录
+GET /chat/record
+request:
+    'from_uid': <integer, unsigned>
+response:
+    {
+        'error_code':       <int>
+        'records': [
+            {
+                'time': <integer, timestamp>,
+                'content': <string>
+            }
+        ]
+    }
+
+// 获取用户信息
+GET /chat/user_info
+request:
+    uid: 
+response:
+    {
+        'error_code':       <int>
+        'user_info:' {
+            'id':           <string>
+            'photo':        <string, url>
+            'name':         <string>
+        }
+    }

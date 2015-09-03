@@ -4,7 +4,7 @@
     var current_user_info, message_input_area, message_container, 
         message_template_compiled, record_template_compiled, user_info_template_compiled,
         user_list_scroll, msg_wrap_list_scroll,
-        users_list = [], msg_wrap_list = [],
+        users_list = [], msg_wrap_list = [];
 
     // 长轮询接收消息
     // 获取消息50毫秒后重新接收

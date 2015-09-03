@@ -7,6 +7,8 @@ import tornado.web
 import tornado.gen
 import tornado.ioloop
 
+import config.app
+
 class base_handler( tornado.web.RequestHandler ):
 
     def get_current_user( self ):
@@ -72,6 +74,15 @@ class chat_handler( base_handler ):
                 return None
         
         return None
+
+    def __get_records( self, from_uid ):
+
+        sql = 'select timestamp, content from messages\
+               where from_uid = {from_uid} and to_uid = {to_uid}'.format( from_uid = from_uid, to_uid = self.current_user )
+
+        self.mysql_cursor.execute( sql )
+
+        return self.mysql_cursor.fetchall()
 
     def prepare( self ):
 
@@ -191,16 +202,20 @@ class chat_handler( base_handler ):
         user_info = self.__get_user_info( self.get_argument( 'user_id' ) )
 
         results = {
-            'user_id': user_info[0],
-            'photo': user_info[1],
-            'user_name': user_info[2]
+            'id': user_info[0],
+            'photo': config.app.primary_host + user_info[1],
+            'name': user_info[2]
         }
 
         raise tornado.gen.Return( json.dumps( { 'error_code': 0, 'user_info': results } ) );
 
     def record( self ):
 
-        pass
+        records = self.__get_records( self.get_argument( 'from_uid' ) )
+
+        results = [ { 'timestamp': r[0], 'content': r[1] } for r in records ]
+
+        raise tornado.gen.Return( json.dumps( { 'error_code': 0, 'records': results } ) )
 
     @tornado.gen.coroutine
     def not_found( self ):

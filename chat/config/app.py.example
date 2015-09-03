@@ -1,2 +1,3 @@
 
 cookie_secret = ''
+primary_host = ''

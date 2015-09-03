@@ -52,7 +52,7 @@ class DoctorPageController extends BaseController {
             'sign'      => $sign
         );
 
-        $chat_url = 'http://localhost:8080/chat/validate_login?'.http_build_query( $parameter, '', '&' );
+        $chat_url = Config::get('app.chat_url').'/chat/validate_login?'.http_build_query( $parameter, '', '&' );
 
         return View::make( 'doctor.chat', array( 'chat_url' => $chat_url, 
                                                  'name' => Session::get( 'doctor.name' ),
