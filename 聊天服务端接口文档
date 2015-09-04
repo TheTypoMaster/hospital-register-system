@@ -12,12 +12,28 @@ request:
     time:   <integer,timestamp>
     sign:   <string>
 response:
-    {
-        'error_code': <integer>,
-        'message': <string>
-    }
+{
+    'error_code': <integer>,
+    'message': <string>
+}
 
 // 初始化 -- 验证登陆
+/*
+    for ios
+ */
+POST /chat/validate
+request:
+    uid:    <integer>,
+    time:   <integer,timestamp>
+    sign:   <string>
+response:
+{
+    'error_code': <integer>,
+    'message': <string>
+
+}
+
+// 初始化 -- 验证登陆 -- 主服务器接口
 /*
     for ios
     主服务器接口：
