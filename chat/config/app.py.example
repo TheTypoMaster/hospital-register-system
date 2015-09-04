@@ -1,3 +1,4 @@
 
 cookie_secret = ''
 primary_host = ''
+sign_token = ''

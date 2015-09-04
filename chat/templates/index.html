@@ -2,76 +2,45 @@
 <html>
     <head>
         <title>复诊资讯</title>
-
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">         
         <link rel="stylesheet" type="text/css" href="{{ static_url("css/index.css") }}" />
-        
     </head>
     <body>
         <div class="chat-body clearfix">
+            <div class="search-wrap clearfix">
+                <form class="search-form" action="">
+                    <input class="search-input" type="text" name="user_name">
+                    <input class="search-submit" type="submit" value="">
+                </form>
+                <ul class="search-result"><!--
+                    <li user_id="<%- user_id %>" class="search-result-li">name</li>
+                    <li user_id="<%- user_id %>" class="search-result-li">name</li>
+                    <li user_id="<%- user_id %>" class="search-result-li">name</li>
+                    <li user_id="<%- user_id %>" class="search-result-li">name</li>
+                    <li user_id="<%- user_id %>" class="search-result-li">name</li>-->
+                </ul>
+            </div>
             <div id="users-list-wrapper">
-                <ul class="users-list" id="users-list"><!--
+                <ul class="users-list" id="users-list">
                     {% for id, nickname, photo in users %}
-                    <li user_id="{{ id }}" class="user">
+                    <li user_id="{{ id }}" class="user" unload>
                         {% if photo %}
-                        <img src="{{ photo }}" class="photo" />
+                        <img src="{{ primary_host }}/{{ photo }}" class="photo" />
                         {% else %}
                         <img src="{{ static_url('images/u70.png') }}" class="photo" />
                         {% end %}
                         <span class="name">{{ nickname }}</span>
                         <span class="unread-count">5</span>
                     </li>
-                    {% end %}-->
+                    {% end %}
                 </ul>
             </div>
             <div class="chat-main">
                 <div class="cur-time">17:30</div>
                 <div class="msg-list">
                     {% for id, nickname, photo in users %}
-                    <div user_id="{{ id }}" class="msg-wrap hidden">
+                    <div from_uid="{{ id }}" class="msg-wrap hidden">
                         <ul class="msg-inner">
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
-                            <li class="item from clearfix">
-                                <img src="{{ static_url( "images/u8.png" ) }}" class="photo" />
-                                <div class="msg-scope">
-                                    <div class="content">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                     {% end %}
@@ -100,11 +69,16 @@
         </script>
         <!-- 当前用户信息 end -->
 
+        <script type="text/template" id="search-result-template">
+            <li user_id="<%- user_id %>" class="search-result-li"><%- name %></li>
+        </script>
+
         <!-- 聊天用户模板 start -->
         <script type="text/template" id="user-info-template">
-            <li uid="<%- id %>" class="user">
+            <li user_id="<%- id %>" class="user">
                 <img src="<%- photo %>" class="photo" />
                 <span class="name"><%- name %></span>
+                <span class="unread-count">0</span>
             </li>
         </script>
         <!-- 聊天用户模板 end-->

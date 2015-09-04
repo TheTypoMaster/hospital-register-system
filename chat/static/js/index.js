@@ -2,7 +2,8 @@
 (function(){
 
     var current_user_info, message_input_area, message_container, 
-        message_template_compiled, record_template_compiled, user_info_template_compiled,
+        search_template_compiled, message_template_compiled, 
+        record_template_compiled, user_info_template_compiled,
         user_list_scroll, msg_wrap_list_scroll,
         users_list = [], msg_wrap_list = [];
 
@@ -31,15 +32,12 @@
     function on_message_recieve( messages ){
 
         var users_missed = [];
-
         var selected_user = $('.select').attr('user_id');
 
         for ( var i = 0; i < messages.length; ++i ){
 
             var user_id = messages[i]['from_uid'];
             var user = users_list[ user_id ];
-
-            user.children('.unread-count').show();
 
             new_message = {
                 'classname': 'from',
@@ -57,20 +55,35 @@
                 continue;
             }
 
+            // 未读计数器
+            var unread_count_ele = user.children('.unread-count');
+            var unread_count = parseInt( unread_count_ele.html() );
+            unread_count_ele.html( unread_count + 1 );
+            
+            // 移动用户到顶部
+            user.remove();
+            user.prependTo('.users-list');
+
+            // 显示未读计数器
+            if ( !user.hasClass('select') ){
+                user.children('.unread-count').show();
+            }
+
+            // 添加消息到对应聊天记录框
             add_message( user_id, new_message );
         }
 
-        // 处理未在聊天列表中的用户的
+        // 处理未在聊天列表中的用户
         if ( users_missed.length ){
             add_new_user( users_missed );
         }
     }
 
     // 添加新用户信息
-    function add_new_user( users_missed ){
-        for( user_id in users_missed ){
+    function add_new_users( new_users, callback ){
+        for( user_id in new_users ){
             $.ajax({
-                url: '/chat/get_user_info',
+                url: '/chat/user_info',
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -78,7 +91,11 @@
                 }
             })
             .done(function( result ) {
-                on_get_user_info( user_id, result.user_info, users_missed[user_id] );
+                on_get_user_info( user_id, result.user_info, new_users[user_id] );
+
+                if ( callback ){
+                    callback();
+                }
             });
         }
     }
@@ -112,6 +129,9 @@
             return;
         }
 
+        selected_user.remove();
+        selected_user.prependTo('.users-list');
+
         message_input_area.val( '' );
 
         add_message( $('.select').attr('user_id'), {
@@ -120,7 +140,7 @@
             'photo': current_user_info['photo']
         });
 
-            // 发送消息
+        // 发送消息
         $.ajax({
             url: '/chat/send',
             type: 'POST',
@@ -136,22 +156,63 @@
         });
     }
 
+    // 加载聊天记录
+    function load_chat_records( user ){
+        $.ajax({
+            url: '/chat/records',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                tar_uid: user.attr('user_id')
+            }
+        })
+        .done(function( result ) {
+            var records = result.records;
+
+            for( r in records ){
+
+                add_message( user.attr('user_id'), {
+                    'classname': records[r].type,
+                    'content': records[r].content,
+                    'photo': records[r].type == 'from' ? user.children('.photo').first().attr('src') : current_user_info['photo']
+                });
+            }
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
     // 添加消息到聊天记录
     function add_message( user_id, message ){
 
         var target_msg_wrap = msg_wrap_list[ user_id ];
-        var target_msg_inner = target_msg_wrap.children('.msg-inner');
 
-        target_msg_inner.append( message_template_compiled( new_message ) );
+        target_msg_wrap.children('.msg-inner').append( message_template_compiled( message ) );
 
         // 聊天记录框往下滚动
         if ( target_msg_wrap.prop('id') == 'active' ){
-            var overflow_height = target_msg_wrap.height() - target_msg_inner.height();
-            if ( overflow_height > 0 ){
-                overflow_height = 0;
-            }
-            msg_wrap_list_scroll.scrollTo( 0, overflow_height );
+            refresh_msg_scroll( compute_scroll_y( target_msg_wrap ) );
         }
+    }
+
+    function compute_scroll_y( msg_element ){
+
+        var msg_inner = msg_element.children('.msg-inner');
+        var overflow_height = msg_element.height() - msg_inner.height();
+
+        if ( overflow_height > 0 ){
+            overflow_height = 0;
+        }
+
+        return overflow_height;
+    }
+
+    function refresh_msg_scroll( overflow_height ){
+        msg_wrap_list_scroll = new IScroll('#active', {
+            mouseWheel: true,
+            startY: overflow_height
+        });
     }
 
     // 计时器
@@ -173,14 +234,16 @@
 
     $(document).ready(function() {
 
+        console.log( '赶出来的东西，太挫...' );
+
         user_list_scroll = new IScroll('#users-list-wrapper', {
             mouseWheel: true
         });
 
         message_input_area = $('#message-input');
-        
         current_user_info = $.parseJSON( $('#current_user_info').html() );
 
+        search_template_compiled = _.template( $('#search-result-template').html() );
         message_template_compiled = _.template( $('#message-template').html() );
         record_template_compiled = _.template( $('#message-record-template').html() );
         user_info_template_compiled = _.template( $('#user-info-template').html() );
@@ -190,43 +253,43 @@
         });
 
         $('.msg-wrap').each(function(index, element) {
-            msg_wrap_list[ $(element).attr('user_id') ] = $(element);
+            msg_wrap_list[ $(element).attr('from_uid') ] = $(element);
         });
         
         // 点击用户名字，显示相应聊天记录框
-        $('.user').on('click', '.name', function(event) {
+        $('.users-list').on('click', '.user', function(event) {
 
             event.preventDefault();
 
-            var parent = $(this).parent('.user');
+            var user = $(this);
 
-            parent.siblings('.select').removeClass('select');
+            user.siblings('.select').removeClass('select');
 
-            var unread_count_ele = $(this).children('.unread-count');
+            // 隐藏未读计数器
+            var unread_count_ele = user.children('.unread-count');
             unread_count_ele.html('0');
             unread_count_ele.hide();
 
-            parent.addClass('select');
+            user.addClass('select');
 
             $.each( msg_wrap_list, function(index, element) {
                 $(element).prop('id', '');
                 $(element).addClass('hidden');
             });
 
-            var target_msg_wrap = msg_wrap_list[ parent.attr('user_id') ];
+            var target_msg_wrap = msg_wrap_list[ user.attr('user_id') ];
 
             target_msg_wrap.removeClass('hidden');
             target_msg_wrap.prop('id', 'active');
 
-            var overflow_height = target_msg_wrap.height() - target_msg_wrap.children('.msg-inner').height();
-            if ( overflow_height > 0 ){
-                overflow_height = 0;
+            // 初次点击时加载聊天记录
+            if ( user.attr('unload') != undefined ){
+                load_chat_records( user );
+                user.removeAttr('unload');
             }
 
-            msg_wrap_list_scroll = new IScroll('#active', {
-                mouseWheel: true,
-                startY: overflow_height
-            });
+            // 聊天记录框滑到顶部
+            refresh_msg_scroll( compute_scroll_y( target_msg_wrap ) );
         });
 
         // ctrl + enter 发送消息
@@ -242,8 +305,62 @@
 
         // 点击“发送”按钮发送消息
         $('.send-btn').on('click', function(event) {
-
             send_message();
+        });
+
+        // 搜索
+        $('.search-form').on('submit', function(event){
+            event.preventDefault();
+
+            $.ajax({
+                url: '/chat/search',
+                type: 'GET',
+                dataType: 'json',
+                data: $(this).serialize()
+            })
+            .done(function( result ){
+                $('.search-result').empty();
+                
+                if ( result.error_code == 0 ){
+                    var users = result.users;
+                    for ( u in users ){
+                        $('.search-result').append( search_template_compiled(  users[u] ) );
+                    }
+                }
+            })
+            .fail(function() {
+                console.log("error");
+            });
+        });
+
+        $('.search-form').on('change', '.search-input', function(event){
+            event.preventDefault();
+
+            if ( $(this).val() == '' ){
+                $('.search-result').empty();
+            }
+        });
+
+        $('.search-result').on('click', '.search-result-li', function(event){
+            var _user_id = $(this).attr('user_id');
+
+            if ( users_list[ _user_id ] ){
+                users_list[ _user_id ].click();
+            }else{
+                var jj = [];
+                jj[ _user_id ] = [];
+                add_new_users(jj, function(){
+                    var user = users_list[ _user_id ];
+                    users_list[ _user_id ].click();
+                    load_chat_records( user );
+
+                    // 移动到顶部
+                    user.remove();
+                    user.prependTo('.users-list');
+                });
+            }
+
+            $('.search-result').empty();
         });
 
         // 时钟
@@ -251,6 +368,28 @@
         
         // 消息长轮询
         polling();
+
+        //test();
     });
 
-})()
+    function test(){
+        $.ajax({
+            url: '/chat/test',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                user_id: [1, 2, 3, 4]
+            }
+        })
+        .done(function( result ) {
+            console.log( result );
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+    }
+
+})();

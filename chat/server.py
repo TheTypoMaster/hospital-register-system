@@ -1,3 +1,5 @@
+#!/usr/bin/env python  
+# -*- coding:utf-8 -*-v
 
 import tornado.web
 import tornado.httpserver

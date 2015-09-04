@@ -1,7 +1,8 @@
 
-html, body, ul{
+html, body, ul, form, input{
     margin: 0px;
     padding: 0px;
+    font-size: 14px;
     font-family: 'Microsoft YaHei';
 }
 
@@ -20,7 +21,59 @@ ul, li{
     margin-top: 18px;
     margin-left: 30px;
     border: solid #e3e3e3 1px;
-    border-bottom: none;
+    border-bottom: none;    
+}
+
+.search-wrap{
+    width: 150px;
+    height: 60px;
+    overflow: visible;
+    position: absolute;
+    .search-form{
+        width: 120px;
+        height: 25px;
+        margin: 15px auto;
+        border-radius: 3px;
+        border: solid #e3e3e3 1px;
+
+        input{
+            border: none;
+            height: 100%;
+            float: left;
+        }
+
+        .search-input{
+            text-indent: 7px;
+            width: 90px;
+            &:focus{
+                outline: none;
+            }
+        }
+
+        .search-submit{
+            width: 30px;
+            cursor: pointer;
+            background: url('/static/images/search.png') no-repeat center #4ac0f8;
+        }
+    }
+
+    .search-result{
+        top: 42px;
+        left: 14px;
+        width: 88px;
+        z-index: 1001;
+        background: white;
+        position: absolute;
+        border-left: solid #e3e3e3 1px;
+        border-right: solid #e3e3e3 1px;
+        .search-result-li{
+            text-indent: 7px;
+            line-height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-bottom: solid #e3e3e3 1px;
+        }
+    }
 }
 
 #users-list-wrapper{
@@ -32,7 +85,9 @@ ul, li{
 }
 
 .users-list{
+    top: 60px;
     width: 100%;
+    position: relative;
 
     .user{
         height: 59px;
@@ -99,14 +154,14 @@ ul, li{
 
     .msg-list{
         position: relative;
+
         .msg-wrap{
             width: 521px;
             height: 419px;
-            padding-left: 24px;
-            padding-right: 24px;
+            padding: 0px 24px;
+            
             position: absolute;
             overflow: hidden;
-            border-bottom: solid #e3e3e3 1px;
 
             .hidden{
                 display: none;
@@ -129,7 +184,7 @@ ul, li{
     .item{
         width: 100%;
         text-align: left;
-        margin-bottom: 12px;
+        padding-bottom: 12px;
 
         .photo{
             height: 50px;
@@ -154,6 +209,7 @@ ul, li{
                 padding: 10px 15px;
                 font-size: 14px;
                 line-height: 16px;
+                word-wrap: break-word;
                 background-color: #f2f2f2;
             }
         }
