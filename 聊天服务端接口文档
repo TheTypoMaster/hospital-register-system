@@ -4,18 +4,33 @@
 
 // 初始化 -- 验证登陆
 /*
+    for web
  */
-
-POST /chat/validate_login
+GET /chat/validate_login
 request:
     uid:    <integer>,
     time:   <integer,timestamp>
     sign:   <string>
-reponse:
+response:
     {
         'error_code': <integer>,
         'message': <string>
     }
+
+// 初始化 -- 验证登陆
+/*
+    for ios
+    主服务器接口：
+        获取登陆信息，然后使用上述uri登陆
+ */
+GET http:<主服务器域名>/user/get_chat_package
+request:
+response:
+{
+    uid:    <integer>,
+    time:   <integer,timestamp>
+    sign:   <string>
+}
 
 // 发送消息
 POST /chat/send
@@ -48,7 +63,7 @@ response:
     }
 
 // 获取聊天记录
-GET /chat/record
+GET /chat/records
 request:
     'from_uid': <integer, unsigned>
 response:
