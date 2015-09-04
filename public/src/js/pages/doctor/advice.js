@@ -90,6 +90,8 @@ $(document).ready(function() {
 			advice: content
 		}, function (data){
 			if(data["error_code"] == 0){
+				jump.trigger("click");
+				$(".add-btn").trigger("click");
 				alert("添加医嘱成功");
 				// patientMask.fadeOut();
 				// patientDetailsMask.fadeOut();
