@@ -17,7 +17,7 @@ $(document).ready(function(){
 	$(document).on("click", ".patient-td-btn", function() {
 
 		//获取日期
-		var btnParent = $(this).parent().prev().text();
+		var btnParent = $(this).parent().parent().find(".patient-td:nth-child(1)").text();
 	    patientDetailsMask.find(".patient-details-td01").html(btnParent);
 
 		var id = $(this).attr("data-id");

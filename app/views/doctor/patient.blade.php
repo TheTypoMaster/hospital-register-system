@@ -160,13 +160,13 @@
 	<!-- 病人列表 START -->
 	<script type="text/template" id="patient_list">
 		<% for(var i = 0; i < array.length; i ++){ 
-				array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); 
-				if(array[i]['status'] == 0){
-					var status = "block";
-				}
-				else{
-					var status = "none";
-				}
+			array[i]["time"] = array[i]["time"].replace(/(:00)$/,""); 
+			if(array[i]['status'] == 0){
+				var status = "block";
+			}
+			else{
+				var status = "none";
+			}
 		%>
 		<div class="patient-details-tr patient-details-content">
 			<div class="patient-details-td patient-details-td01"><%- array[i]["time"] %></div>
