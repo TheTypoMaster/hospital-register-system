@@ -571,4 +571,23 @@ class UserController extends BaseController{
         return View::make( 'user.center', array( 'account' => $register_account ) );
     }
 
+    public function get_chat_package(){
+        
+        $sign_package = array(
+            'token'     => 'ziruikeji',
+            'user_id'   => Session::get( 'user.id' ),
+            'timestamp' => time()
+        );
+
+        ksort( $sign_package );
+        $sign = sha1( http_build_query( $sign_package, '', '&' ) );
+
+        $parameter = array(
+            'uid'       => $sign_package['user_id'],
+            'time'      => $sign_package['timestamp'],
+            'sign'      => $sign
+        );
+
+        return Response::json( $parameter );
+    }
 }

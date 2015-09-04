@@ -99,32 +99,24 @@ class DoctorPageController extends BaseController {
     }
 
     public function get_records(){
-        
-        $paginator = RegisterRecord::where( 'doctor_id', Session::get( 'doctor.id' ) )
-                                   ->where( 'created_at', 'like', Input::get( 'date', date( 'Y-m-d' ) ).'%' )
-                                   ->with('user')->paginate( $this->default_num_per_page );
 
-        $result = array();
-        $records = $paginator->getCollection();
-
-        foreach( $records as $record ){
-            $user = $record->user;
-            $result[] = array(
-                'record_id'   => $record->id,
-                'user_name'   => $user->real_name,
-            );
-        }
+        $paginator = RegisterRecord::selectRaw( 'register_records.id as record_id, users.real_name as user_name' )
+                                   ->join( 'periods', 'periods.id', '=', 'register_records.period_id' )
+                                   ->join( 'schedules', 'schedules.id', '=', 'periods.schedule_id' )
+                                   ->join( 'users', 'users.id', '=', 'register_records.user_id' )
+                                   ->where( 'schedules.date', Input::get( 'date', date( 'Y-m-d' ) ) )
+                                   ->where( 'schedules.doctor_id', Session::get( 'doctor.id' ) )
+                                   ->paginate( $this->default_num_per_page );
 
         return Response::json(array(
                     'error_code'  => 0,
-                    'records'     => $result,
+                    'records'     => $paginator->getCollection(),
                     'last_page'   => $paginator->getLastPage() ));
     }
 
     public function get_record_detail(){
 
         $record = RegisterRecord::find( Input::get( 'record_id' ) );
-
         $doctor = $record->doctor;
 
         $result = array(
@@ -235,7 +227,6 @@ class DoctorPageController extends BaseController {
         $date = Input::get( 'date' ).'-01 00:00:00';
 
         $timestamp_start = strtotime( $date );
-
         $timestamp_end = strtotime( '+1 months', $timestamp_start );
 
         $paginator = $this->__get_messages(array( 3, 4 ), $timestamp_start, $timestamp_end);
@@ -254,7 +245,6 @@ class DoctorPageController extends BaseController {
         $date = Input::get( 'date' ).'-01 00:00:00';
 
         $timestamp_start = strtotime( $date );
-
         $timestamp_end = strtotime( '+1 months', $timestamp_start );
 
         $paginator = $this->__get_messages(array( 3 ), $timestamp_start, $timestamp_end);

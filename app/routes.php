@@ -42,7 +42,7 @@ Route::group(array( 'prefix' => 'hospital' ), function()
 //用户模块
 Route::group(array( 'prefix' => 'user' ), function(){
 
-    Route::get( 'test', 'UserController@test' ) ;
+    Route::get( 'test', 'UserController@test' );
     
     Route::get( 'check_phone', 'UserController@check_phone' );
     Route::post( 'check_verification_code', 'UserController@check_verification_code' );
@@ -70,6 +70,7 @@ Route::group(array( 'prefix' => 'user' ), function(){
     Route::group(array( 'before' => 'auth.user.is_in' ), function(){
         Route::get( 'center', 'UserController@user_center' );
         Route::get( 'pay_record', 'UserController@pay_record' );
+        Route::get( 'get_chat_package', 'UserController@get_chat_package' );
         Route::post( 'modify_user', 'UserController@modify_user' );
         Route::post( 'upload_head_portrait', 'UserController@upload_head_portrait' );        
     });
