@@ -10,6 +10,7 @@ import tornado.gen
 import tornado.ioloop
 
 import config.app
+import config.mysql
 
 class base_handler( tornado.web.RequestHandler ):
 
@@ -82,6 +83,7 @@ class chat_handler( base_handler ):
             self.application.database.commit()
         except:
             self.application.database.rollback()
+            raise
 
     def __retrieve_message( self ):
 
@@ -237,7 +239,7 @@ class chat_handler( base_handler ):
         }
 
         try:
-            self.__send_message( from_uid, to_uid, content.encode('gbk') )
+            self.__send_message( from_uid, to_uid, content.encode( config.mysql.character_set_client ) )
         except:
             message['error_code'] = 1
             message['message'] = 'Fail'
@@ -274,7 +276,7 @@ class chat_handler( base_handler ):
     @tornado.gen.coroutine
     def search( self ):
 
-        user_real_name = self.get_argument( 'user_name', '' ).encode( 'gbk' )
+        user_real_name = self.get_argument( 'user_name', '' ).encode( config.mysql.character_set_client  )
 
         users = self.__search_user_by_real_name( user_real_name )
 

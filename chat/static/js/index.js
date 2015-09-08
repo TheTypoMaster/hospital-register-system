@@ -104,8 +104,9 @@
     function on_get_user_info( user_id, user_info, messages ){
         // 添加到聊天列表
         var new_user = $( user_info_template_compiled( user_info ) );
+		var unread_count_ele = new_user.children('.unread-count');
         new_user.appendTo( '.users-list' );
-        new_user.children('.unread-count').show();
+        unread_count_ele.show();
         users_list[ user_id ] = new_user;
 
         // 添加相应聊天记录模块
@@ -113,7 +114,10 @@
         new_msg_wrap.appendTo( '.msg-list' );
         msg_wrap_list[ user_id ] = new_msg_wrap;
 
-        // 添加消息
+        // 未读消息数
+		unread_count_ele.html( messages.length );
+
+		// 添加消息
         for ( i in messages ){
             new_msg_wrap.append(message_template_compiled(messages[i]));
         }
