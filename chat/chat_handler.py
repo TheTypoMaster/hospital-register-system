@@ -49,18 +49,20 @@ class chat_handler( base_handler ):
                and status in (0, 1) limit {limit}'.format( to_uid = to_uid, limit = limit )
 
         self.mysql_cursor.execute( sql )
+
         recent_chat_user_id = [ str( u[0] ) for u in self.mysql_cursor.fetchall() ]
 
-        sql = 'select id, real_name, photo from users where id in ({users})'.format( users = ','.join( recent_chat_user_id ) )
+        if len( recent_chat_user_id ):
 
-        self.mysql_cursor.execute( sql )
-        return self.mysql_cursor.fetchall()
+			sql = 'select id, real_name, photo from users where id in ({users})'.format( users = ','.join( recent_chat_user_id ) )
+
+			self.mysql_cursor.execute( sql )
+			return self.mysql_cursor.fetchall()
+        return []
 
     def __search_user_by_real_name( self, name ):
 
         sql = 'select id, real_name from users where real_name = "{name}"'.format( name = name )
-
-        print sql
 
         self.mysql_cursor.execute( sql )
 
