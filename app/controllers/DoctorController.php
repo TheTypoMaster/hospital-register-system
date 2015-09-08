@@ -214,7 +214,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
 
-        // To do: 通过微信公众号向永华发送模板消息
+        // 通过微信公众号向永华发送模板消息
         $weixin_pay_order = WeixinPay::where( 'record_id', $record->id )->first();
 
         if ( isset( $weixin_pay_order ) && $weixin_pay_order->status == 'FINISHED' ){
@@ -223,18 +223,18 @@ class DoctorController extends BaseController {
                 'template_id'   => Config::get( 'weixin.template.advice' ),
                 'topcolor'      => '#FF00000',
                 'data'          => array(
-                    'first'     => {
+                    'first'     => [
                         'value' => '诊后医嘱提醒'
-                    },
-                    'keyword1'  => {
+                    ],
+                    'keyword1'  => [
                         'value' => $record->doctor->name
-                    },
-                    'keyword2'  => {
+                    ],
+                    'keyword2'  => [
                         'value' => $advice
-                    },
-                    'remark'    => {
+                    ],
+                    'remark'    => [
                         'value' => '请谨遵医嘱'
-                    }
+                    ]
                 )
             ]);
         }
@@ -295,6 +295,7 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
         }
 
+        // 通过微信公众号向永华发送模板消息
         if ( isset( $weixin_pay_order ) && $weixin_pay_order->status == 'FINISHED' ){
             $doctor = $record->doctor;
             WeixinSDK::send_template_message([
@@ -302,24 +303,24 @@ class DoctorController extends BaseController {
                 'template_id'   => Config::get( 'weixin.template.return' ),
                 'topcolor'      => '#FF00000',
                 'data'          => array(
-                    'first'     => {
+                    'first'     => [
                         'value' => '您好，您的复诊时间已到，请及时进行复诊。'
-                    },
-                    'keyword1'  => {
+                    ],
+                    'keyword1'  => [
                         'value' => $record->account->name
-                    },
-                    'keyword2'  => {
+                    ],
+                    'keyword2'  => [
                         'value' => $doctor->department->hospital->name 
-                    },
-                    'keyword3'  => {
+                    ],
+                    'keyword3'  => [
                         'value' => $doctor->name
-                    },
-                    'keyword4'  => {
+                    ],
+                    'keyword4'  => [
                         'value' => $record->return_date
-                    },
-                    'remark'    => {
+                    ],
+                    'remark'    => [
                         'value'      => '祝您身体健康！'
-                    }
+                    ]
                 )
             ]);
         }
