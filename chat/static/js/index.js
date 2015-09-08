@@ -11,7 +11,7 @@
     // 获取消息50毫秒后重新接收
     function polling(){
         $.ajax({
-            url: '/chat/recieve',
+            url: '/chat/receive',
             type: 'GET',
             dataType: 'json',
             timout: 50 * 1000
@@ -19,7 +19,7 @@
         .done(function( result ){
 
             if ( result.error_code == 0 ){
-               on_message_recieve( result.messages );
+               on_message_receive( result.messages );
             }
 
             setTimeout( polling, 50 );
@@ -29,7 +29,7 @@
     }
 
     // 长轮询接收消息回调函数
-    function on_message_recieve( messages ){
+    function on_message_receive( messages ){
 
         var users_missed = [];
         var selected_user = $('.select').attr('user_id');

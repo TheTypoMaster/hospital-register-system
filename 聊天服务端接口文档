@@ -67,7 +67,7 @@ request:
             2. 若无，查询0.05后重新查询，
                30s后返回，或当有新消息时返回
  */
-GET /chat/recieve
+GET /chat/receive
 response:
     {
         'error_code': <int>

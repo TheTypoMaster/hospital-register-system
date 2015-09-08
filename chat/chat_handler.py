@@ -130,7 +130,7 @@ class chat_handler( base_handler ):
             'get':{
                 'test': self.test,
                 'search': self.search,
-                'recieve': self.recieve,
+                'receive': self.receive,
                 'records': self.get_records,
                 'user_info': self.get_user_info,
                 'validate_login': self.validate_login
@@ -247,7 +247,7 @@ class chat_handler( base_handler ):
         raise tornado.gen.Return( json.dumps( message ) )
 
     @tornado.gen.coroutine
-    def recieve( self ):
+    def receive( self ):
 
         start_timestamp     = int( time.time() )
         current_timestamp   = int( time.time() )
