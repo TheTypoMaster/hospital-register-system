@@ -135,6 +135,7 @@ class DoctorController extends BaseController {
     }
 
     public function upload_portrait(){
+
         if ( !Input::hasFile( 'portrait' ) ){
 
             return Response::json(array( 'error_code' => 2, 'message' => '无文件上传' ));
@@ -213,6 +214,31 @@ class DoctorController extends BaseController {
             return Response::json(array( 'error_code' => 1, 'message' => '添加失败' ));
         }
 
+        // To do: 通过微信公众号向永华发送模板消息
+        $weixin_pay_order = WeixinPay::where( 'record_id', $record->id )->first();
+
+        if ( isset( $weixin_pay_order ) && $weixin_pay_order->status == 'FINISHED' ){
+            WeixinSDK::send_template_message([
+                'touser'        => $weixin_pay_order->open_id,
+                'template_id'   => Config::get( 'weixin.template.advice' ),
+                'topcolor'      => '#FF00000',
+                'data'          => array(
+                    'first'     => {
+                        'value' => '诊后医嘱提醒'
+                    },
+                    'keyword1'  => {
+                        'value' => $record->doctor->name
+                    },
+                    'keyword2'  => {
+                        'value' => $advice
+                    },
+                    'remark'    => {
+                        'value' => '请谨遵医嘱'
+                    }
+                )
+            ]);
+        }
+
         return Response::json(array( 'error_code' => 0, 'message' => '添加成功' ));
     }
 
@@ -267,6 +293,35 @@ class DoctorController extends BaseController {
 
         if( !$record->save() ){
             return Response::json(array( 'error_code' => 1, 'message' => '设置失败' ));
+        }
+
+        if ( isset( $weixin_pay_order ) && $weixin_pay_order->status == 'FINISHED' ){
+            $doctor = $record->doctor;
+            WeixinSDK::send_template_message([
+                'touser'        => $weixin_pay_order->open_id,
+                'template_id'   => Config::get( 'weixin.template.return' ),
+                'topcolor'      => '#FF00000',
+                'data'          => array(
+                    'first'     => {
+                        'value' => '您好，您的复诊时间已到，请及时进行复诊。'
+                    },
+                    'keyword1'  => {
+                        'value' => $record->account->name
+                    },
+                    'keyword2'  => {
+                        'value' => $doctor->department->hospital->name 
+                    },
+                    'keyword3'  => {
+                        'value' => $doctor->name
+                    },
+                    'keyword4'  => {
+                        'value' => $record->return_date
+                    },
+                    'remark'    => {
+                        'value'      => '祝您身体健康！'
+                    }
+                )
+            ]);
         }
 
         return Response::json(array( 'error_code' => 0, 'message' => '设置成功', 'return_date' => $record->return_date ));

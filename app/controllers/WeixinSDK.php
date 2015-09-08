@@ -6,13 +6,26 @@ class WeixinSDK{
     private $appSecret;
     private $dataWrapper;
 
-    public function __construct( $appId, $appSecret, $dataWrapper ){
+    private static $__instance = null;
+
+    public static function __callStatic( $function, $arguments ){
+        if ( empty( $__instance ) ){
+            $__instance = new WeixinSDK(
+                Config::get( 'weixin.app_id' ),
+                Config::get( 'weixin.app_secret'),
+                new DataStorageWrapper() );
+        }
+
+        return $__instance->$function( $arguments );
+    }
+
+    private function __construct( $appId, $appSecret, $dataWrapper ){
         $this->appId = $appId;
         $this->appSecret = $appSecret;
         $this->dataWrapper = $dataWrapper;
     }
 
-    public function getSignPackage() {
+    private function getSignPackage() {
         $jsapi_ticket = $this->getJsApiTicket();
 
         // 注意 URL 一定要动态获取，不能 hardcode.
@@ -99,16 +112,37 @@ class WeixinSDK{
         return $access_token;
     }
 
-    private function httpGet($url) {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 500);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
+    private function send_template_message( $arguments ){
 
-        $res = curl_exec($curl);
-        curl_close($curl);
+        $access_token = $this->getAccessToken();
+
+        $response = $this->http_send( 
+            'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=$access_token',
+            json_encode( $arguments ),
+            'POST'
+        );
+
+        return json_decode( $response );
+    }
+
+    private function http_send( $url, $query_sring = '', $method = 'GET' ) {
+        $curl = curl_init();
+
+        if ( $method == 'POST' ){
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $query_sring);
+        }else if ( $method == 'GET' ){
+            $url .= http_build_query( $query_sring );
+        }
+
+        curl_setopt( $curl, CURLOPT_TIMEOUT, 30 );
+        curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $curl, CURLOPT_SSL_VERIFYHOST, false );
+        curl_setopt( $curl, CURLOPT_URL, $url );
+
+        $res = curl_exec( $curl );
+        curl_close( $curl );
 
         return $res;
     }

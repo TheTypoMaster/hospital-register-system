@@ -29,19 +29,7 @@ class WeixinController extends BaseController{
 	}
 
     public function response_message(){
-	/*	
-		$request = Request::instance();
-
-		$message = new SimpleXMLElement( $request->getContent() );
-		
-		Session::put( 'user.open_id', (string)$message->FromUserName );
-	
-		//Session::put( 'user.open_id', '123123'  );
-
-		Log::info( Session::all() );
-
-		Log::info( Session::get( 'user.open_id' ) );
-	*/
+        
 		return Response::make( 'success' );
     }
 }
